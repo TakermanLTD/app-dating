@@ -1,0 +1,105 @@
+<Project Sdk="Microsoft.VisualStudio.JavaScript.Sdk/0.5.126-alpha">
+  <PropertyGroup>
+    <StartupCommand>npm run dev</StartupCommand>
+    <JavaScriptTestRoot>.\</JavaScriptTestRoot>
+    <JavaScriptTestFramework>Jest</JavaScriptTestFramework>
+    <!-- Allows the build (or compile) script located on package.json to run on Build -->
+    <ShouldRunBuildScript>false</ShouldRunBuildScript>
+    <!-- Folder where production build objects will be placed -->
+    <PublishAssetsDirectory>$(MSBuildProjectDirectory)\dist</PublishAssetsDirectory>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Remove="src\assets\vendor\aos\aos.cjs.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <TypeScriptConfiguration Include="src\assets\vendor\aos\aos.cjs.js" />
+    <TypeScriptConfiguration Include="src\assets\vendor\aos\aos.css" />
+    <TypeScriptConfiguration Include="src\assets\vendor\aos\aos.esm.js" />
+    <TypeScriptConfiguration Include="src\assets\vendor\aos\aos.js" />
+    <TypeScriptConfiguration Include="src\assets\vendor\aos\aos.js.map" />
+    <TypeScriptConfiguration Include="src\assets\vendor\bootstrap\js\bootstrap.bundle.js" />
+    <TypeScriptConfiguration Include="src\assets\vendor\bootstrap\js\bootstrap.bundle.js.map" />
+    <TypeScriptConfiguration Include="src\assets\vendor\bootstrap\js\bootstrap.bundle.min.js" />
+    <TypeScriptConfiguration Include="src\assets\vendor\bootstrap\js\bootstrap.bundle.min.js.map" />
+    <TypeScriptConfiguration Include="src\assets\vendor\bootstrap\js\bootstrap.esm.js" />
+    <TypeScriptConfiguration Include="src\assets\vendor\bootstrap\js\bootstrap.esm.js.map" />
+    <TypeScriptConfiguration Include="src\assets\vendor\bootstrap\js\bootstrap.esm.min.js" />
+    <TypeScriptConfiguration Include="src\assets\vendor\bootstrap\js\bootstrap.esm.min.js.map" />
+    <TypeScriptConfiguration Include="src\assets\vendor\bootstrap\js\bootstrap.js" />
+    <TypeScriptConfiguration Include="src\assets\vendor\bootstrap\js\bootstrap.js.map" />
+    <TypeScriptConfiguration Include="src\assets\vendor\bootstrap\js\bootstrap.min.js" />
+    <TypeScriptConfiguration Include="src\assets\vendor\bootstrap\js\bootstrap.min.js.map" />
+    <TypeScriptConfiguration Include="src\assets\vendor\glightbox\js\glightbox.js" />
+    <TypeScriptConfiguration Include="src\assets\vendor\glightbox\js\glightbox.min.js" />
+    <TypeScriptConfiguration Include="src\assets\vendor\isotope-layout\isotope.pkgd.js" />
+    <TypeScriptConfiguration Include="src\assets\vendor\isotope-layout\isotope.pkgd.min.js" />
+    <TypeScriptConfiguration Include="src\assets\vendor\php-email-form\validate.js" />
+    <TypeScriptConfiguration Include="src\assets\vendor\swiper\swiper-bundle.min.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="src\assets\vendor\aos\aos.css" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="src\assets\vendor\aos\aos.esm.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="src\assets\vendor\aos\aos.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="src\assets\vendor\aos\aos.js.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="src\assets\vendor\bootstrap\js\bootstrap.bundle.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="src\assets\vendor\bootstrap\js\bootstrap.bundle.js.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="src\assets\vendor\bootstrap\js\bootstrap.bundle.min.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="src\assets\vendor\bootstrap\js\bootstrap.bundle.min.js.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="src\assets\vendor\bootstrap\js\bootstrap.esm.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="src\assets\vendor\bootstrap\js\bootstrap.esm.js.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="src\assets\vendor\bootstrap\js\bootstrap.esm.min.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="src\assets\vendor\bootstrap\js\bootstrap.esm.min.js.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="src\assets\vendor\bootstrap\js\bootstrap.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="src\assets\vendor\bootstrap\js\bootstrap.js.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="src\assets\vendor\bootstrap\js\bootstrap.min.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="src\assets\vendor\bootstrap\js\bootstrap.min.js.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="src\assets\vendor\glightbox\js\glightbox.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="src\assets\vendor\glightbox\js\glightbox.min.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="src\assets\vendor\isotope-layout\isotope.pkgd.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="src\assets\vendor\isotope-layout\isotope.pkgd.min.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="src\assets\vendor\php-email-form\validate.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="src\assets\vendor\swiper\swiper-bundle.min.js" />
+  </ItemGroup>
+</Project>
