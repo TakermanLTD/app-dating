@@ -9,10 +9,7 @@ import Login from '../components/Login.vue';
 import ResetPasswordRequest from '../components/ResetPasswordRequest.vue';
 import ResetPassword from '../components/ResetPassword.vue';
 import Activate from '../components/Activate.vue';
-import Uploads from '../components/Uploads.vue';
 import Orders from '../components/Orders.vue';
-import PrivacyPolicy from '../components/PrivacyPolicy.vue';
-import TermsAndConditions from '../components/TermsAndConditions.vue';
 import { useAuthStore } from '@/stores';
 
 export const router = createRouter({
@@ -25,16 +22,13 @@ export const router = createRouter({
         { path: '/profile', component: Profile },
         { path: '/shipping', component: Shipping },
         { path: '/print', component: Print },
-        { path: '/uploads', component: Uploads },
         { path: '/orders', component: Orders },
         { path: '/register', component: Registration },
         { path: '/login', component: Login },
         { path: '/reset-password-request', component: ResetPasswordRequest },
         { path: '/reset-password', component: ResetPassword },
         { path: '/activate', component: Activate },
-        { path: '/logout', component: Home },
-        { path: '/privacy-policy', component: PrivacyPolicy },
-        { path: '/terms-and-conditions', component: TermsAndConditions }
+        { path: '/logout', component: Home }
     ]
 });
 
@@ -45,8 +39,6 @@ router.beforeEach((to) => {
         '/contacts',
         '/register',
         '/login',
-        '/privacy-policy',
-        '/terms-and-conditions',
         '/reset-password',
         '/reset-password-request',
         '/activate'];

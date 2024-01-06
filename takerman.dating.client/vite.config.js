@@ -62,10 +62,6 @@ export default defineConfig({
                 target: 'https://localhost:7203/',
                 secure: false
             },
-            '^/Upload': {
-                target: 'https://localhost:7203/',
-                secure: false
-            },
             '^/Notification': {
                 target: 'https://localhost:7203/',
                 secure: false

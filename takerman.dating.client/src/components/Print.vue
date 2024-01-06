@@ -3,7 +3,6 @@
         <div class="container">
             <ol>
                 <li><router-link to="/">Home</router-link></li>
-                <li><router-link to="/uploads">Uploads</router-link></li>
                 <li>Print</li>
             </ol>
         </div>

@@ -112,14 +112,14 @@ export default {
                 if (this.fields.password && this.fields.password !== '') {
                     if (!new RegExp(this.passwordPattern).test(this.password) || !new RegExp(this.passwordPattern).test(this.confirmPassword)) {
                         this.loading = false;
-                        this.status = 'The password confirmation or the password is strong enough. Please use stronger password.';
+                        this.status = 'Паролата не е достатъчно силна. Моля използвайте по-силна парола';
                         this.statusClass = 'danger';
                         return;
                     }
 
                     if (this.fields.confirmPassword !== this.fields.password) {
                         this.loading = false;
-                        this.status = 'The password confirmation is not the same as the password';
+                        this.status = 'Потвърждението на паролата не е същото. Въведете същата парола в двете полета';
                         this.statusClass = 'danger';
                         return;
                     }
@@ -130,23 +130,23 @@ export default {
                 this.loading = false;
 
                 if (response == "" || response.status == 200) {
-                    this.status = 'Updated Successfully';
+                    this.status = 'Редактиран успешно';
                     this.statusClass = 'success';
                 } else {
-                    this.status = 'Error when updating user';
+                    this.status = 'Грешка при редакция на потребител';
                     this.statusClass = 'danger';
                 }
             }
             catch (error) {
                 this.loading = false;
-                this.status = 'Error when updating user';
+                this.status = 'Грешка при редакция на потребител. Най-вероятно е от нас. Моля уведомете ни';
                 this.statusClass = 'danger';
                 console.log(error);
             }
         },
         async deleteAccount(event) {
             event.preventDefault();
-            if (confirm('Are you sure? All your data and uploads will be deleted if you continue?')) {
+            if (confirm('Сигурни ли сте, че искате да изтриете акаунта си?')) {
                 this.loading = true;
                 const authStore = useAuthStore();
                 await fetchWrapper.delete("User/Delete?userId=" + authStore.user.id);
