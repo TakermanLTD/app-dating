@@ -1,5 +1,4 @@
-﻿using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Takerman.Dating.Data
@@ -8,36 +7,53 @@ namespace Takerman.Dating.Data
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get;set; }
+        public int Id { get; set; }
 
         [DataType(DataType.Text)]
-        [Description("First Name")]
         [StringLength(300)]
         public string FirstName { get; set; }
 
         [DataType(DataType.Text)]
-        [Description("Last Name")]
         [StringLength(300)]
         public string LastName { get; set; }
 
         [DataType(DataType.EmailAddress)]
-        [Description("Email")]
         [StringLength(300)]
         public string Email { get; set; }
 
         [DataType(DataType.Password)]
-        [Description("Password")]
         [StringLength(300)]
         public string Password { get; set; }
 
+        [DataType(DataType.Text)]
+        [StringLength(200)]
+        public string City { get; set; }
+
+        [DataType(DataType.Text)]
+        [StringLength(200)]
+        public string Country { get; set; }
+
+        [DataType(DataType.PhoneNumber)]
+        [StringLength(100)]
+        public string Phone { get; set; }
+
+        [DataType(DataType.Text)]
+        public string Facebook { get; set; }
+
+        [DataType(DataType.Text)]
+        public string Instagram { get; set; }
+
         [DataType(DataType.DateTime)]
-        [Description("Created On")]
         public DateTime CreatedOn { get; set; }
 
-        [Description("Orders")]
         public virtual ICollection<Order> Orders { get; set; } = null;
 
-        [Description("Is Active")]
+        public virtual ICollection<UserPicture> Pictures { get; set; } = null;
+
+        public virtual ICollection<DateUserChoice> Choices { get; set; } = null;
+
         public bool IsActive { get; set; }
+
+        public Gender Gender { get; set; }
     }
 }

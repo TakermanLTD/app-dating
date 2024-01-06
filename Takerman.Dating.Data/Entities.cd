@@ -1,87 +1,101 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="Takerman.Dating.Data.User">
-    <Position X="0.5" Y="0.5" Width="1.5" />
+  <Class Name="Takerman.Dating.Data.Date">
+    <Position X="6.25" Y="1.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAECAEAAACAAAAAAEAAAAAAAAAACAAACAAAAAAAAAAg=</HashCode>
-      <FileName>User.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="Takerman.Dating.Data.Order">
-    <Position X="2.75" Y="0.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAADAAAEAAAAAAAAAAAAAIgAAAACQAAAAAgAgAAAAAA=</HashCode>
-      <FileName>Order.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="Takerman.Dating.Data.Address">
-    <Position X="7.25" Y="0.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAADAAAAAAAAAAAIAEAAAAgAAAIAAAAAAAIAIAAAAAA=</HashCode>
-      <FileName>Address.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="Takerman.Dating.Data.Print">
-    <Position X="5" Y="0.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AEEDAAAAAQAAAAAAAAAAAIgAAAAAAAAAAAgAAAAAAAA=</HashCode>
-      <FileName>Print.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="Takerman.Dating.Data.Upload">
-    <Position X="0.5" Y="3.5" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAADAAAAAAQAAAAAAAAAAAwAQAAIAAAAAQEgABAAAAA=</HashCode>
-      <FileName>Upload.cs</FileName>
+      <HashCode>AAACAAFEAQgggEAAAAIACAACEIAEAAAgAAAAAAAAAAA=</HashCode>
+      <FileName>Date.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Takerman.Dating.Data.Message">
-    <Position X="5" Y="3.5" Width="1.5" />
+    <Position X="2.75" Y="1.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAACAAAgACAAAAAAAAAAAAQAAAAAAAAAAAAACAAAAAA=</HashCode>
       <FileName>Message.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Takerman.Dating.Data.Newsletter">
-    <Position X="7.25" Y="3.5" Width="1.5" />
+    <Position X="4.5" Y="1.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAACAAAAACAAAAAAAAAAAAwAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Newsletter.cs</FileName>
     </TypeIdentifier>
   </Class>
+  <Class Name="Takerman.Dating.Data.Order">
+    <Position X="2.75" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAADAAAEAAAAAAAAAAAAACgACAACQAIBAAAAAAAAAAA=</HashCode>
+      <FileName>Order.cs</FileName>
+    </TypeIdentifier>
+  </Class>
   <Class Name="Takerman.Dating.Data.ResetPasswordRequest">
-    <Position X="10.5" Y="4" Width="1.5" />
+    <Position X="4.5" Y="4" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAADAAAAAAAAAAAAAAAgAAgAAAAAAAAAAAAAgAAAAAA=</HashCode>
       <FileName>ResetPasswordRequest.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Takerman.Dating.Data.UploadData">
-    <Position X="2.75" Y="3.75" Width="1.5" />
+  <Class Name="Takerman.Dating.Data.User">
+    <Position X="0.75" Y="1.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAACAAAAAAAAAAAAAAAAAAgAAAAAABAAAAAAAAAAAAA=</HashCode>
-      <FileName>UploadData.cs</FileName>
+      <HashCode>AAUCAEIAACAAAACIEAAAAAAAAAICAAACAABAIAAAAAg=</HashCode>
+      <FileName>User.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Takerman.Dating.Data.Color">
-    <Position X="2.75" Y="5.5" Width="1.5" />
+  <Class Name="Takerman.Dating.Data.UserPicture">
+    <Position X="0.75" Y="5.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAACAAAAAAAAAAAAAAAAAARAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Color.cs</FileName>
+      <HashCode>AAADgAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAABAAAAA=</HashCode>
+      <FileName>UserPicture.cs</FileName>
     </TypeIdentifier>
   </Class>
+  <Class Name="Takerman.Dating.Data.DateUserChoice">
+    <Position X="8.25" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAADAAAAAAAAAAAAAAAAACmAAAAAAAABAAAAAAAAAAA=</HashCode>
+      <FileName>DateUserChoice.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Takerman.Dating.Data.ChatMessage">
+    <Position X="4.5" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAADQAAgAAAAAAAAAAAAAAgAAAAAAAAAAAAAIAAAAAA=</HashCode>
+      <FileName>ChatMessage.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="Takerman.Dating.Data.DateStatus">
+    <Position X="10.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAAAAAAAAAAQAAAAAAIIAAAAAAAAAAABAAAA=</HashCode>
+      <FileName>DateStatus.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Takerman.Dating.Data.DateType">
+    <Position X="10.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAEAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DateType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
   <Enum Name="Takerman.Dating.Data.OrderStatus">
     <Position X="10.5" Y="2" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAoAAAAAAAAAAAIAAAAAAAAAAAAAAgA=</HashCode>
+      <HashCode>AAAAAAAAAAgAAAIAgAAAAAAAAAIAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>OrderStatus.cs</FileName>
     </TypeIdentifier>
   </Enum>
-  <Enum Name="Takerman.Dating.Data.Material">
-    <Position X="10.5" Y="0.75" Width="1.5" />
+  <Enum Name="Takerman.Dating.Data.ChoiceType">
+    <Position X="8.25" Y="5.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Material.cs</FileName>
+      <HashCode>AAAAAAAAAAAQAAAAAAAAAAAAACAAAAAACAAAAAAAAAA=</HashCode>
+      <FileName>ChoiceType.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Takerman.Dating.Data.Gender">
+    <Position X="8.25" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAA=</HashCode>
+      <FileName>Gender.cs</FileName>
     </TypeIdentifier>
   </Enum>
   <Font Name="Segoe UI" Size="9" />

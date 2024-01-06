@@ -7,11 +7,10 @@ namespace Takerman.Dating.Server.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class OrderController(IOrderService orderService, INotificationService notificationService, IUploadService uploadService) : ControllerBase
+    public class OrderController(IOrderService orderService, INotificationService notificationService) : ControllerBase
     {
         private readonly IOrderService _orderService = orderService;
         private readonly INotificationService _notificationService = notificationService;
-        private readonly IUploadService _uploadService = uploadService;
 
         [HttpGet("Get")]
         public async Task<Order> Get(int id)
@@ -28,13 +27,9 @@ namespace Takerman.Dating.Server.Controllers
             {
                 Id = x.Id,
                 Currency = x.Currency,
-                Quantity = x.Quantity,
                 Total = x.Total,
-                Color = x.Color.Name,
                 Status = Enum.GetName(x.Status) ?? string.Empty,
-                Upload = _uploadService.GetAsync(x.UploadId).Result?.Name ?? string.Empty,
-                Refundable = x.CreatedOn.AddDays(14) > DateTime.Now,
-                TrackingCode = x.TrackingCode
+                Refundable = x.CreatedOn.AddDays(14) > DateTime.Now
             }).ToList();
 
             return result;

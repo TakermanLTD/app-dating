@@ -22,7 +22,7 @@ namespace Takerman.Dating.Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Takerman.Dating.Data.Address", b =>
+            modelBuilder.Entity("Takerman.Dating.Data.ChatMessage", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -30,40 +30,25 @@ namespace Takerman.Dating.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("City")
+                    b.Property<string>("Message")
                         .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Country")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
+                    b.Property<DateTime>("SentOn")
+                        .HasColumnType("datetime2");
 
-                    b.Property<int>("Number")
+                    b.Property<int>("ToUserId")
                         .HasColumnType("int");
-
-                    b.Property<string>("Phone")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("Street")
-                        .IsRequired()
-                        .HasMaxLength(300)
-                        .HasColumnType("nvarchar(300)");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Addresses");
+                    b.ToTable("ChatMessages");
                 });
 
-            modelBuilder.Entity("Takerman.Dating.Data.Color", b =>
+            modelBuilder.Entity("Takerman.Dating.Data.Date", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -71,17 +56,90 @@ namespace Takerman.Dating.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<bool>("Available")
-                        .HasColumnType("bit");
+                    b.Property<int>("DateType")
+                        .HasColumnType("int");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Location")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<short>("MaxAges")
+                        .HasColumnType("smallint");
+
+                    b.Property<short>("MenCount")
+                        .HasColumnType("smallint");
+
+                    b.Property<short>("MinAges")
+                        .HasColumnType("smallint");
+
+                    b.Property<short>("MinMen")
+                        .HasColumnType("smallint");
+
+                    b.Property<short>("MinWomen")
+                        .HasColumnType("smallint");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(10,2)");
+
+                    b.Property<string>("ShortDescription")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<DateTime>("StartsOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
+                    b.Property<string>("VideoLink")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<short>("WomenCount")
+                        .HasColumnType("smallint");
+
                     b.HasKey("Id");
 
-                    b.ToTable("Colors");
+                    b.ToTable("Dates");
+                });
+
+            modelBuilder.Entity("Takerman.Dating.Data.DateUserChoice", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ChoiceType")
+                        .HasColumnType("int");
+
+                    b.Property<int>("DateId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("VoteForId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DateId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("DateUserChoices");
                 });
 
             modelBuilder.Entity("Takerman.Dating.Data.Message", b =>
@@ -95,14 +153,12 @@ namespace Takerman.Dating.Data.Migrations
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasMaxLength(300)
-                        .HasColumnType("nvarchar(300)")
-                        .HasAnnotation("Relational:JsonPropertyName", "email");
+                        .HasColumnType("nvarchar(300)");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(300)
-                        .HasColumnType("nvarchar(300)")
-                        .HasAnnotation("Relational:JsonPropertyName", "name");
+                        .HasColumnType("nvarchar(300)");
 
                     b.Property<DateTime>("SentOn")
                         .HasColumnType("datetime2");
@@ -110,8 +166,7 @@ namespace Takerman.Dating.Data.Migrations
                     b.Property<string>("Text")
                         .IsRequired()
                         .HasMaxLength(400)
-                        .HasColumnType("nvarchar(400)")
-                        .HasAnnotation("Relational:JsonPropertyName", "text");
+                        .HasColumnType("nvarchar(400)");
 
                     b.HasKey("Id");
 
@@ -129,15 +184,13 @@ namespace Takerman.Dating.Data.Migrations
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasMaxLength(300)
-                        .HasColumnType("nvarchar(300)")
-                        .HasAnnotation("Relational:JsonPropertyName", "email");
+                        .HasColumnType("nvarchar(300)");
 
                     b.Property<DateTime>("SubscribedOn")
                         .HasColumnType("datetime2");
 
                     b.Property<int?>("UserId")
-                        .HasColumnType("int")
-                        .HasAnnotation("Relational:JsonPropertyName", "userId");
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -152,19 +205,6 @@ namespace Takerman.Dating.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("City")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.Property<int>("ColorId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Country")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
@@ -172,57 +212,25 @@ namespace Takerman.Dating.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasMaxLength(300)
-                        .HasColumnType("nvarchar(300)");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasMaxLength(300)
-                        .HasColumnType("nvarchar(300)");
-
-                    b.Property<int>("Number")
+                    b.Property<int>("DateId")
                         .HasColumnType("int");
 
                     b.Property<string>("PaymentProvider")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Phone")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
-                    b.Property<string>("Street")
-                        .IsRequired()
-                        .HasMaxLength(300)
-                        .HasColumnType("nvarchar(300)");
-
                     b.Property<decimal>("Total")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("TrackingCode")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("UploadId")
-                        .HasColumnType("int");
+                        .HasColumnType("decimal(10,2)");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ColorId");
-
-                    b.HasIndex("UploadId");
+                    b.HasIndex("DateId");
 
                     b.HasIndex("UserId");
 
@@ -255,68 +263,6 @@ namespace Takerman.Dating.Data.Migrations
                     b.ToTable("ResetPasswordRequests");
                 });
 
-            modelBuilder.Entity("Takerman.Dating.Data.Upload", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("Downloads")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsRemoved")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<int>("SizeKB")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Type")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("UploadDataId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("UploadedOn")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UploadDataId")
-                        .IsUnique();
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Uploads");
-                });
-
-            modelBuilder.Entity("Takerman.Dating.Data.UploadData", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<byte[]>("Data")
-                        .IsRequired()
-                        .HasColumnType("varbinary(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("UploadDatas");
-                });
-
             modelBuilder.Entity("Takerman.Dating.Data.User", b =>
                 {
                     b.Property<int>("Id")
@@ -325,18 +271,42 @@ namespace Takerman.Dating.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("Country")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
+
+                    b.Property<int?>("DateId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasMaxLength(300)
                         .HasColumnType("nvarchar(300)");
 
+                    b.Property<string>("Facebook")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasMaxLength(300)
                         .HasColumnType("nvarchar(300)");
+
+                    b.Property<int>("Gender")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Instagram")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
@@ -351,33 +321,67 @@ namespace Takerman.Dating.Data.Migrations
                         .HasMaxLength(300)
                         .HasColumnType("nvarchar(300)");
 
+                    b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("DateId");
 
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("Takerman.Dating.Data.Address", b =>
+            modelBuilder.Entity("Takerman.Dating.Data.UserPicture", b =>
                 {
-                    b.HasOne("Takerman.Dating.Data.User", "User")
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<byte[]>("Picture")
+                        .IsRequired()
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<DateTime>("UploadedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserPictures");
+                });
+
+            modelBuilder.Entity("Takerman.Dating.Data.DateUserChoice", b =>
+                {
+                    b.HasOne("Takerman.Dating.Data.Date", "Date")
                         .WithMany()
+                        .HasForeignKey("DateId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Takerman.Dating.Data.User", "User")
+                        .WithMany("Choices")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Date");
 
                     b.Navigation("User");
                 });
 
             modelBuilder.Entity("Takerman.Dating.Data.Order", b =>
                 {
-                    b.HasOne("Takerman.Dating.Data.Color", "Color")
-                        .WithMany()
-                        .HasForeignKey("ColorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Takerman.Dating.Data.Upload", null)
+                    b.HasOne("Takerman.Dating.Data.Date", "Date")
                         .WithMany("Orders")
-                        .HasForeignKey("UploadId")
+                        .HasForeignKey("DateId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -387,7 +391,7 @@ namespace Takerman.Dating.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Color");
+                    b.Navigation("Date");
 
                     b.Navigation("User");
                 });
@@ -403,39 +407,38 @@ namespace Takerman.Dating.Data.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Takerman.Dating.Data.Upload", b =>
+            modelBuilder.Entity("Takerman.Dating.Data.User", b =>
                 {
-                    b.HasOne("Takerman.Dating.Data.UploadData", "UploadData")
-                        .WithOne("Upload")
-                        .HasForeignKey("Takerman.Dating.Data.Upload", "UploadDataId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("Takerman.Dating.Data.Date", null)
+                        .WithMany("Attendees")
+                        .HasForeignKey("DateId");
+                });
 
+            modelBuilder.Entity("Takerman.Dating.Data.UserPicture", b =>
+                {
                     b.HasOne("Takerman.Dating.Data.User", "User")
-                        .WithMany()
+                        .WithMany("Pictures")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("UploadData");
-
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Takerman.Dating.Data.Upload", b =>
+            modelBuilder.Entity("Takerman.Dating.Data.Date", b =>
                 {
-                    b.Navigation("Orders");
-                });
+                    b.Navigation("Attendees");
 
-            modelBuilder.Entity("Takerman.Dating.Data.UploadData", b =>
-                {
-                    b.Navigation("Upload")
-                        .IsRequired();
+                    b.Navigation("Orders");
                 });
 
             modelBuilder.Entity("Takerman.Dating.Data.User", b =>
                 {
+                    b.Navigation("Choices");
+
                     b.Navigation("Orders");
+
+                    b.Navigation("Pictures");
                 });
 #pragma warning restore 612, 618
         }

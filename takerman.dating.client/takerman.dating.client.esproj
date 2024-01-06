@@ -102,4 +102,12 @@
   <ItemGroup>
     <None Remove="src\assets\vendor\swiper\swiper-bundle.min.js" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="src\assets\img\dates\kopanari\" />
+    <Folder Include="src\assets\img\dates\bulgarians\" />
+    <Folder Include="src\assets\img\dates\romas\" />
+    <Folder Include="src\assets\img\dates\slavs\" />
+    <Folder Include="src\assets\img\dates\turks\" />
+    <Folder Include="src\assets\img\dates\pomaks\" />
+  </ItemGroup>
 </Project>

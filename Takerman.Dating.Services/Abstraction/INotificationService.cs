@@ -7,8 +7,6 @@ namespace Takerman.Dating.Services.Abstraction
     {
         Task SendEmailAsync(MailMessageDto message);
 
-        Task NotifyForUploadAsync(int userId, Upload result);
-
         Task NotifyForOrderCreatedAsync(Order order);
 
         Task NotifyForOrderStatusChangedAsync(Order order);

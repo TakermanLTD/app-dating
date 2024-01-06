@@ -73,8 +73,6 @@ namespace Takerman.Dating.Services
             await using var context = new DefaultContext();
             var user = await GetAsync(userId);
             context.ResetPasswordRequests.RemoveRange(context.ResetPasswordRequests.Where(x => x.UserId == userId));
-            context.Addresses.RemoveRange(context.Addresses.Where(x => x.UserId == userId));
-            context.Uploads.RemoveRange(context.Uploads.Where(x => x.UserId == userId));
             context.Orders.RemoveRange(context.Orders.Where(x => x.UserId == userId));
             context.Remove(user);
             await context.SaveChangesAsync();

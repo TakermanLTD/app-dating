@@ -114,29 +114,6 @@ namespace Takerman.Dating.Services
             }
         }
 
-        public async Task NotifyForUploadAsync(int userId, Upload result)
-        {
-            var user = await _userService.GetAsync(userId);
-
-            if (user != null)
-            {
-                _logger.LogWarning(
-@$"A new 3D model for dating was submitted.
-
-**User*:
-User Id: {user.Id}
-Name: {user.FirstName} {user.LastName}
-Email: {user.Email}
-
-**Model**
-Upload Id: {result.Id}
-Name: {result.Name}
-Uploaded On: {result.UploadedOn}
-Type: {result.Type}
-[DOWNLOAD](https://takerprint.com/Home/Download?id={result.Id}&userId={userId})");
-            }
-        }
-
         public async Task NotifyForOrderCreatedAsync(Order order)
         {
             var user = await _userService.GetAsync(order.UserId);
@@ -151,13 +128,9 @@ Email: {user.Email}
 
 **Order**
 Order Id: {order.Id}
-Color: {order.ColorId}
-Quantity: {order.Quantity}
 Currency: {order.Currency}
 Total: {order.Total}
 Payment Provider: {order.PaymentProvider}
-Upload Id: {order.UploadId}
-Address: {order.Street} {order.Number}, {order.City}, {order.Country}, {order.Phone}
 Created On: {order.CreatedOn}");
 
             await SendEmailAsync(new MailMessageDto()
@@ -168,11 +141,8 @@ Created On: {order.CreatedOn}");
 <strong>Will be sent to</strong> <br />
 Name: {user.FirstName} {user.LastName} <br />
 Email: {user.Email} <br />
-Address: {order.Street} {order.Number}, {order.City}, {order.Country}, {order.Phone} <br />
 <br />
 <strong>Model</strong> <br />
-Color: {order.ColorId} <br />
-Quantity: {order.Quantity} <br />
 Total: {order.Total} {order.Currency}<br />
 Created On: {order.CreatedOn} <br />",
                 To = user.Email,

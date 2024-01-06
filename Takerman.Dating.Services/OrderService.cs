@@ -46,7 +46,7 @@ namespace Takerman.Dating.Services
         public async Task<IEnumerable<Order>> GetByUserIdAsync(int userId)
         {
             await using var context = new DefaultContext();
-            return await context.Orders.Include(x => x.Color).Where(x => x.UserId == userId).ToListAsync();
+            return await context.Orders.Where(x => x.UserId == userId).ToListAsync();
         }
 
         public async Task<Order> GetAsync(int id)
@@ -63,14 +63,6 @@ namespace Takerman.Dating.Services
             context.Orders.Update(result);
             await context.SaveChangesAsync();
             return result;
-        }
-
-        public async Task DeleteByUploadId(int uploadId)
-        {
-            await using var context = new DefaultContext();
-            var orders = await context.Orders.Where(x => x.UploadId == uploadId).ToListAsync();
-            context.Orders.RemoveRange(orders);
-            await context.SaveChangesAsync();
         }
 
         public async Task<Order> CancelAsync(int id)
