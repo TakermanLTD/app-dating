@@ -65,7 +65,7 @@ export default {
     methods: {
         logout() {
             const authStore = useAuthStore();
-            const { user: authUser } = storeToRefs(authStore);
+            let { user: authUser } = storeToRefs(authStore);
             authStore.logout();
             authUser = null;
             this.user = null;
