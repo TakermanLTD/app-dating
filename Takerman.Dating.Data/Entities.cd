@@ -3,7 +3,7 @@
   <Class Name="Takerman.Dating.Data.Date">
     <Position X="6.25" Y="1.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAACAAFEAQgggEAAAAIACAACEIAEAAAgAAAAAAAAAAA=</HashCode>
+      <HashCode>AAECAAFEAQgggEAAAAIADAACEIAEAAAgAAAAAAAAAAA=</HashCode>
       <FileName>Date.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -38,12 +38,12 @@
   <Class Name="Takerman.Dating.Data.User">
     <Position X="0.75" Y="1.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAUCAEIAACAAAACIEAAAAAAAAAICAAACAABAIAAAAAg=</HashCode>
+      <HashCode>AAUCAEIAACAAAACIFAAAAAAAAAICAAAiAABAIAAAAAg=</HashCode>
       <FileName>User.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Takerman.Dating.Data.UserPicture">
-    <Position X="0.75" Y="5.75" Width="1.5" />
+    <Position X="0.75" Y="6.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAADgAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAABAAAAA=</HashCode>
       <FileName>UserPicture.cs</FileName>
@@ -52,7 +52,7 @@
   <Class Name="Takerman.Dating.Data.DateUserChoice">
     <Position X="8.25" Y="2.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>CAADAAAAAAAAAAAAAAAAACmAAAAAAAABAAAAAAAAAAA=</HashCode>
+      <HashCode>CAADAAAAAAAAAAAAAAAAACiAAAAAAAABAAAAAAAAAAA=</HashCode>
       <FileName>DateUserChoice.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -96,6 +96,13 @@
     <TypeIdentifier>
       <HashCode>BAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAA=</HashCode>
       <FileName>Gender.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Takerman.Dating.Data.Ethnicity">
+    <Position X="10.5" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAIAAAIAAABgAAAAAAAAAgAAAAAAAAAACAA=</HashCode>
+      <FileName>Ethnicity.cs</FileName>
     </TypeIdentifier>
   </Enum>
   <Font Name="Segoe UI" Size="9" />

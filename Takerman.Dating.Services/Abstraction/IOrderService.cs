@@ -16,7 +16,7 @@ namespace Takerman.Dating.Services.Abstraction
         Task ChangeStatusAsync(Order order, OrderStatus orderStatus);
 
         Task<IEnumerable<Order>> GetByUserIdAsync(int userId);
-        
+
         Task<Order> CancelAsync(int id);
     }
 }

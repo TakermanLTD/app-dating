@@ -46,14 +46,16 @@ namespace Takerman.Dating.Data
         [DataType(DataType.DateTime)]
         public DateTime CreatedOn { get; set; }
 
+        public bool IsActive { get; set; }
+
+        public Gender Gender { get; set; }
+
+        public Ethnicity Ethnicity { get; set; }
+
         public virtual ICollection<Order> Orders { get; set; } = null;
 
         public virtual ICollection<UserPicture> Pictures { get; set; } = null;
 
         public virtual ICollection<DateUserChoice> Choices { get; set; } = null;
-
-        public bool IsActive { get; set; }
-
-        public Gender Gender { get; set; }
     }
 }

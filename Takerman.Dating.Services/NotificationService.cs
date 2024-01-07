@@ -196,9 +196,9 @@ Created On: {order.CreatedOn} <br />",
             _logger.LogWarning(
 @$"A new user has beed registered. It is still not active
 Link to [activate](https://{domainName}/activate?code={user.Id})
-User Data: 
-UserId: {user.Id} 
-Name: {user.FirstName} {user.FirstName} 
+User Data:
+UserId: {user.Id}
+Name: {user.FirstName} {user.FirstName}
 Email: {user.Email}");
         }
 
