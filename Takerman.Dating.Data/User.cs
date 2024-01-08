@@ -11,46 +11,46 @@ namespace Takerman.Dating.Data
 
         [DataType(DataType.Text)]
         [StringLength(300)]
-        public string FirstName { get; set; }
+        public required string FirstName { get; set; }
 
         [DataType(DataType.Text)]
         [StringLength(300)]
-        public string LastName { get; set; }
+        public required string LastName { get; set; }
 
         [DataType(DataType.EmailAddress)]
         [StringLength(300)]
-        public string Email { get; set; }
+        public required string Email { get; set; }
 
         [DataType(DataType.Password)]
         [StringLength(300)]
-        public string Password { get; set; }
+        public required string Password { get; set; }
 
         [DataType(DataType.Text)]
         [StringLength(200)]
-        public string City { get; set; }
+        public string? City { get; set; }
 
         [DataType(DataType.Text)]
         [StringLength(200)]
-        public string Country { get; set; }
+        public string? Country { get; set; }
 
         [DataType(DataType.PhoneNumber)]
         [StringLength(100)]
-        public string Phone { get; set; }
+        public string? Phone { get; set; }
 
         [DataType(DataType.Text)]
-        public string Facebook { get; set; }
+        public string? Facebook { get; set; }
 
         [DataType(DataType.Text)]
-        public string Instagram { get; set; }
+        public string? Instagram { get; set; }
 
         [DataType(DataType.DateTime)]
         public DateTime CreatedOn { get; set; }
 
         public bool IsActive { get; set; }
 
-        public Gender Gender { get; set; }
+        public required Gender Gender { get; set; }
 
-        public Ethnicity Ethnicity { get; set; }
+        public Ethnicity? Ethnicity { get; set; }
 
         public virtual ICollection<Order> Orders { get; set; } = null;
 

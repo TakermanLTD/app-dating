@@ -1,7 +1,10 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
+using System.Reflection;
 using Takerman.Dating.Data;
 using Takerman.Dating.Data.DTOs;
+using Takerman.Dating.Models.DTOs;
 using Takerman.Dating.Services.Abstraction;
 using Takerman.Dating.Services.Authentication;
 
@@ -106,17 +109,25 @@ namespace Takerman.Dating.Server.Controllers
         }
 
         [HttpPut("Update")]
-        public async Task Update([FromBody] RegisterDto data)
+        public async Task Update([FromBody] ProfileDto user)
         {
-            var user = _mapper.Map<User>(data);
-            user.IsActive = true;
-
-            if (!string.IsNullOrEmpty(data.Password) && data.Password.ToLower() == data.ConfirmPassword.ToLower())
+            if (!string.IsNullOrEmpty(user.Password) && user.Password.Equals(user.ConfirmPassword, StringComparison.CurrentCultureIgnoreCase))
             {
-                user.Password = data.Password;
+                user.Password = user.Password;
             }
 
             await _userService.UpdateAsync(user);
+        }
+
+        [HttpGet("GetEthnicities")]
+        public async Task<IEnumerable<KeyValuePair<int, string>>> GetEthnicities()
+        {
+            var result = new List<KeyValuePair<int, string>>();
+            
+            foreach (var item in Enum.GetValues<Ethnicity>())
+                result.Add(new KeyValuePair<int, string>((int)item, item.GetType().GetMember(Enum.GetName(item)).First().GetCustomAttribute<DisplayAttribute>().Name));
+            
+            return result;
         }
     }
 }

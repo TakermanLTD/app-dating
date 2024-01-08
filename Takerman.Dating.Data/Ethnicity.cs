@@ -1,12 +1,28 @@
-﻿namespace Takerman.Dating.Data
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Takerman.Dating.Data
 {
     public enum Ethnicity
     {
-        Bulgar,
-        Rom,
-        Kopanar,
-        Turk,
-        Pomak,
-        Slav
+        [Display(Name = "Няма")]
+        None = 1,
+
+        [Display(Name = "Българин")]
+        Bulgar = 2,
+
+        [Display(Name = "Ром")]
+        Rom = 3,
+
+        [Display(Name = "Копанарин")]
+        Kopanar = 4,
+
+        [Display(Name = "Турчин")]
+        Turk = 5,
+
+        [Display(Name = "Помак")]
+        Pomak = 6,
+
+        [Display(Name = "Славянин")]
+        Slav = 7
     }
 }

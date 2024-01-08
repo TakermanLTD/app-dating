@@ -1,4 +1,5 @@
 ﻿using Takerman.Dating.Data;
+using Takerman.Dating.Models.DTOs;
 using Takerman.Dating.Services.Authentication;
 
 namespace Takerman.Dating.Services.Abstraction
@@ -7,7 +8,7 @@ namespace Takerman.Dating.Services.Abstraction
     {
         Task<bool> ActivateAsync(int userId);
 
-        Task<AuthenticateResponse> Authenticate(AuthenticateRequest model);
+        Task<ProfileDto> Authenticate(AuthenticateRequest model);
 
         Task ChangePasswordAsync(int userId, string password);
 
@@ -23,6 +24,6 @@ namespace Takerman.Dating.Services.Abstraction
 
         Task<ResetPasswordRequest> GenerateResetPasswordRequest(int userId);
 
-        Task UpdateAsync(User user);
+        Task UpdateAsync(ProfileDto user);
     }
 }

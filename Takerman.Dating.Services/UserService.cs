@@ -8,6 +8,7 @@ using System.Security.Cryptography;
 using System.Text;
 using Takerman.Dating.Data;
 using Takerman.Dating.Data.DTOs;
+using Takerman.Dating.Models.DTOs;
 using Takerman.Dating.Services.Abstraction;
 using Takerman.Dating.Services.Authentication;
 
@@ -21,6 +22,7 @@ namespace Takerman.Dating.Services
             _mapper = new MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<User, User>();
+                cfg.CreateMap<User, ProfileDto>();
             }).CreateMapper();
         }
 
@@ -84,14 +86,20 @@ namespace Takerman.Dating.Services
             return await context.Users.FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public async Task UpdateAsync(User user)
+        public async Task UpdateAsync(ProfileDto user)
         {
             await using var context = new DefaultContext();
             var result = await GetAsync(user.Id);
             result.Email = user.Email;
             result.FirstName = user.FirstName;
             result.LastName = user.LastName;
-            result.IsActive = user.IsActive;
+            result.City = user.City;
+            result.Country = user.Country;
+            result.Ethnicity = user.Ethnicity;
+            result.Facebook = user.Facebook;
+            result.Gender = user.Gender;
+            result.Instagram = user.Instagram;
+            result.Phone = user.LastName;
 
             if (!string.IsNullOrEmpty(user.Password))
                 result.Password = GetHashedPassword(user.Password);
@@ -109,7 +117,7 @@ namespace Takerman.Dating.Services
             return builder.ToString();
         }
 
-        public async Task<AuthenticateResponse> Authenticate(AuthenticateRequest model)
+        public async Task<ProfileDto> Authenticate(AuthenticateRequest model)
         {
             await using var context = new DefaultContext();
             var hashedPassword = GetHashedPassword(model.Password);
@@ -124,7 +132,10 @@ namespace Takerman.Dating.Services
 
             var token = GenerateJwtToken(user);
 
-            return new AuthenticateResponse(user, token);
+            var result = _mapper.Map<ProfileDto>(user);
+            result.Token = token;
+
+            return result;
         }
 
         private string GenerateJwtToken(User user)

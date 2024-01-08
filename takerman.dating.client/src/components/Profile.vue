@@ -29,6 +29,71 @@
                     </div>
                 </div>
                 <br />
+                <div class="form-group row">
+                    <label for="gender" class="col-sm-2 col-form-label">Пол</label>
+                    <div class="col-sm-10">
+                        <div class="form-check form-check-inline">
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="radio" :value="1" name="gender" v-model="fields.gender"> Мъж
+                            </label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="radio" :value="2" name="gender" v-model="fields.gender"> Жена
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <div class="form-group row">
+                    <label for="city" class="col-sm-2 col-form-label">Град</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="city" placeholder="Град" v-model="fields.city" />
+                    </div>
+                </div>
+                <br />
+                <div class="form-group row">
+                    <label for="country" class="col-sm-2 col-form-label">Държава</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="country" placeholder="Държава"
+                            v-model="fields.country" />
+                    </div>
+                </div>
+                <br />
+                <div class="form-group row">
+                    <label for="phone" class="col-sm-2 col-form-label">Телефон</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="phone" placeholder="Телефон" v-model="fields.phone" />
+                    </div>
+                </div>
+                <br />
+                <div class="form-group row">
+                    <label for="facebook" class="col-sm-2 col-form-label">Фейсбук</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="facebook" placeholder="Фейсбук"
+                            v-model="fields.facebook" />
+                    </div>
+                </div>
+                <br />
+                <div class="form-group row">
+                    <label for="instagram" class="col-sm-2 col-form-label">Инстаграм</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="instagram" placeholder="Инстаграм"
+                            v-model="fields.instagram" />
+                    </div>
+                </div>
+                <br />
+                <div class="form-group row">
+                    <label for="ethnicity" class="col-sm-2 col-form-label">Етнос</label>
+                    <div class="col-sm-10">
+                        <div class="form-group">
+                            <select v-model="fields.ethnicity" :value="fields.ethnicity" class="form-control" name="ethnicity" id="ethnicity">
+                                <option v-for="(ethnicity, key) in ethnicities" :key="key" :value="ethnicity.key">{{ ethnicity.value }}</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <br />
                 <hgroup>
                     <h4>Парола</h4>
                 </hgroup>
@@ -86,14 +151,25 @@ export default {
                 firstName: '',
                 lastName: '',
                 email: '',
+                gender: 1,
+                city: '',
+                country: '',
+                phone: '',
+                facebook: '',
+                instagram: '',
+                ethnicity: 1,
                 password: '',
                 confirmPassword: ''
             },
+            ethnicities: [],
             loading: false,
             status: '',
             statusClass: '',
             passwordPattern: ".{8,}"
         };
+    },
+    async beforeCreate() {
+        this.ethnicities = await fetchWrapper.get('User/GetEthnicities');
     },
     mounted() {
         const authStore = useAuthStore();
@@ -102,6 +178,13 @@ export default {
         this.fields.firstName = user.firstName;
         this.fields.lastName = user.lastName;
         this.fields.email = user.email;
+        this.fields.city = user.city;
+        this.fields.country = user.country;
+        this.fields.gender = user.gender;
+        this.fields.phone = user.phone;
+        this.fields.facebook = user.facebook;
+        this.fields.instagram = user.instagram;
+        this.fields.ethnicity = user.ethnicity;
     },
     methods: {
         async save(event) {

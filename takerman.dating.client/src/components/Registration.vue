@@ -31,6 +31,24 @@
                         </div>
                     </div>
                     <br />
+                    <div class="form-group row">
+                        <label for="gender" class="col-sm-2 col-form-label">Пол</label>
+                        <div class="col-sm-10">
+                            <div class="form-check form-check-inline">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="radio" required name="gender" id="genderMan" :value="1"
+                                        v-model="fields.gender"> Мъж
+                                </label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="radio" required name="gender" id="genderWoman" :value="2"
+                                        v-model="fields.gender"> Жена
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
                 </div>
                 <hgroup>
                     <h4>Парола</h4>
@@ -86,7 +104,8 @@ export default {
                 lastName: '',
                 email: '',
                 password: '',
-                confirmPassword: ''
+                confirmPassword: '',
+                gender: 1
             },
             loading: false,
             status: '',
