@@ -17,12 +17,14 @@ namespace Takerman.Dating.Services
         private readonly ConnectionFactory _connectionFactory;
         private readonly IUserService _userService;
         private readonly ILogger<NotificationService> _logger;
+        private readonly DefaultContext _context;
 
-        public NotificationService(IOptions<RabbitMqConfig> rabbitMqConfig, IUserService userService, ILogger<NotificationService> logger)
+        public NotificationService(IOptions<RabbitMqConfig> rabbitMqConfig, IUserService userService, ILogger<NotificationService> logger, DefaultContext context)
         {
             _rabbitMqConfig = rabbitMqConfig.Value;
             _userService = userService;
             _logger = logger;
+            _context = context;
             _connectionFactory = new ConnectionFactory()
             {
                 HostName = _rabbitMqConfig.Hostname,
@@ -35,8 +37,7 @@ namespace Takerman.Dating.Services
 
         public async Task SubscribeForNewsletterAsync(Newsletter model)
         {
-            await using var context = new DefaultContext();
-            var newsletter = await context.Newsletters.FirstOrDefaultAsync(x => x.Email.ToLower() == model.Email.ToLower());
+            var newsletter = await _context.Newsletters.FirstOrDefaultAsync(x => x.Email.ToLower() == model.Email.ToLower());
             var user = await _userService.GetByEmailAsync(model.Email);
 
             if (newsletter == null)
@@ -48,15 +49,15 @@ namespace Takerman.Dating.Services
                     UserId = user?.Id
                 };
 
-                await context.Newsletters.AddAsync(model);
+                await _context.Newsletters.AddAsync(model);
             }
             else
             {
                 newsletter.UserId = user?.Id;
-                context.Newsletters.Update(newsletter);
+                _context.Newsletters.Update(newsletter);
             }
 
-            await context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
         }
 
         public async Task SendEmailAsync(MailMessageDto message)

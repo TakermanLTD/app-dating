@@ -1,4 +1,6 @@
+using Microsoft.EntityFrameworkCore;
 using Serilog;
+using Takerman.Dating.Data;
 using Takerman.Dating.Data.DTOs;
 using Takerman.Dating.Models.Broker;
 using Takerman.Dating.Server.Middleware;
@@ -20,6 +22,7 @@ builder.Services.AddExceptionHandler<BadRequestExceptionHandler>();
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
 builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
+builder.Services.AddDbContext<DefaultContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<INotificationService, NotificationService>();
 builder.Services.AddScoped<IOrderService, OrderService>();

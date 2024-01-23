@@ -2,7 +2,7 @@
 
 namespace Takerman.Dating.Data
 {
-    public class DefaultContext : DbContext
+    public class DefaultContext(DbContextOptions<DefaultContext> options) : DbContext(options)
     {
         public DbSet<ChatMessage> ChatMessages { get; set; }
         public DbSet<Date> Dates { get; set; }
@@ -13,14 +13,5 @@ namespace Takerman.Dating.Data
         public DbSet<ResetPasswordRequest> ResetPasswordRequests { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<UserPicture> UserPictures { get; set; }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer(ConnectionStrings.ConnectionString);
-        }
-
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-        }
     }
 }

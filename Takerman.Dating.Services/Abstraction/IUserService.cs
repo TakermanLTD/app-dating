@@ -8,7 +8,7 @@ namespace Takerman.Dating.Services.Abstraction
     {
         Task<bool> ActivateAsync(int userId);
 
-        Task<ProfileDto> Authenticate(AuthenticateRequest model);
+        Task<AuthenticateResponse> Authenticate(AuthenticateRequest model);
 
         Task ChangePasswordAsync(int userId, string password);
 

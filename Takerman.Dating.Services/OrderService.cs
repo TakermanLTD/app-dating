@@ -6,32 +6,27 @@ using Takerman.Dating.Services.Abstraction;
 
 namespace Takerman.Dating.Services
 {
-    public class OrderService : IOrderService
+    public class OrderService(DefaultContext context) : IOrderService
     {
-        private readonly IMapper _mapper;
+        private readonly DefaultContext _context = context;
 
-        public OrderService()
-        {
-            _mapper = new MapperConfiguration(cfg =>
+        private readonly IMapper _mapper = new MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<OrderDto, Order>();
                 cfg.CreateMap<Order, OrderDto>();
             }).CreateMapper();
-        }
 
         public async Task ChangeStatusAsync(Order order, OrderStatus orderStatus)
         {
-            await using var context = new DefaultContext();
             var result = await GetAsync(order.Id);
             result.Status = orderStatus;
-            await context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
         }
 
         public async Task<Order> CreateAsync(Order order)
         {
-            await using var context = new DefaultContext();
-            var result = (await context.Orders.AddAsync(order)).Entity;
-            await context.SaveChangesAsync();
+            var result = (await _context.Orders.AddAsync(order)).Entity;
+            await _context.SaveChangesAsync();
             return result;
         }
 
@@ -45,33 +40,29 @@ namespace Takerman.Dating.Services
 
         public async Task<IEnumerable<Order>> GetByUserIdAsync(int userId)
         {
-            await using var context = new DefaultContext();
-            return await context.Orders.Where(x => x.UserId == userId).ToListAsync();
+            return await _context.Orders.Where(x => x.UserId == userId).ToListAsync();
         }
 
         public async Task<Order> GetAsync(int id)
         {
-            await using var context = new DefaultContext();
-            return await context.Orders.FirstAsync(x => x.Id == id);
+            return await _context.Orders.FirstAsync(x => x.Id == id);
         }
 
         public async Task<Order> UpdateAsync(Order order)
         {
-            await using var context = new DefaultContext();
             var result = await GetAsync(order.Id);
             result = _mapper.Map<Order>(result);
-            context.Orders.Update(result);
-            await context.SaveChangesAsync();
+            _context.Orders.Update(result);
+            await _context.SaveChangesAsync();
             return result;
         }
 
         public async Task<Order> CancelAsync(int id)
         {
-            await using var context = new DefaultContext();
             var result = await GetAsync(id);
             result.Status = OrderStatus.Canceled;
-            context.Orders.Update(result);
-            await context.SaveChangesAsync();
+            _context.Orders.Update(result);
+            await _context.SaveChangesAsync();
             return result;
         }
     }

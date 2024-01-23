@@ -14,45 +14,36 @@ using Takerman.Dating.Services.Authentication;
 
 namespace Takerman.Dating.Services
 {
-    public class UserService : IUserService
+    public class UserService(IOptions<AppSettings> appSettings, DefaultContext context) : IUserService
     {
-        public UserService(IOptions<AppSettings> appSettings)
-        {
-            _appSettings = appSettings.Value;
-            _mapper = new MapperConfiguration(cfg =>
+        private readonly AppSettings _appSettings = appSettings.Value;
+        private readonly DefaultContext _context = context;
+        private readonly IMapper _mapper = new MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<User, User>();
                 cfg.CreateMap<User, ProfileDto>();
             }).CreateMapper();
-        }
-
-        private readonly AppSettings _appSettings;
-        private readonly IMapper _mapper;
 
         public async Task<bool> ActivateAsync(int userId)
         {
-            await using var context = new DefaultContext();
             var result = await GetAsync(userId);
             result.IsActive = true;
-            context.Users.Update(result);
-            await context.SaveChangesAsync();
+            _context.Users.Update(result);
+            await _context.SaveChangesAsync();
             return true;
         }
 
         public async Task ChangePasswordAsync(int userId, string password)
         {
-            await using var context = new DefaultContext();
             var result = await GetAsync(userId);
             result.Password = GetHashedPassword(password);
             result.IsActive = true;
-            context.Users.Update(result);
-            await context.SaveChangesAsync();
+            _context.Users.Update(result);
+            await _context.SaveChangesAsync();
         }
 
         public async Task<User> CreateAsync(User user)
         {
-            await using var context = new DefaultContext();
-
             var existing = await GetByEmailAsync(user.Email);
             if (existing != null)
             {
@@ -63,8 +54,8 @@ namespace Takerman.Dating.Services
                 user.Password = GetHashedPassword(user.Password);
                 user.CreatedOn = DateTime.Now;
                 user.IsActive = false;
-                var result = (await context.Users.AddAsync(user)).Entity;
-                await context.SaveChangesAsync();
+                var result = (await _context.Users.AddAsync(user)).Entity;
+                await _context.SaveChangesAsync();
 
                 return result;
             }
@@ -72,23 +63,20 @@ namespace Takerman.Dating.Services
 
         public async Task DeleteAsync(int userId)
         {
-            await using var context = new DefaultContext();
             var user = await GetAsync(userId);
-            context.ResetPasswordRequests.RemoveRange(context.ResetPasswordRequests.Where(x => x.UserId == userId));
-            context.Orders.RemoveRange(context.Orders.Where(x => x.UserId == userId));
-            context.Remove(user);
-            await context.SaveChangesAsync();
+            _context.ResetPasswordRequests.RemoveRange(_context.ResetPasswordRequests.Where(x => x.UserId == userId));
+            _context.Orders.RemoveRange(_context.Orders.Where(x => x.UserId == userId));
+            _context.Remove(user);
+            await _context.SaveChangesAsync();
         }
 
         public async Task<User> GetAsync(int id)
         {
-            await using var context = new DefaultContext();
-            return await context.Users.FirstOrDefaultAsync(x => x.Id == id);
+            return await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task UpdateAsync(ProfileDto user)
         {
-            await using var context = new DefaultContext();
             var result = await GetAsync(user.Id);
             result.Email = user.Email;
             result.FirstName = user.FirstName;
@@ -104,8 +92,8 @@ namespace Takerman.Dating.Services
             if (!string.IsNullOrEmpty(user.Password))
                 result.Password = GetHashedPassword(user.Password);
 
-            context.Users.Update(result);
-            await context.SaveChangesAsync();
+            _context.Users.Update(result);
+            await _context.SaveChangesAsync();
         }
 
         private string GetHashedPassword(string password)
@@ -117,12 +105,11 @@ namespace Takerman.Dating.Services
             return builder.ToString();
         }
 
-        public async Task<ProfileDto> Authenticate(AuthenticateRequest model)
+        public async Task<AuthenticateResponse> Authenticate(AuthenticateRequest model)
         {
-            await using var context = new DefaultContext();
             var hashedPassword = GetHashedPassword(model.Password);
 
-            var user = await context.Users.FirstOrDefaultAsync(x =>
+            var user = await _context.Users.FirstOrDefaultAsync(x =>
                 x.Email == model.Email &&
                 x.Password == hashedPassword &&
                 x.IsActive == true);
@@ -132,10 +119,7 @@ namespace Takerman.Dating.Services
 
             var token = GenerateJwtToken(user);
 
-            var result = _mapper.Map<ProfileDto>(user);
-            result.Token = token;
-
-            return result;
+            return new AuthenticateResponse(user, token);
         }
 
         private string GenerateJwtToken(User user)
@@ -161,14 +145,13 @@ namespace Takerman.Dating.Services
 
         public async Task<User> GetByEmailAsync(string email)
         {
-            await using var context = new DefaultContext();
-            return await context.Users.FirstOrDefaultAsync(x => x.Email.ToLower() == email.ToLower());
+            var result = await _context.Users.FirstOrDefaultAsync(x => x.Email.ToLower() == email.ToLower());
+            
+            return result;
         }
 
         public async Task<ResetPasswordRequest> GenerateResetPasswordRequest(int userId)
         {
-            await using var context = new DefaultContext();
-
             var result = new ResetPasswordRequest()
             {
                 UserId = userId,
@@ -176,9 +159,9 @@ namespace Takerman.Dating.Services
                 Code = GenerateResetPasswordRequestCode()
             };
 
-            await context.ResetPasswordRequests.AddAsync(result);
+            await _context.ResetPasswordRequests.AddAsync(result);
 
-            await context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
 
             return result;
         }
@@ -192,9 +175,7 @@ namespace Takerman.Dating.Services
 
         public async Task<ResetPasswordRequest> GetResetPasswordRequest(string code)
         {
-            await using var context = new DefaultContext();
-
-            return await context.ResetPasswordRequests.FirstOrDefaultAsync(x => x.Code == code);
+            return await _context.ResetPasswordRequests.FirstOrDefaultAsync(x => x.Code == code);
         }
     }
 }
