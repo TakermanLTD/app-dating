@@ -170,21 +170,19 @@ export default {
     },
     async beforeCreate() {
         this.ethnicities = await fetchWrapper.get('User/GetEthnicities');
-    },
-    mounted() {
         const authStore = useAuthStore();
-        const user = authStore.user;
-        this.fields.id = user.id;
-        this.fields.firstName = user.firstName;
-        this.fields.lastName = user.lastName;
-        this.fields.email = user.email;
-        this.fields.city = user.city;
-        this.fields.country = user.country;
-        this.fields.gender = user.gender;
-        this.fields.phone = user.phone;
-        this.fields.facebook = user.facebook;
-        this.fields.instagram = user.instagram;
-        this.fields.ethnicity = user.ethnicity;
+        const data = await fetchWrapper.get('User/Get?id=' + authStore.user.id);
+        this.fields.id = data.id;
+        this.fields.firstName = data.firstName;
+        this.fields.lastName = data.lastName;
+        this.fields.email = data.email;
+        this.fields.city = data.city;
+        this.fields.country = data.country;
+        this.fields.gender = data.gender;
+        this.fields.phone = data.phone;
+        this.fields.facebook = data.facebook;
+        this.fields.instagram = data.instagram;
+        this.fields.ethnicity = data.ethnicity;
     },
     methods: {
         async save(event) {
