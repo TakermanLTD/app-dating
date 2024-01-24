@@ -1,6 +1,10 @@
 <template>
     <div class="card-deck">
-        <div v-for="date in dates" :key="date.id" class="card" style="margin: 15px; width: 18rem; display: inline-block;">
+        <div v-if="this.loading" class="text-center">
+            <span>Loading...</span>
+        </div>
+        <div v-else v-for="date in dates" :key="date.id" class="card"
+            style="margin: 15px; width: 18rem; display: inline-block;">
             <img class="card-img-top" src="/src/assets/img/date/date-thumbnail.jpeg" alt="Date">
             <div class="card-body">
                 <h4 class="card-title text-center">{{ date.title }}</h4>
@@ -40,13 +44,20 @@ import { router } from '@/helpers';
 export default {
     data() {
         return {
+            loading: false,
             moment: moment,
             dates: []
         }
     },
     async beforeMount() {
-        const authStore = useAuthStore();
-        this.dates = await fetchWrapper.get('Dates/GetAll' + (authStore.user == null ? '' : '?userId=' + authStore.user.id));
+        try {
+            this.loading = true;
+            const authStore = useAuthStore();
+            this.dates = await fetchWrapper.get('Dates/GetAll' + (authStore.user == null ? '' : '?userId=' + authStore.user.id));
+            this.loading = false;
+        } catch (error) {
+            this.loading = false;
+        }
     },
     methods: {
         async saveSpot(date) {
