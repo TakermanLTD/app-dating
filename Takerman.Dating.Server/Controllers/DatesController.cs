@@ -11,10 +11,10 @@ namespace Takerman.Dating.Server.Controllers
         private readonly IDatingService _datingService = datingService;
         private readonly ILogger<DatesController> _logger = logger;
 
-        [HttpGet("GetAll")]
-        public async Task<IEnumerable<DateCardDto>> GetAll(int? userId)
+        [HttpPost("GetAll")]
+        public async Task<IEnumerable<DateCardDto>> GetAll(int? userId, FilterDto filter)
         {
-            return await _datingService.GetAllAsCards(userId);
+            return await _datingService.GetAllAsCards(userId, filter);
         }
 
         [HttpGet("SaveSpot")]

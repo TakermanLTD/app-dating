@@ -38,10 +38,32 @@ namespace Takerman.Dating.Services
             return await _context.Dates.ToListAsync();
         }
 
-        public async Task<IEnumerable<DateCardDto>> GetAllAsCards(int? userId)
+        public async Task<IEnumerable<DateCardDto>> GetAllAsCards(int? userId, FilterDto filter)
         {
             var result = new List<DateCardDto>();
-            var dates = await _context.Dates.ToListAsync();
+
+            var query = _context.Dates.AsQueryable();
+
+            if (filter != null)
+            {
+                if (filter.MinAges != 0)
+                    query = query.Where(x => x.MinAges >= filter.MinAges);
+
+                if (filter.MaxAges != 0)
+                    query = query.Where(x => x.MaxAges <= filter.MaxAges);
+
+                if (filter.MaxPrice != 0)
+                    query = query.Where(x => x.Price <= filter.MaxPrice);
+
+                if (filter.Ethnicity.HasValue && filter.Ethnicity != 0)
+                    query = query.Where(x => (int)x.Ethnicity == filter.Ethnicity);
+
+                if (filter.DateType.HasValue && filter.DateType != 0)
+                    query = query.Where(x => (int)x.DateType == filter.DateType);
+            }
+
+            var dates = await query.ToListAsync();
+
             foreach (var date in dates)
             {
                 var card = await GetCardFromDate(userId, date);
@@ -53,10 +75,10 @@ namespace Takerman.Dating.Services
         public async Task<DateCardDto> GetCardFromDate(int? userId, Date date)
         {
             var savedSpots = new List<UserSavedSpot>();
-            
+
             if (userId.HasValue)
                 savedSpots = await _context.UserSavedSpots.Where(x => x.UserId == userId.Value).ToListAsync();
-            
+
             var card = _mapper.Map(date, new DateCardDto());
             card.Ethnicity = date.Ethnicity.GetDisplay();
             card.Status = Enum.GetName(date.Status);

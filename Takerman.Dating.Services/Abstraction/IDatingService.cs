@@ -9,7 +9,7 @@ namespace Takerman.Dating.Services.Abstraction
 
         Task<IEnumerable<Date>> GetAll();
 
-        Task<IEnumerable<DateCardDto>> GetAllAsCards(int? userId);
+        Task<IEnumerable<DateCardDto>> GetAllAsCards(int? userId, FilterDto filter);
 
         Task<IEnumerable<Date>> Filter(DateFilterDto filter);
 

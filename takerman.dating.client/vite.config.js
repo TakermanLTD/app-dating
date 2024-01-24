@@ -50,7 +50,7 @@ export default defineConfig({
                 target: 'https://localhost:7203/',
                 secure: false
             },
-            '^/Address': {
+            '^/Options': {
                 target: 'https://localhost:7203/',
                 secure: false
             },
