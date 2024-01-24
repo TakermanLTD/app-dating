@@ -25,13 +25,19 @@
                 <p class="card-text text-center">
                     {{ date.shortDescription }}
                 </p>
-                <p v-if="date.startsOn" class="text-center">
-                    <a @click="buy(date)" class="btn btn-success">Купи достъп</a>
-                </p>
-                <p v-else class="text-center">
+                <p v-if="date.status === 'NotApproved'" class="text-center">
                     <a @click="date.isSpotSaved ? unsaveSpot(date) : saveSpot(date)"
                         :class="date.isSpotSaved ? 'btn btn-danger' : 'btn btn-primary'">
                         {{ date.isSpotSaved ? 'Няма да присъствам' : 'Запази място' }}</a>
+                </p>
+                <p v-else-if="date.status === 'Approved'" class="text-center">
+                    <a @click="buy(date)" class="btn btn-success">Купи достъп</a>
+                </p>
+                <p v-else-if="date.status === 'Started'" class="text-center">
+                    <strong>Срещата е започнала</strong>
+                </p>
+                <p v-else class="text-center">
+                    <strong>Срещата е завършила</strong>
                 </p>
             </div>
         </div>

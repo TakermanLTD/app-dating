@@ -59,6 +59,7 @@ namespace Takerman.Dating.Services
             
             var card = _mapper.Map(date, new DateCardDto());
             card.Ethnicity = date.Ethnicity.GetDisplay();
+            card.Status = Enum.GetName(date.Status);
             card.IsSpotSaved = savedSpots.Any(x => x.DateId == date.Id);
             card.DateType = date.DateType.GetDisplay();
             card.StartsOn = date.StartsOn.HasValue ? date.StartsOn.Value.ToShortDateString() : string.Empty;
