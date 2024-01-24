@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Takerman.Dating.Data;
+using Takerman.Dating.Models.DTOs;
 using Takerman.Dating.Services.Abstraction;
 
 namespace Takerman.Dating.Server.Controllers
@@ -12,15 +12,21 @@ namespace Takerman.Dating.Server.Controllers
         private readonly ILogger<DatesController> _logger = logger;
 
         [HttpGet("GetAll")]
-        public async Task<IEnumerable<Date>> GetAll()
+        public async Task<IEnumerable<DateCardDto>> GetAll(int? userId)
         {
-            return await _datingService.GetAll();
+            return await _datingService.GetAllAsCards(userId);
         }
 
         [HttpGet("SaveSpot")]
-        public async Task<IEnumerable<Date>> SaveSpot()
+        public async Task SaveSpot(int userId, int dateId)
         {
-            return await _datingService.GetAll();
+            await _datingService.SaveSpot(userId, dateId);
+        }
+
+        [HttpGet("UnsaveSpot")]
+        public async Task UnsaveSpot(int userId, int dateId)
+        {
+            await _datingService.UnsaveSpot(userId, dateId);
         }
     }
 }
