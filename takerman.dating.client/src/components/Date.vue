@@ -9,9 +9,9 @@
   </section>
   <section class="container">
     <div v-if="this.loading">Зареждане...</div>
-    <div v-else>
+    <div class="text-center" v-else>
       <h2 class="text-center">{{ date?.title }}</h2><br />
-      <div class="card" style="margin: 15px; width: 18rem; display: inline-block;">
+      <div class="card" style="margin: 15px; display: inline-block;">
         <img class="card-img-top" src="/src/assets/img/date/date-thumbnail.jpeg" alt="Date">
         <div class="card-body">
           <h4 class="card-title text-center">{{ date?.title }}</h4>
@@ -30,7 +30,7 @@
             </tbody>
           </table>
           <p class="card-text text-center">
-            {{ date.shortDescription }}
+            {{ date.description }}
           </p>
           <p v-if="date?.status === 'NotApproved'" class="text-center">
             <a @click="date?.isSpotSaved ? unsaveSpot(date) : saveSpot(date)"
@@ -47,9 +47,6 @@
             <strong>Срещата е завършила</strong>
           </p>
         </div>
-        <p>
-          {{ date?.description }}
-        </p>
       </div>
     </div>
   </section>
