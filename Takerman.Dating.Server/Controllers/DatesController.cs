@@ -16,5 +16,11 @@ namespace Takerman.Dating.Server.Controllers
         {
             return await _datingService.GetAll();
         }
+
+        [HttpGet("SaveSpot")]
+        public async Task<IEnumerable<Date>> SaveSpot()
+        {
+            return await _datingService.GetAll();
+        }
     }
 }
