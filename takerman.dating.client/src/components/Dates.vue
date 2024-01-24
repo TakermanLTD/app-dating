@@ -1,11 +1,11 @@
 <template>
     <div class="card-deck">
-        <div v-for="date in dates" :key="date.id" class="card" style="margin: 15px; width: 18rem;">
-            <img class="card-img-top" src="/src/assets/img/portfolio/portfolio-1.jpg" alt="Card image cap">
+        <div v-for="date in dates" :key="date.id" class="card" style="margin: 15px; width: 18rem; display: inline-block;">
+            <img class="card-img-top" src="/src/assets/img/date/date-thumbnail.jpeg" alt="Date">
             <div class="card-body">
                 <h4 class="card-title text-center">{{ date.title }}</h4>
                 <h6 class="card-title text-center">
-                    за {{ date.ethnicity }} - {{ date.minAges }}-{{ date.maxAges }} год.</h6>
+                    за <strong>{{ date.ethnicity }}</strong> - {{ date.minAges }}-{{ date.maxAges }} год.</h6>
                 <table class="table">
                     <tbody>
                         <tr>
@@ -13,7 +13,7 @@
                             <td>Жени {{ date.womenCount }}/{{ date.minWomen }}</td>
                         </tr>
                         <tr>
-                            <td>{{ moment(date.startsOn).format("DD MMM, hh:mm") }}</td>
+                            <td>{{ date.startsOn ? moment(date.startsOn).format("DD MMM, hh:mm") : 'Предстои' }}</td>
                             <td>Цена {{ date.price }}лв.</td>
                         </tr>
                     </tbody>
@@ -22,7 +22,8 @@
                     {{ date.shortDescription }}
                 </p>
                 <p class="text-center">
-                    <a @click="date.isSpotSaved ? unsaveSpot(date) : saveSpot(date)" :class="date.isSpotSaved ? 'btn btn-danger' : 'btn btn-success' ">
+                    <a @click="date.isSpotSaved ? unsaveSpot(date) : saveSpot(date)"
+                        :class="date.isSpotSaved ? 'btn btn-danger' : 'btn btn-success'">
                         {{ date.isSpotSaved ? 'Не се интересувам' : 'Запази място' }}</a>
                 </p>
             </div>
@@ -54,8 +55,10 @@ export default {
                 router.push('/login');
             } else {
                 await fetchWrapper.get('Dates/SaveSpot' + (authStore.user == null ? '' : '?userId=' + authStore.user.id + '&dateId=' + date.id))
-                    .then(() => {
-                        date.isSpotSaved = true;
+                    .then((result) => {
+                        date.isSpotSaved = result.isSpotSaved;
+                        date.menCount = result.menCount;
+                        date.womenCount = result.womenCount;
                     });
             }
         },
@@ -65,8 +68,10 @@ export default {
                 router.push('/login');
             } else {
                 await fetchWrapper.get('Dates/UnsaveSpot' + (authStore.user == null ? '' : '?userId=' + authStore.user.id + '&dateId=' + date.id))
-                    .then(() => {
-                        date.isSpotSaved = false;
+                    .then((result) => {
+                        date.isSpotSaved = result.isSpotSaved;
+                        date.menCount = result.menCount;
+                        date.womenCount = result.womenCount;
                     });
             }
         }

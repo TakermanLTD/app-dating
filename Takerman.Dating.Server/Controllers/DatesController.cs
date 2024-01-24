@@ -18,15 +18,15 @@ namespace Takerman.Dating.Server.Controllers
         }
 
         [HttpGet("SaveSpot")]
-        public async Task SaveSpot(int userId, int dateId)
+        public async Task<DateCardDto> SaveSpot(int userId, int dateId)
         {
-            await _datingService.SaveSpot(userId, dateId);
+            return await _datingService.SaveSpot(userId, dateId);
         }
 
         [HttpGet("UnsaveSpot")]
-        public async Task UnsaveSpot(int userId, int dateId)
+        public async Task<DateCardDto> UnsaveSpot(int userId, int dateId)
         {
-            await _datingService.UnsaveSpot(userId, dateId);
+            return await _datingService.UnsaveSpot(userId, dateId);
         }
     }
 }

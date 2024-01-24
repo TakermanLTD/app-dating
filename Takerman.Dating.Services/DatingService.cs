@@ -40,24 +40,29 @@ namespace Takerman.Dating.Services
 
         public async Task<IEnumerable<DateCardDto>> GetAllAsCards(int? userId)
         {
-            var savedSpots = userId.HasValue ? await GetSavedSpots(userId.Value) : null;
-
             var result = new List<DateCardDto>();
-            foreach (var date in _context.Dates)
+            var dates = await _context.Dates.ToListAsync();
+            foreach (var date in dates)
             {
-                var card = _mapper.Map(date, new DateCardDto());
-                card.Ethnicity = date.Ethnicity.GetDisplay();
-                card.IsSpotSaved = savedSpots != null && savedSpots.Any(x => x.UserId == userId.Value && x.DateId == x.DateId);
-                card.DateType = date.DateType.GetDisplay();
-                card.StartsOn = date.StartsOn.HasValue ? date.StartsOn.Value.ToShortDateString() : string.Empty;
+                var card = await GetCardFromDate(userId, date);
                 result.Add(card);
             }
             return result;
         }
 
-        public async Task<IEnumerable<UserSavedSpot>> GetSavedSpots(int userId)
+        public async Task<DateCardDto> GetCardFromDate(int? userId, Date date)
         {
-            return await _context.UserSavedSpots.Where(x => x.UserId == userId).ToListAsync();
+            var savedSpots = new List<UserSavedSpot>();
+            
+            if (userId.HasValue)
+                savedSpots = await _context.UserSavedSpots.Where(x => x.UserId == userId.Value).ToListAsync();
+            
+            var card = _mapper.Map(date, new DateCardDto());
+            card.Ethnicity = date.Ethnicity.GetDisplay();
+            card.IsSpotSaved = savedSpots.Any(x => x.DateId == date.Id);
+            card.DateType = date.DateType.GetDisplay();
+            card.StartsOn = date.StartsOn.HasValue ? date.StartsOn.Value.ToShortDateString() : string.Empty;
+            return card;
         }
 
         public async Task<IEnumerable<DateUserChoice>> GetDateVotesByUser(int userId, int dateId)
@@ -65,9 +70,14 @@ namespace Takerman.Dating.Services
             throw new NotImplementedException();
         }
 
-        public async Task SaveSpot(int userId, int dateId)
+        public async Task<DateCardDto> SaveSpot(int userId, int dateId)
         {
-            await UnsaveSpot(userId, dateId);
+            var existing = _context.UserSavedSpots.Where(x => x.UserId == userId && x.DateId == dateId);
+            if (existing.Any())
+            {
+                _context.UserSavedSpots.RemoveRange(existing);
+                await _context.SaveChangesAsync();
+            }
 
             await _context.UserSavedSpots.AddAsync(new UserSavedSpot
             {
@@ -77,9 +87,24 @@ namespace Takerman.Dating.Services
             });
 
             await _context.SaveChangesAsync();
+
+            var date = await Get(dateId);
+            var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == userId);
+            if (date != null && user != null)
+            {
+                if (user.Gender == Gender.Male)
+                    date.MenCount = (short)(date.MenCount + 1);
+                else if (user.Gender == Gender.Female)
+                    date.WomenCount = (short)(date.WomenCount + 1);
+
+                _context.Dates.Update(date);
+                await _context.SaveChangesAsync();
+            }
+
+            return await GetCardFromDate(userId, date);
         }
 
-        public async Task UnsaveSpot(int userId, int dateId)
+        public async Task<DateCardDto> UnsaveSpot(int userId, int dateId)
         {
             var existing = _context.UserSavedSpots.Where(x => x.UserId == userId && x.DateId == dateId);
             if (existing.Any())
@@ -87,6 +112,21 @@ namespace Takerman.Dating.Services
                 _context.UserSavedSpots.RemoveRange(existing);
                 await _context.SaveChangesAsync();
             }
+
+            var date = await Get(dateId);
+            var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == userId);
+            if (date != null && user != null)
+            {
+                if (user.Gender == Gender.Male)
+                    date.MenCount = (short)(date.MenCount - 1);
+                else if (user.Gender == Gender.Female)
+                    date.WomenCount = (short)(date.WomenCount - 1);
+
+                _context.Dates.Update(date);
+                await _context.SaveChangesAsync();
+            }
+
+            return await GetCardFromDate(userId, date);
         }
 
         public async Task Vote(int userId, int choiceId, ChoiceType choiceType)

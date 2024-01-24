@@ -13,16 +13,16 @@ namespace Takerman.Dating.Services.Abstraction
 
         Task<IEnumerable<Date>> Filter(DateFilterDto filter);
 
-        Task<IEnumerable<UserSavedSpot>> GetSavedSpots(int userId);
+        Task<DateCardDto> GetCardFromDate(int? userId, Date date);
 
-        Task SaveSpot(int userId, int dateId);
+        Task<DateCardDto> SaveSpot(int userId, int dateId);
 
         Task Vote(int userId, int choiceId, ChoiceType choiceType);
 
         Task<IEnumerable<DateUserChoice>> GetDateVotesByUser(int userId, int dateId);
 
         Task Buy(int userId, int dateId);
-        
-        Task UnsaveSpot(int userId, int dateId);
+
+        Task<DateCardDto> UnsaveSpot(int userId, int dateId);
     }
 }
