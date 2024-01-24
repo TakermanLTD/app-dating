@@ -72,6 +72,12 @@ namespace Takerman.Dating.Services
             return result;
         }
 
+        public async Task<DateCardDto> GetCard(int? userId, int dateId)
+        {
+            var date = await Get(dateId);
+            return await GetCardFromDate(userId, date);
+        }
+
         public async Task<DateCardDto> GetCardFromDate(int? userId, Date date)
         {
             var savedSpots = new List<UserSavedSpot>();

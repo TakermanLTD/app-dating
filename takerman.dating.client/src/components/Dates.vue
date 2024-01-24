@@ -41,9 +41,10 @@
         </div>
         <div v-else v-for="date in dates" :key="date.id" class="card"
             style="margin: 15px; width: 18rem; display: inline-block;">
-            <img class="card-img-top" src="/src/assets/img/date/date-thumbnail.jpeg" alt="Date">
+            <router-link :to="'/date?id=' + date.id + '&userId=' + this.userId"><img class="card-img-top" src="/src/assets/img/date/date-thumbnail.jpeg" alt="Date"></router-link>
             <div class="card-body">
-                <h4 class="card-title text-center">{{ date.title }}</h4>
+                <h4 class="card-title text-center"><router-link :to="'/date?id=' + date.id + '&userId=' + this.userId">{{ date.title }}</router-link>
+                </h4>
                 <h6 class="card-title text-center">
                     за <strong>{{ date.ethnicity }}</strong> - {{ date.minAges }}-{{ date.maxAges }} год.</h6>
                 <table class="table">
@@ -89,6 +90,7 @@ import { router } from '@/helpers';
 export default {
     data() {
         return {
+            userId: null,
             loading: false,
             ethnicities: [],
             dateTypes: [],
@@ -104,6 +106,8 @@ export default {
         }
     },
     async beforeMount() {
+        const authStore = useAuthStore();
+        this.userId = authStore.user?.id;
         await this.applyFilter();
         this.ethnicities = await fetchWrapper.get('Options/GetEthnicities');
         this.dateTypes = await fetchWrapper.get('Options/GetDateTypes');

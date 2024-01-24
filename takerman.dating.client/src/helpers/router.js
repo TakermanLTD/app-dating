@@ -4,6 +4,7 @@ import Contacts from '../components/Contacts.vue';
 import Profile from '../components/Profile.vue';
 import Shipping from '../components/Shipping.vue';
 import Print from '../components/Print.vue';
+import Date from '../components/Date.vue';
 import Registration from '../components/Registration.vue';
 import Login from '../components/Login.vue';
 import ResetPasswordRequest from '../components/ResetPasswordRequest.vue';
@@ -22,6 +23,7 @@ export const router = createRouter({
         { path: '/profile', component: Profile },
         { path: '/shipping', component: Shipping },
         { path: '/print', component: Print },
+        { path: '/date', component: Date },
         { path: '/orders', component: Orders },
         { path: '/register', component: Registration },
         { path: '/login', component: Login },
