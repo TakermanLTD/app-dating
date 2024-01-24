@@ -25,10 +25,13 @@
                 <p class="card-text text-center">
                     {{ date.shortDescription }}
                 </p>
-                <p class="text-center">
+                <p v-if="date.startsOn" class="text-center">
+                    <a @click="buy(date)" class="btn btn-success">Купи достъп</a>
+                </p>
+                <p v-else class="text-center">
                     <a @click="date.isSpotSaved ? unsaveSpot(date) : saveSpot(date)"
-                        :class="date.isSpotSaved ? 'btn btn-danger' : 'btn btn-success'">
-                        {{ date.isSpotSaved ? 'Не се интересувам' : 'Запази място' }}</a>
+                        :class="date.isSpotSaved ? 'btn btn-danger' : 'btn btn-primary'">
+                        {{ date.isSpotSaved ? 'Няма да присъствам' : 'Запази място' }}</a>
                 </p>
             </div>
         </div>
@@ -85,6 +88,9 @@ export default {
                         date.womenCount = result.womenCount;
                     });
             }
+        },
+        async buy(date) {
+            console.log('Buy access');
         }
     }
 }
