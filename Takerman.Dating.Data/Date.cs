@@ -19,7 +19,7 @@ namespace Takerman.Dating.Data
 
         public DateStatus Status { get; set; }
 
-        public string VideoLink { get; set; }
+        public string? VideoLink { get; set; }
 
         public DateType DateType { get; set; }
 
@@ -31,7 +31,7 @@ namespace Takerman.Dating.Data
         [MaxLength(500)]
         public string ShortDescription { get; set; }
 
-        public DateTime StartsOn { get; set; }
+        public DateTime? StartsOn { get; set; }
 
         public short MinAges { get; set; }
 
@@ -40,7 +40,7 @@ namespace Takerman.Dating.Data
         [Column(TypeName = "decimal(10,2)")]
         public decimal Price { get; set; }
 
-        public string Location { get; set; }
+        public string? Location { get; set; }
 
         public Ethnicity Ethnicity { get; set; }
 

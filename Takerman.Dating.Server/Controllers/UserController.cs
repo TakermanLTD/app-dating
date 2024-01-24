@@ -1,4 +1,5 @@
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 using System.Reflection;
@@ -12,22 +13,15 @@ namespace Takerman.Dating.Server.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class UserController : ControllerBase
+    public class UserController(IUserService userService, INotificationService notificationService) : ControllerBase
     {
-        private readonly IUserService _userService;
-        private readonly INotificationService _notificationService;
-        private readonly IMapper _mapper;
-
-        public UserController(IUserService userService, INotificationService notificationService)
-        {
-            _userService = userService;
-            _notificationService = notificationService;
-            _mapper = new MapperConfiguration(cfg =>
+        private readonly IUserService _userService = userService;
+        private readonly INotificationService _notificationService = notificationService;
+        private readonly IMapper _mapper = new MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<RegisterDto, User>();
                 cfg.CreateMap<User, RegisterDto>();
             }).CreateMapper();
-        }
 
         [HttpPost("Authenticate")]
         public async Task<IActionResult> Authenticate(AuthenticateRequest model)
@@ -98,6 +92,7 @@ namespace Takerman.Dating.Server.Controllers
             return result;
         }
 
+        [Authorize]
         [HttpDelete("Delete")]
         public async Task Delete(int userId)
         {
@@ -108,6 +103,7 @@ namespace Takerman.Dating.Server.Controllers
             await _notificationService.NotifyForDeletedUser(user);
         }
 
+        [Authorize]
         [HttpPut("Update")]
         public async Task Update([FromBody] ProfileDto user)
         {

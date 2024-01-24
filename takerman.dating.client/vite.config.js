@@ -58,7 +58,7 @@ export default defineConfig({
                 target: 'https://localhost:7203/',
                 secure: false
             },
-            '^/Shop': {
+            '^/Dates': {
                 target: 'https://localhost:7203/',
                 secure: false
             },

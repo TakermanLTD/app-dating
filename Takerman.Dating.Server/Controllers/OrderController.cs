@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Takerman.Dating.Data;
 using Takerman.Dating.Models.DTOs;
@@ -5,6 +6,7 @@ using Takerman.Dating.Services.Abstraction;
 
 namespace Takerman.Dating.Server.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("[controller]")]
     public class OrderController(IOrderService orderService, INotificationService notificationService) : ControllerBase
