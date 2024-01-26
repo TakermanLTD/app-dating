@@ -99,6 +99,16 @@ namespace Takerman.Dating.Services
             throw new NotImplementedException();
         }
 
+        public async Task<IEnumerable<DateCardDto>> GetSavedSpots(int userId)
+        {
+            var savedSpots = await _context.UserSavedSpots.Where(x => x.UserId == userId).ToListAsync();
+            var result = new List<DateCardDto>();
+            foreach (var spot in savedSpots)
+                result.Add(await GetCard(userId, spot.DateId));
+
+            return result.ToList();
+        }
+
         public async Task<DateCardDto> SaveSpot(int userId, int dateId)
         {
             var existing = _context.UserSavedSpots.Where(x => x.UserId == userId && x.DateId == dateId);

@@ -26,5 +26,7 @@ namespace Takerman.Dating.Services.Abstraction
         Task Buy(int userId, int dateId);
 
         Task<DateCardDto> UnsaveSpot(int userId, int dateId);
+
+        Task<IEnumerable<DateCardDto>> GetSavedSpots(int userId);
     }
 }

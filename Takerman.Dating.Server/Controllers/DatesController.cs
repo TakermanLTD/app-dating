@@ -23,6 +23,12 @@ namespace Takerman.Dating.Server.Controllers
             return await _datingService.GetAllAsCards(userId, filter);
         }
 
+        [HttpGet("GetSavedSpots")]
+        public async Task<IEnumerable<DateCardDto>>  GetSavedSpots(int userId)
+        {
+            return await _datingService.GetSavedSpots(userId);
+        }
+
         [HttpGet("SaveSpot")]
         public async Task<DateCardDto> SaveSpot(int userId, int dateId)
         {
