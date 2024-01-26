@@ -36,7 +36,8 @@
           <div class="col">{{ spot.menCount }}</div>
           <div class="col">{{ spot.price }}лв.</div>
           <div class="col">{{ spot.ethnicity }}</div>
-          <div class="col"><button class="btn btn-success" v-if="spot.status == 'Approved'">Купи</button>
+          <div class="col">
+            <PayButton :date-id="spot.id" v-if="spot.status == 'Approved'">Купи</PayButton>
           </div>
         </div>
         <br />
@@ -80,6 +81,7 @@
 import moment from 'moment';
 import { fetchWrapper, router } from '@/helpers';
 import { useAuthStore } from '@/stores';
+import PayButton from './PayButton.vue';
 
 export default {
   data() {
@@ -87,7 +89,7 @@ export default {
       moment: moment,
       orders: null,
       loading: false
-    }
+    };
   },
   async created() {
     this.loading = true;
@@ -103,7 +105,8 @@ export default {
           order.status = 'Отказана';
         });
     }
-  }
+  },
+  components: { PayButton }
 }
 </script>
 

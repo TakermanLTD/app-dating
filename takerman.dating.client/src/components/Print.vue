@@ -201,7 +201,7 @@
 </template>
 
 <script lang="js">
-import { loadScript } from '@paypal/paypal-js'
+import { loadScript } from '@paypal/paypal-js';
 import { fetchWrapper } from '@/helpers';
 import { useAuthStore } from '@/stores';
 
