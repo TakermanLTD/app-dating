@@ -2,11 +2,8 @@
     <!-- ======= Contact Section ======= -->
     <section id="contact" class="contact section-bg">
         <div class="container">
-
-            <div class="section-title" data-aos="fade-up">
-                <h2>Контакти</h2>
-            </div>
-
+            <breadcrumbs :paths="breadcrumbs" />
+            <Heading heading="Контакти" />
             <div class="row">
 
                 <div class="col-lg-5 d-flex align-items-stretch" data-aos="fade-right">
@@ -42,7 +39,8 @@
                             <div class="row">
                                 <div class="form-group col-md-6">
                                     <label for="name">Вашето име</label>
-                                    <input type="text" required name="name" class="form-control" id="name" v-model="fields.name" />
+                                    <input type="text" required name="name" class="form-control" id="name"
+                                        v-model="fields.name" />
                                 </div>
                                 <div class="form-group col-md-6 mt-3 mt-md-0">
                                     <label for="name">Вашия имейл</label>
@@ -50,17 +48,20 @@
                                         v-model="fields.email" />
                                 </div>
                             </div>
-                            <!-- <div class="form-group mt-3">
-                            <label for="name">Subject</label>
-                            <input type="text" class="form-control" name="subject" id="subject" v-model="subject" />
-                        </div> -->
+                            <!-- 
+                                <div class="form-group mt-3">
+                                    <label for="name">Subject</label>
+                                    <input type="text" class="form-control" name="subject" id="subject" v-model="subject" />
+                                </div> 
+                            -->
                             <div class="form-group mt-3">
                                 <label for="name">Съобщение</label>
                                 <textarea class="form-control" name="message" rows="10" required
                                     v-model="fields.text"></textarea>
                             </div>
                             <div class="my-3">
-                                <div v-show="this.loading === true" class="loading" style="display: block;">Зареждане...</div>
+                                <div v-show="this.loading === true" class="loading" style="display: block;">Зареждане...
+                                </div>
                                 <div v-show="this.error !== ''" class="error-message" style="display: block;">{{ this.error
                                 }}</div>
                                 <div v-show="this.success !== ''" class="sent-message" style="display: block;">{{
@@ -72,15 +73,23 @@
                 </div>
             </div>
         </div>
-    </section><!-- End Contact Section -->
+    </section>
 </template>
 
 <script lang="js">
 import { fetchWrapper } from '@/helpers';
+import breadcrumbs from '../components/breadcrumbs.vue';
+import Heading from '../components/heading.vue';
 
 export default {
     data() {
         return {
+            breadcrumbs: [
+                {
+                    name: 'contacts',
+                    title: 'Контакти'
+                }
+            ],
             fields: {
                 name: '',
                 email: '',
@@ -91,19 +100,21 @@ export default {
             success: ''
         };
     },
+    component: {
+        Heading
+    },
     methods: {
         async send(event) {
             try {
                 event.preventDefault();
                 this.loading = true;
-
                 let response = await fetchWrapper.post('Notification/SendContactUsMessage', this.fields);
-
                 if (!response) {
                     this.loading = false;
                     this.error = '';
                     this.success = 'Message sent successfully. Thank you!';
-                } else {
+                }
+                else {
                     this.loading = false;
                     this.error = response.body;
                     this.success = '';

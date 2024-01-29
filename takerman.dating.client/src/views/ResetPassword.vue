@@ -1,8 +1,6 @@
 <template>
     <div class="container">
-        <hgroup>
-            <h3>Възстановяване на парола</h3>
-        </hgroup>
+        <Heading heading="Възстановяване на парола" />
         <div v-if="!this.isRequestValid">
             <strong class="text-center">Линка за възстановяване на паролата е изтекъл. Моля опитайте отново или ни уведомете.</strong>
         </div>
@@ -51,6 +49,7 @@
 
 <script lang="js">
 import { useAuthStore } from '@/stores';
+import Heading from '../components/heading.vue';
 
 export default {
     data() {
@@ -70,12 +69,12 @@ export default {
     created() {
         let queryString = window.location.search;
         let urlParams = new URLSearchParams(queryString);
-
         if (urlParams.has('code') && urlParams.has('userId')) {
             this.isRequestValid = true;
             this.code = urlParams.get('code');
             this.userId = urlParams.get('userId');
-        } else {
+        }
+        else {
             this.isRequestValid = false;
         }
     },
@@ -83,34 +82,30 @@ export default {
         async submit(event) {
             try {
                 event.preventDefault();
-
                 if (!new RegExp(this.passwordPattern).test(this.password) || !new RegExp(this.passwordPattern).test(this.confirmPassword)) {
                     this.status = 'Паролата не е достатъчно силна. Моля въведете по-силна парола';
                     this.statusClass = 'danger';
                     return;
                 }
-
                 if (this.fields.confirmPassword !== this.fields.password) {
                     this.status = 'Паролата не е същата в полето за потвърждение. Въведете същата парола и на двете места';
                     this.statusClass = 'danger';
                     return;
                 }
-
                 const authStore = useAuthStore();
-
                 await authStore.changePassword(Number.parseInt(this.userId), this.fields.password)
                     .then(() => {
-                        this.loading = false;
-                        this.isRequestValid = true;
-                        this.status = "Паролата беше променена успешно. Вече можете да влезете в сайта";
-                        this.statusClass = "success";
-                    })
+                    this.loading = false;
+                    this.isRequestValid = true;
+                    this.status = "Паролата беше променена успешно. Вече можете да влезете в сайта";
+                    this.statusClass = "success";
+                })
                     .catch(error => {
-                        this.loading = false;
-                        this.isRequestValid = false;
-                        this.status = "Неусшено възстановяване на парола. Моля опитайте отново или се свържете с нас";
-                        this.statusClass = "danger";
-                    });
+                    this.loading = false;
+                    this.isRequestValid = false;
+                    this.status = "Неусшено възстановяване на парола. Моля опитайте отново или се свържете с нас";
+                    this.statusClass = "danger";
+                });
             }
             catch (error) {
                 this.isRequestValid = false;
@@ -119,7 +114,8 @@ export default {
                 this.statusClass = 'danger';
             }
         }
-    }
+    },
+    components: { Heading }
 }
 </script>
 

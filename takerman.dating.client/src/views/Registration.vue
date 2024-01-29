@@ -1,9 +1,7 @@
 <template>
     <form @submit="save">
         <div class="container">
-            <hgroup>
-                <h3>Регистрация</h3>
-            </hgroup>
+            <Heading heading="Регистрация" />
             <br />
             <fieldset>
                 <div>
@@ -95,6 +93,7 @@
 
 <script lang="js">
 import { fetchWrapper } from '@/helpers';
+import Heading from '../components/heading.vue';
 
 export default {
     data() {
@@ -124,28 +123,24 @@ export default {
                     this.statusClass = 'danger';
                     return;
                 }
-
                 if (this.fields.confirmPassword !== this.fields.password) {
                     this.loading = false;
                     this.status = 'Паролата не е същата в полето за потвърждение. Въведете същата парола и на двете места';
                     this.statusClass = 'danger';
                     return;
                 }
-
                 let response = await fetchWrapper.post('User/Create', this.fields);
-
                 this.loading = false;
-
                 if (response && response.id != 0) {
                     if (response.status == 204) {
                         this.status = 'Съществува потребител със същия имейл. Моля влезте в системата или възстановете паролата си.';
                         this.statusClass = 'danger';
                         return;
                     }
-
                     this.status = 'Активационен линк е изпратен до имейла ви. Моля отворете пощата си, за да потвърдите акаунта.';
                     this.statusClass = 'success';
-                } else {
+                }
+                else {
                     this.status = 'Грешка при регистрация на потребител. Моля уведомете ни';
                     this.statusClass = 'danger';
                 }
@@ -157,7 +152,8 @@ export default {
                 console.log(error);
             }
         }
-    }
+    },
+    components: { Heading }
 }
 </script>
 

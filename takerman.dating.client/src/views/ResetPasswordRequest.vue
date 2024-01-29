@@ -1,9 +1,6 @@
 <template>
     <div class="container">
-        <hgroup>
-            <h3>Вход</h3>
-        </hgroup>
-        <br />
+        <Heading heading="Възстановяване на парола" />
         <form @submit="submit">
             <fieldset>
                 <div>
@@ -15,24 +12,14 @@
                         </div>
                     </div>
                     <br />
-                    <div class="form-group row">
-                        <label for="password" class="col-sm-2 col-form-label">Парола</label>
-                        <div class="col-sm-10">
-                            <input type="password" class="form-control" id="password" required placeholder="Парола"
-                                v-model="fields.password" />
-                        </div>
-                    </div>
-                    <br />
                 </div>
                 <div class="form-group row">
                     <div class="col-sm-2">
-                        <button id="btnSubmit" type="submit" class="btn btn-success text-center">Вход</button> &nbsp; or
-                        <router-link to="/register">Регистрация</router-link> &nbsp;
+                        <button id="btnSubmit" type="submit" class="btn btn-success text-center">Възстанови
+                            паролата</button>
                     </div>
                     <div class="col-sm-10">
-                        <router-link to="/reset-password-request">Въстанови парола</router-link>
-                        <div v-if="this.loading">Зареждане...</div>
-                        <div v-else v-show="status"
+                        <div v-show="status"
                             :class="{ 'alert-success': this.statusClass == 'success', 'alert-danger': this.statusClass == 'danger' }"
                             class="alert" role="alert">
                             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
@@ -48,15 +35,14 @@
 
 <script lang="js">
 import { useAuthStore } from '@/stores';
+import Heading from '../components/heading.vue';
 
 export default {
     data() {
         return {
             fields: {
-                email: '',
-                password: ''
+                email: ''
             },
-            loading: false,
             status: '',
             statusClass: ''
         };
@@ -65,29 +51,26 @@ export default {
         async submit(event) {
             try {
                 event.preventDefault();
-
-                this.loading = true;
-
                 const authStore = useAuthStore();
-
-                const result = await authStore.login(this.fields.email, this.fields.password)
+                const result = await authStore.resetPassword(this.fields.email)
                     .catch(error => console.log(error));
-
-                this.loading = false;
-
                 if (!result) {
-                    this.status = "Неуспешно влизане. Моля опитайте пак със други данни за вход";
+                    this.status = "Не съществува потребител със такъв имейл";
                     this.statusClass = "danger";
+                }
+                else {
+                    this.status = "Изпратихме имейл със линк за възстановяване на паролата. Моля проверете пощата си";
+                    this.statusClass = "success";
                 }
             }
             catch (error) {
-                this.loading = false;
                 console.log(error);
-                this.status = 'Потребителя не съществува. Моля регистрирайте се или ни уведомете.';
+                this.status = 'Възникна грешка. Най-вероятно грешката е при нас. Моля уведомете ни за това';
                 this.statusClass = 'danger';
             }
         }
-    }
+    },
+    components: { Heading }
 }
 </script>
 

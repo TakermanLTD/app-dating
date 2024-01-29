@@ -1,9 +1,7 @@
 <template>
     <form @submit="save">
         <div class="container">
-            <hgroup>
-                <h3>Профил</h3>
-            </hgroup>
+            <Heading heading="Профил" />
             <br />
             <fieldset>
                 <div class="form-group row">
@@ -142,6 +140,7 @@
 <script lang="js">
 import { fetchWrapper } from '@/helpers';
 import { useAuthStore } from '@/stores';
+import Heading from '../components/heading.vue';
 
 export default {
     data() {
@@ -189,7 +188,6 @@ export default {
             try {
                 event.preventDefault();
                 this.loading = true;
-
                 if (this.fields.password && this.fields.password !== '') {
                     if (!new RegExp(this.passwordPattern).test(this.password) || !new RegExp(this.passwordPattern).test(this.confirmPassword)) {
                         this.loading = false;
@@ -197,7 +195,6 @@ export default {
                         this.statusClass = 'danger';
                         return;
                     }
-
                     if (this.fields.confirmPassword !== this.fields.password) {
                         this.loading = false;
                         this.status = 'Потвърждението на паролата не е същото. Въведете същата парола в двете полета';
@@ -205,15 +202,13 @@ export default {
                         return;
                     }
                 }
-
                 const response = await fetchWrapper.put("User/Update", this.fields);
-
                 this.loading = false;
-
                 if (response == "" || response.status == 200) {
                     this.status = 'Редактиран успешно';
                     this.statusClass = 'success';
-                } else {
+                }
+                else {
                     this.status = 'Грешка при редакция на потребител';
                     this.statusClass = 'danger';
                 }
@@ -235,7 +230,8 @@ export default {
                 authStore.logout();
             }
         }
-    }
+    },
+    components: { Heading }
 }
 </script>
 

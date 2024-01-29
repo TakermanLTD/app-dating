@@ -1,16 +1,14 @@
 import { createRouter, createWebHistory } from "vue-router"
-import Home from '../components/Home.vue';
-import Contacts from '../components/Contacts.vue';
-import Profile from '../components/Profile.vue';
-import Shipping from '../components/Shipping.vue';
-import Print from '../components/Print.vue';
+import Home from '../views/Home.vue';
+import Contacts from '../views/Contacts.vue';
+import Profile from '../views/Profile.vue';
 import Date from '../components/Date.vue';
-import Registration from '../components/Registration.vue';
-import Login from '../components/Login.vue';
-import ResetPasswordRequest from '../components/ResetPasswordRequest.vue';
-import ResetPassword from '../components/ResetPassword.vue';
-import Activate from '../components/Activate.vue';
-import Orders from '../components/Orders.vue';
+import Registration from '../views/Registration.vue';
+import Login from '../views/Login.vue';
+import ResetPasswordRequest from '../views/ResetPasswordRequest.vue';
+import ResetPassword from '../views/ResetPassword.vue';
+import Activate from '../views/Activate.vue';
+import Orders from '../views/Orders.vue';
 import { useAuthStore } from '@/stores';
 
 export const router = createRouter({
@@ -21,8 +19,6 @@ export const router = createRouter({
         { path: '/home', component: Home },
         { path: '/contacts', component: Contacts },
         { path: '/profile', component: Profile },
-        { path: '/shipping', component: Shipping },
-        { path: '/print', component: Print },
         { path: '/date', component: Date },
         { path: '/orders', component: Orders },
         { path: '/register', component: Registration },

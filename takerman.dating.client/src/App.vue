@@ -1,6 +1,5 @@
 <template>
-    <Header />
-
+    <Header></Header>
     <main style="margin-top: 100px">
         <router-view></router-view>
     </main>
@@ -9,19 +8,14 @@
 </template>
 
 <script lang="js">
-import Header from './components/Header.vue';
-import Home from './components/Home.vue';
-import Footer from './components/Footer.vue';
-import Chat from './components/Chat.vue';
 import { useAuthStore } from '@/stores';
-
+import Header from './components/Header.vue';
+import Footer from './components/Footer.vue';
 
 export default {
     components: {
         Header,
-        Home,
-        Footer,
-        Chat
+        Footer
     },
     mounted() {
         const authStore = useAuthStore();

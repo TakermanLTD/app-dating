@@ -41,7 +41,7 @@
                         </ul> -->
                     </div>
 
-                    <Newsletter />
+                    <newsletter />
                 </div>
             </div>
         </div>
@@ -58,10 +58,10 @@
 </template>
 
 <script lang="js">
-import Newsletter from './Newsletter.vue';
+import newsletter from './newsletter.vue';
 
 export default {
-    components: { Newsletter }
+    components: { newsletter }
 }
 </script>
 
