@@ -41,9 +41,11 @@
         </div>
         <div v-else v-for="date in dates" :key="date.id" class="card"
             style="margin: 15px; width: 18rem; display: inline-block;">
-            <router-link :to="'/date?id=' + date.id + '&userId=' + this.userId"><img class="card-img-top" src="/src/assets/img/date/date-thumbnail.jpeg" alt="Date"></router-link>
+            <router-link :to="'/date?id=' + date.id + '&userId=' + this.userId"><img class="card-img-top"
+                    src="/src/assets/img/date/date-thumbnail.jpeg" alt="Date"></router-link>
             <div class="card-body">
-                <h4 class="card-title text-center"><router-link :to="'/date?id=' + date.id + '&userId=' + this.userId">{{ date.title }}</router-link>
+                <h4 class="card-title text-center"><router-link :to="'/date?id=' + date.id + '&userId=' + this.userId">{{
+                    date.title }}</router-link>
                 </h4>
                 <h6 class="card-title text-center">
                     за <strong>{{ date.ethnicity }}</strong> - {{ date.minAges }}-{{ date.maxAges }} год.</h6>
@@ -68,7 +70,7 @@
                         {{ date.isSpotSaved ? 'Няма да присъствам' : 'Запази място' }}</a>
                 </p>
                 <p v-else-if="date.status === 'Approved'" class="text-center">
-                    <a @click="buy(date)" class="btn btn-success">Купи достъп</a>
+                    <router-link class="btn btn-success" :to="'date?id=' + date.id + '&userId=' + userId">Купи достъп</router-link>
                 </p>
                 <p v-else-if="date.status === 'Started'" class="text-center">
                     <strong>Срещата е започнала</strong>

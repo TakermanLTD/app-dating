@@ -22,6 +22,8 @@ namespace Takerman.Dating.Models.DTOs
 
         public string? ShortDescription { get; set; }
 
+        public string? Description { get; set; }
+
         public string? StartsOn { get; set; }
 
         public short MinAges { get; set; }

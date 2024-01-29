@@ -1,5 +1,5 @@
 <template>
-    <div id="paypal-button-container"></div>
+    <div v-if="this.dateId" id="paypal-button-container"></div>
 </template>
 
 <script lang="js">
@@ -9,7 +9,8 @@ import { useAuthStore } from '@/stores';
 
 export default {
     props: {
-        dateId: Number
+        dateId: Number,
+        onApprove: Function
     },
     data() {
         return {
