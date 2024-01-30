@@ -2,7 +2,7 @@
     <!-- ======= Contact Section ======= -->
     <section id="contact" class="contact section-bg">
         <div class="container">
-            <breadcrumbs :paths="breadcrumbs" />
+            <!-- <breadcrumbs :paths="breadcrumbs" /> -->
             <Heading heading="Контакти" />
             <div class="row">
 
@@ -78,8 +78,8 @@
 
 <script lang="js">
 import { fetchWrapper } from '@/helpers';
-import breadcrumbs from '../components/breadcrumbs.vue';
-import Heading from '../components/heading.vue';
+import Heading from '../components/Heading.vue';
+import breadcrumbs from '../components/Breadcrumbs.vue';
 
 export default {
     data() {
@@ -100,9 +100,7 @@ export default {
             success: ''
         };
     },
-    component: {
-        Heading
-    },
+    component: {},
     methods: {
         async send(event) {
             try {
@@ -128,7 +126,8 @@ export default {
                 console.log(error);
             }
         }
-    }
+    },
+    components: { Heading, breadcrumbs }
 }
 </script>
 

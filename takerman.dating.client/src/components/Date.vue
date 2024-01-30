@@ -1,11 +1,15 @@
 <template>
-  <Breadcrumbs :path="breadcrumbs"></Breadcrumbs>
-  <Loader v-if="this.loading"></Loader>
+  <breadcrumbs :paths="this.breadcrumbs" />
+  <loader v-if="this.loading" />
   <div class="row text-center" v-else>
-    <Heading :title="date?.title"></Heading>
-    <Card :date="date"></Card>
+    <heading :heading="date?.title" />
+    <card :date="date" />
     <div style="height: 100px;" class="col">
       <p class="center-text-vertically">
+        {{ date.description }}
+        <br />
+        <br />
+        <br />
         Бързите срещи са формализиран метод за запознанства лице-в-лице, насърчаващ хора да се запознаят с голям брой
         непознати. <br /> <br />
         Обикновено при бързите срещи се изисква предварителна регистрация. Мъжете и жените се разменят, за да се срещнат
@@ -25,6 +29,10 @@
 <script lang="js">
 import { fetchWrapper, router } from '@/helpers';
 import { useAuthStore } from '@/stores';
+import breadcrumbs from './breadcrumbs.vue';
+import loader from './loader.vue';
+import heading from './Heading.vue';
+import card from './Card.vue';
 
 export default {
   data() {
@@ -42,18 +50,23 @@ export default {
           title: 'Среща'
         }
       ]
-    }
+    };
   },
   async created() {
     this.loading = true;
     let queryString = window.location.search;
     let urlParams = new URLSearchParams(queryString);
-
     if (urlParams.has('id')) {
       this.id = urlParams.get('id');
       this.date = await fetchWrapper.get('Dates/Get?id=' + this.id);
     }
     this.loading = false;
+  },
+  components: {
+    loader,
+    breadcrumbs,
+    heading,
+    card
   }
 }
 </script>

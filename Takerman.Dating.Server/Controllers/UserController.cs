@@ -92,7 +92,7 @@ namespace Takerman.Dating.Server.Controllers
             return result;
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpDelete("Delete")]
         public async Task Delete(int userId)
         {
@@ -103,7 +103,7 @@ namespace Takerman.Dating.Server.Controllers
             await _notificationService.NotifyForDeletedUser(user);
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpPut("Update")]
         public async Task Update([FromBody] ProfileDto user)
         {

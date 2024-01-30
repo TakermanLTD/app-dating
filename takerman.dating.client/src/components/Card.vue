@@ -1,8 +1,12 @@
 <template>
     <div class="col card" style="margin: 15px; width: 18rem; display: inline-block;">
-        <img class="card-img-top" src="/src/assets/img/date/date-thumbnail.jpeg" alt="Date">
+        <router-link :to="'date?id=' + date.id + ''">
+            <img class="card-img-top" src="/src/assets/img/date/date-thumbnail.jpeg" alt="Date">
+        </router-link>
         <div class="card-body">
-            <h4 class="card-title text-center">{{ date?.title }}</h4>
+            <h4 class="card-title text-center">
+                <router-link :to="'date?id=' + date.id + ''">{{ date?.title }}</router-link>
+            </h4>
             <h6 class="card-title text-center">
                 за <strong>{{ date?.ethnicity }}</strong> - {{ date?.minAges }}-{{ date?.maxAges }} год.</h6>
             <table class="table">
@@ -12,7 +16,8 @@
                         <td>Жени {{ date?.womenCount }}/{{ date?.minWomen }}</td>
                     </tr>
                     <tr>
-                        <td>{{ date?.startsOn ? moment(date?.startsOn).format("DD MMM, hh:mm") : 'Предстои' }}</td>
+                        <td>{{ date?.startsOn ? moment(new Date(date?.startsOn)).format("DD MMM, hh:mm") : 'Предстои' }}
+                        </td>
                         <td>Цена {{ date?.price }}лв.</td>
                     </tr>
                 </tbody>
@@ -39,7 +44,8 @@
             </div>
             </p>
             <p v-else-if="date?.status === 'Approved'" class="text-center">
-                <router-link class="btn btn-success" :to="'date?id=' + date.id + '&userId=' + this.userId + ''">Купи срещата</router-link>
+                <router-link class="btn btn-success" :to="'date?id=' + date.id + ''">Купи
+                    срещата</router-link>
             </p>
             <p v-else-if="date?.status === 'Started'" class="text-center">
                 <strong>Срещата е започнала</strong>
@@ -73,7 +79,9 @@ export default {
     },
     beforeMount() {
         const authStore = useAuthStore();
-        this.userId = authStore.user.id;
+        if (authStore.user) {
+            this.userId = authStore.user.id;
+        }
     },
     methods: {
         onApprove() {

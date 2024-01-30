@@ -34,6 +34,7 @@ router.beforeEach((to) => {
     const publicPages = [
         '/',
         '/home',
+        '/date',
         '/contacts',
         '/register',
         '/login',

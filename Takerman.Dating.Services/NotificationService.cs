@@ -147,7 +147,7 @@ Email: {user.Email} <br />
 Total: {order.Total} {order.Currency}<br />
 Created On: {order.CreatedOn} <br />",
                 To = user.Email,
-                Subject = "TakerPrint - A new order has been created"
+                Subject = "Sreshti - A new order has been created"
             });
         }
 
@@ -155,20 +155,20 @@ Created On: {order.CreatedOn} <br />",
         {
             var user = await _userService.GetAsync(order.UserId);
 
-            _logger.LogWarning($@"TakerPrint - Order status changed Order Id: {order.Id}");
+            _logger.LogWarning($@"Sreshti - Order status changed Order Id: {order.Id}");
 
             await SendEmailAsync(new MailMessageDto()
             {
                 From = "tivanov@takerman.net",
-                Body = @$"TakerPrint - Order {order.Id} status changed to {Enum.GetName(order.Status)}. You can login and check it https://takerprint.com/orders",
+                Body = @$"Sreshti - Order {order.Id} status changed to {Enum.GetName(order.Status)}. You can login and check it https://Sreshti.com/orders",
                 To = user.Email,
-                Subject = $"TakerPrint - Order {order.Id} status changed to {Enum.GetName(order.Status)}"
+                Subject = $"Sreshti - Order {order.Id} status changed to {Enum.GetName(order.Status)}"
             });
         }
 
         public async Task NotifyForNewsletterAsync(string email)
         {
-            _logger.LogWarning($@"TakerPrint - A user with email {email} has subscribed to the newsletter.");
+            _logger.LogWarning($@"Sreshti - A user with email {email} has subscribed to the newsletter.");
         }
 
         public async Task NotifyForNewMessageAsync(Message message)
@@ -177,7 +177,7 @@ Created On: {order.CreatedOn} <br />",
             {
                 Body = $"From: {message.Name}. <br />Email {message.Email}. <br />Message: {message.Text}",
                 From = "tivanov@takerman.net",
-                Subject = $"TakerPrint - New email from {message.Name}",
+                Subject = $"Sreshti - New email from {message.Name}",
                 To = "contact@takerman.net"
             });
         }
@@ -190,7 +190,7 @@ Created On: {order.CreatedOn} <br />",
                     $"Here is the link to activate your account: https://{domainName}/activate?code={user.Id} <br /> Login data: </br>" +
                     $"Email: {user.Email} <br /> Password: the password you have set",
                 From = "tivanov@takerman.net",
-                Subject = "TakerPrint - Activate account",
+                Subject = "Sreshti - Activate account",
                 To = user.Email
             });
 
@@ -207,9 +207,9 @@ Email: {user.Email}");
         {
             await SendEmailAsync(new MailMessageDto()
             {
-                Body = $"Sorry to see you go. Your account in TakerPrint has been deleted completely and all your data with it too. All the best!",
+                Body = $"Sorry to see you go. Your account in Sreshti has been deleted completely and all your data with it too. All the best!",
                 From = "tivanov@takerman.net",
-                Subject = "TakerPrint - Account Deleted",
+                Subject = "Sreshti - Account Deleted",
                 To = user.Email
             });
 
@@ -228,7 +228,7 @@ Email: {user.Email}");
                 Body = $"You have requested to reset your password. <br />" +
                 $"Here is the link to change it: https://{domainName}/reset-password?code={code}&userId={user.Id}",
                 From = "tivanov@takerman.net",
-                Subject = "TakerPrint - Reset password",
+                Subject = "Sreshti - Reset password",
                 To = user.Email
             });
         }
@@ -241,7 +241,7 @@ Email: {user.Email}");
             {
                 Body = $"Your order with number {order.Id} has been canceled and you will receive a full refund of {order.Total} {order.Currency} in couple of days. Please follow your bank statements.<br />",
                 From = "tivanov@takerman.net",
-                Subject = "TakerPrint - Order Canceled",
+                Subject = "Sreshti - Order Canceled",
                 To = user.Email
             });
 

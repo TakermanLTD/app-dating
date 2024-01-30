@@ -12,7 +12,7 @@
 <script lang="js">
 export default {
     props: {
-        paths: []
+        paths: Array
     }
 }
 </script>
