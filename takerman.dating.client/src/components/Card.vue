@@ -30,9 +30,9 @@
                     :class="date?.isSpotSaved ? 'btn btn-danger' : 'btn btn-primary'">
                     {{ date?.isSpotSaved ? 'Няма да присъствам' : 'Запази място' }}</a>
             </p>
-            <p v-else-if="false && date?.status === 'Approved'" class="text-center">
+            <p v-else-if="date?.isBought == false && date?.status === 'Approved' && date?.price > 0" class="text-center">
                 <PayButton v-if="status === 'notBought'" :date-id="date.id" :on-approve="onApprove">Купи</PayButton>
-            <div v-else-if="status === 'bought'" class="alert alert-success" role="alert">
+            <div v-if="status === 'bought'" class="alert alert-success" role="alert">
                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                 <span class="sr-only"></span> Закупихте срещата успешно. Можете да я видите от менюто <router-link
                     to="orders">'Мои срещи'</router-link>
@@ -42,6 +42,9 @@
                 <span class="sr-only"></span> Стана грешка при плащането. Моля опитайте пак или се свържете с нас през
                 контактната форма или чата
             </div>
+            </p>
+            <p v-else-if="date?.status === 'Approved' && date?.price == 0" class="text-center">
+                <button class="btn btn-primary">Към срещата</button>
             </p>
             <p v-else-if="date?.status === 'Approved'" class="text-center">
                 <router-link class="btn btn-success" :to="'date?id=' + date.id + ''">Купи
