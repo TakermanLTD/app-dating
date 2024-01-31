@@ -45,7 +45,7 @@
 import { fetchWrapper } from '@/helpers';
 import { useAuthStore } from '@/stores';
 import card from '../components/Card.vue';
-import loader from '../components/loader.vue';
+import loader from '../components/Loader.vue';
 
 export default {
     data() {

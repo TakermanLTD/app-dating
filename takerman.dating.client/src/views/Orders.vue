@@ -44,8 +44,8 @@
 <script lang="js">
 import { fetchWrapper } from '@/helpers';
 import { useAuthStore } from '@/stores';
-import Breadcrumbs from '../components/breadcrumbs.vue';
-import Heading from '../components/heading.vue';
+import Breadcrumbs from '../components/Breadcrumbs.vue';
+import Heading from '../components/Heading.vue';
 
 export default {
     data() {

@@ -27,10 +27,9 @@
 </template>
 
 <script lang="js">
-import { fetchWrapper, router } from '@/helpers';
-import { useAuthStore } from '@/stores';
-import breadcrumbs from './breadcrumbs.vue';
-import loader from './loader.vue';
+import { fetchWrapper } from '@/helpers';
+import breadcrumbs from './Breadcrumbs.vue';
+import loader from './Loader.vue';
 import heading from './Heading.vue';
 import card from './Card.vue';
 

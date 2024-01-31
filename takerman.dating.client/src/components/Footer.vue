@@ -58,7 +58,7 @@
 </template>
 
 <script lang="js">
-import newsletter from './newsletter.vue';
+import newsletter from './Newsletter.vue';
 
 export default {
     components: { newsletter }

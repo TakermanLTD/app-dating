@@ -46,7 +46,7 @@
 
 <script lang="js">
 import { useAuthStore } from '@/stores';
-import heading from '../components/heading.vue';
+import heading from '../components/Heading.vue';
 
 export default {
     data() {
