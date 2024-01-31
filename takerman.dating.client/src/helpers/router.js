@@ -2,13 +2,13 @@ import { createRouter, createWebHistory } from "vue-router"
 import Home from '../views/Home.vue';
 import Contacts from '../views/Contacts.vue';
 import Profile from '../views/Profile.vue';
-import Date from '../components/Date.vue';
+import Date from '../views/Date.vue';
 import Registration from '../views/Registration.vue';
 import Login from '../views/Login.vue';
 import ResetPasswordRequest from '../views/ResetPasswordRequest.vue';
 import ResetPassword from '../views/ResetPassword.vue';
 import Activate from '../views/Activate.vue';
-import Orders from '../views/Orders.vue';
+import Orders from '../views/MyDates.vue';
 import { useAuthStore } from '@/stores';
 
 export const router = createRouter({

@@ -28,10 +28,10 @@
 
 <script lang="js">
 import { fetchWrapper } from '@/helpers';
-import breadcrumbs from './Breadcrumbs.vue';
-import loader from './Loader.vue';
-import heading from './Heading.vue';
-import card from './Card.vue';
+import breadcrumbs from '../components/Breadcrumbs.vue';
+import loader from '../components/Loader.vue';
+import heading from '../components/Heading.vue';
+import card from '../components/Card.vue';
 
 export default {
   data() {

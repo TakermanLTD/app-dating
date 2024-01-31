@@ -30,7 +30,7 @@
                     :class="date?.isSpotSaved ? 'btn btn-danger' : 'btn btn-primary'">
                     {{ date?.isSpotSaved ? 'Няма да присъствам' : 'Запази място' }}</a>
             </p>
-            <p v-else-if="date?.isBought == false && date?.status === 'Approved' && date?.price > 0" class="text-center">
+            <p v-else-if="showPayButton" class="text-center">
                 <PayButton v-if="status === 'notBought'" :date-id="date.id" :on-approve="onApprove">Купи</PayButton>
             <div v-if="status === 'bought'" class="alert alert-success" role="alert">
                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
@@ -61,6 +61,8 @@
 </template>
 <script lang="js">
 import moment from 'moment';
+import { useRoute } from 'vue-router';
+import { computed } from 'vue';
 import { fetchWrapper } from '@/helpers';
 import { useAuthStore } from '@/stores';
 import PayButton from './PayButton.vue';
@@ -74,7 +76,8 @@ export default {
         return {
             moment: moment,
             status: 'notBought',
-            userId: 0
+            userId: 0,
+            showPayButton: false
         }
     },
     components: {
@@ -85,6 +88,9 @@ export default {
         if (authStore.user) {
             this.userId = authStore.user.id;
         }
+        const route = useRoute();
+        const path = computed(() => route.path);
+        this.showPayButton = path.value === '/date' && this.date?.status === 'Approved' && this.date?.price > 0
     },
     methods: {
         onApprove() {
