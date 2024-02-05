@@ -77,6 +77,9 @@ export default {
             userId: 0
         }
     },
+    emits: {
+        onUnsaveSpot: null
+    },
     computed: {
         path() {
             var route = useRoute();
@@ -96,7 +99,6 @@ export default {
         async onApprove(e, o) {
             this.paymentStatus = 'success';
 
-            // create order
             const data = {
                 dateId: this.date?.id,
                 userId: this.userId,
@@ -105,7 +107,8 @@ export default {
                 orderId: e.orderID,
                 paymentSource: e.paymentSource
             }
-            let response = await fetchWrapper.post('Order/Create', data);
+
+            await fetchWrapper.post('Order/Create', data);
 
             const payButton = document.getElementsByClassName('pay-button');
             for (let i = 0; i < payButton.length; i++) {
@@ -139,6 +142,7 @@ export default {
                         this.date.status = result.status;
                         this.date.menCount = result.menCount;
                         this.date.womenCount = result.womenCount;
+                        this.$emit('onUnsaveSpot');
                     });
             }
         }
