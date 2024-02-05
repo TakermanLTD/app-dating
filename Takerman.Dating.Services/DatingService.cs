@@ -80,15 +80,19 @@ namespace Takerman.Dating.Services
 
         public async Task<DateCardDto> GetCardFromDate(int? userId, Date date)
         {
-            var savedSpots = new List<UserSavedSpot>();
-
-            if (userId.HasValue)
-                savedSpots = await _context.UserSavedSpots.Where(x => x.UserId == userId.Value).ToListAsync();
-
             var card = _mapper.Map(date, new DateCardDto());
             card.Ethnicity = date.Ethnicity.GetDisplay();
             card.Status = Enum.GetName(date.Status);
-            card.IsSpotSaved = savedSpots.Any(x => x.DateId == date.Id);
+            if (userId.HasValue)
+            {
+                var isSpotSaved = _context.UserSavedSpots.Any(x => x.UserId == userId.Value && x.DateId == date.Id);
+                if (isSpotSaved)
+                    card.Status = Enum.GetName(DateStatus.SavedSpot);
+
+                var isDateBought = _context.Orders.Any(x => x.UserId == userId.Value && x.DateId == date.Id);
+                if (isDateBought)
+                    card.Status = Enum.GetName(DateStatus.Bought);
+            }
             card.DateType = date.DateType.GetDisplay();
             card.StartsOn = date.StartsOn.HasValue ? date.StartsOn.Value.ToShortDateString() : string.Empty;
             return card;

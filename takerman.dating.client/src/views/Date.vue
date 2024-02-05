@@ -3,7 +3,7 @@
   <loader v-if="this.loading" />
   <div class="row text-center" v-else>
     <heading :heading="date?.title" />
-    <card :date="date" />
+    <card :id="date?.id" />
     <div style="height: 100px;" class="col">
       <p class="center-text-vertically">
         {{ date.description }}

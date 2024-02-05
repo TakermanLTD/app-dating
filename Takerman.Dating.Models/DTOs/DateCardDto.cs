@@ -37,8 +37,6 @@ namespace Takerman.Dating.Models.DTOs
 
         public string Ethnicity { get; set; }
 
-        public bool? IsSpotSaved { get; set; }
-
         public object ToListAsync()
         {
             throw new NotImplementedException();

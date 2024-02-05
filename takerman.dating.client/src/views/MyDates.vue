@@ -11,7 +11,7 @@
           </p>
         </div>
         <div v-else class="card-deck">
-          <card v-for="(spot, index) in this.savedSpots" :date="spot" :key="index" />
+          <card v-for="(spot, index) in this.savedSpots" :date="spot.id" :key="index" />
         </div>
         <br />
         <heading heading="Купени срещи" />
@@ -21,7 +21,7 @@
           </p>
         </div>
         <div v-else class="card-deck">
-          <card class="gray-100" v-for="(order, index) in this.orders" :date="order" :key="index" />
+          <card class="gray-100" v-for="(order, index) in this.orders" :id="order.dateId" :key="index" />
         </div>
       </div>
     </div>

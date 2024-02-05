@@ -37,7 +37,7 @@
         <div v-else-if="!dates || dates.length == 0" class="text-center">
             <h3>There are not dates upcomming</h3>
         </div>
-        <card :date="date" v-else v-for="date in dates" :key="date.id" />
+        <card :id="date.id" v-else v-for="date in dates" :key="date.id" />
     </div>
 </template>
 
