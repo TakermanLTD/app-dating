@@ -20,17 +20,18 @@ namespace Takerman.Dating.Data
 
         public OrderStatus Status { get; set; }
 
-        [DataType(DataType.Text)]
-        public string PaymentProvider { get; set; }
+        public string PaymentId { get; set; }
+
+        public string PayerId { get; set; }
+
+        public string PaymentSource { get; set; }
+
+        public string OrderId { get; set; }
 
         [ForeignKey(nameof(User))]
         public int UserId { get; set; }
 
-        public virtual User User { get; set; } = null;
-
         [ForeignKey(nameof(Date))]
         public int DateId { get; set; }
-
-        public virtual Date Date { get; set; } = null;
     }
 }

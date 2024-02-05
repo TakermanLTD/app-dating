@@ -33,8 +33,12 @@ namespace Takerman.Dating.Services
         public async Task<Order> CreateAsync(OrderDto orderDto)
         {
             var order = _mapper.Map<Order>(orderDto);
+            var date = await _context.Dates.FirstAsync(x => x.Id == orderDto.DateId);
             order.Status = OrderStatus.Started;
             order.CreatedOn = DateTime.Now;
+            order.Currency = "EUR";
+            if (date != null)
+                order.Total = date.Price;
             return await CreateAsync(order);
         }
 

@@ -45,8 +45,8 @@
                 контактната форма или чата
             </div>
             </p>
-            <p v-else-if="this.date?.status === 'Bought' && this.date?.price == 0" class="text-center">
-                <span>Вече сте закупили тази среща</span>
+            <p v-else-if="this.date?.status === 'Bought'" class="text-center">
+                <router-link to="orders"><strong>Вече сте закупили тази среща</strong></router-link>
             </p>
             <p v-else-if="this.date?.status === 'Started'" class="text-center">
                 <strong>Срещата е започнала</strong>
@@ -93,10 +93,19 @@ export default {
         this.date = await fetchWrapper.get('Dates/Get?id=' + this.id + '&userId=' + this.userId);
     },
     methods: {
-        onApprove(e) {
+        async onApprove(e, o) {
             this.paymentStatus = 'success';
 
             // create order
+            const data = {
+                dateId: this.date?.id,
+                userId: this.userId,
+                paymentId: e.paymentID,
+                payerId: e.payerID,
+                orderId: e.orderID,
+                paymentSource: e.paymentSource
+            }
+            let response = await fetchWrapper.post('Order/Create', data);
 
             const payButton = document.getElementsByClassName('pay-button');
             for (let i = 0; i < payButton.length; i++) {

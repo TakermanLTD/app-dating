@@ -131,7 +131,7 @@ Email: {user.Email}
 Order Id: {order.Id}
 Currency: {order.Currency}
 Total: {order.Total}
-Payment Provider: {order.PaymentProvider}
+Payment Provider: {order.PaymentSource}
 Created On: {order.CreatedOn}");
 
             await SendEmailAsync(new MailMessageDto()
