@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Serilog;
+using System.Net;
 using Takerman.Dating.Data;
 using Takerman.Dating.Data.DTOs;
 using Takerman.Dating.Models.Broker;
@@ -8,13 +9,18 @@ using Takerman.Dating.Services;
 using Takerman.Dating.Services.Abstraction;
 
 var builder = WebApplication.CreateBuilder(args);
+var hostname = Dns.GetHostName();
 
 Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Warning()
     .ReadFrom.Configuration(builder.Configuration)
     .CreateLogger();
-builder.Host.UseSerilog(Log.Logger);
 
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+if (!builder.Environment.IsDevelopment())
+    connectionString = connectionString.Replace("takerman_dating_bg", hostname);
+
+builder.Host.UseSerilog(Log.Logger);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -22,7 +28,7 @@ builder.Services.AddExceptionHandler<BadRequestExceptionHandler>();
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
 builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
-builder.Services.AddDbContext<DefaultContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddDbContext<DefaultContext>(options => options.UseSqlServer(connectionString));
 builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<INotificationService, NotificationService>();
 builder.Services.AddTransient<IOrderService, OrderService>();
