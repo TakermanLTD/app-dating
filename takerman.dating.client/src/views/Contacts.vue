@@ -44,8 +44,8 @@
                                 </div>
                                 <div class="form-group col-md-6 mt-3 mt-md-0">
                                     <label for="name">Вашия имейл</label>
-                                    <input type="email" required class="form-control" name="email" id="email"
-                                        v-model="fields.email" />
+                                    <input type="email" required class="form-control" name="from" id="from"
+                                        v-model="fields.from" />
                                 </div>
                             </div>
                             <!-- 
@@ -56,8 +56,8 @@
                             -->
                             <div class="form-group mt-3">
                                 <label for="name">Съобщение</label>
-                                <textarea class="form-control" name="message" rows="10" required
-                                    v-model="fields.text"></textarea>
+                                <textarea class="form-control" name="body" rows="10" required
+                                    v-model="fields.body"></textarea>
                             </div>
                             <div class="my-3">
                                 <div v-show="this.loading === true" class="loading" style="display: block;">Зареждане...
@@ -92,8 +92,9 @@ export default {
             ],
             fields: {
                 name: '',
-                email: '',
-                text: ''
+                from: '',
+                body: '',
+                subject: 'A new message from sreshti.net'
             },
             loading: false,
             error: '',
