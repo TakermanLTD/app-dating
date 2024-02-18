@@ -1,19 +1,17 @@
 ﻿using Takerman.Dating.Data;
-using Takerman.Dating.Models.Mailing;
+using Takerman.Mail;
 
 namespace Takerman.Dating.Services.Abstraction
 {
     public interface INotificationService
     {
-        Task SendEmailAsync(MailMessageDto message);
-
         Task NotifyForOrderCreatedAsync(Order order);
 
         Task NotifyForOrderStatusChangedAsync(Order order);
 
         Task NotifyForNewsletterAsync(string email);
 
-        Task NotifyForNewMessageAsync(Message message);
+        Task NotifyForNewMessageAsync(MailMessageDto message);
 
         Task NotifyForCreatedUser(User user, string domainName);
 

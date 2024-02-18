@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Takerman.Dating.Data;
 using Takerman.Dating.Services.Abstraction;
+using Takerman.Mail;
 
 namespace Takerman.Dating.Server.Controllers
 {
@@ -11,7 +12,7 @@ namespace Takerman.Dating.Server.Controllers
         private readonly INotificationService _notificationService = notificationService;
 
         [HttpPost("SendContactUsMessage")]
-        public async Task SendContactUsMessage([FromBody] Message model)
+        public async Task SendContactUsMessage([FromBody] MailMessageDto model)
         {
             await _notificationService.NotifyForNewMessageAsync(model);
         }

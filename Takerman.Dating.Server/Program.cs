@@ -7,6 +7,7 @@ using Takerman.Dating.Models.Broker;
 using Takerman.Dating.Server.Middleware;
 using Takerman.Dating.Services;
 using Takerman.Dating.Services.Abstraction;
+using Takerman.Mail;
 
 var builder = WebApplication.CreateBuilder(args);
 var hostname = Dns.GetHostName();
@@ -34,6 +35,7 @@ builder.Services.AddTransient<INotificationService, NotificationService>();
 builder.Services.AddTransient<IOrderService, OrderService>();
 builder.Services.AddTransient<IDatingService, DatingService>();
 builder.Services.AddTransient<IOptionsService, OptionsService>();
+builder.Services.AddTransient<IMailService, MailService>();
 builder.Services.Configure<RabbitMqConfig>(builder.Configuration.GetSection(nameof(RabbitMqConfig)));
 builder.Services.Configure<PayPalConfig>(builder.Configuration.GetSection(nameof(PayPalConfig)));
 var app = builder.Build();
