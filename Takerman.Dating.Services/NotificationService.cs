@@ -100,10 +100,9 @@ Created On: {order.CreatedOn} <br />",
 
         public async Task NotifyForNewMessageAsync(MailMessageDto message)
         {
-            message.Body = $"From: {message.Name}. <br />Email {message.Email}. <br />Message: {message.Text}"
             await _mailService.SendToQueue(new MailMessageDto()
             {
-                Body = $"From: {message.Name}. <br />Email {message.Email}. <br />Message: {message.Text}",
+                Body = $"From: {message.Name}. <br />Email {message.From}. <br />Message: {message.Body}",
                 From = "tivanov@takerman.net",
                 Subject = $"Sreshti - New email from {message.Name}",
                 To = "contact@takerman.net"

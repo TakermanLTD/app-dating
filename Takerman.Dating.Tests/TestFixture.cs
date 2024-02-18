@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Takerman.Dating.Models.Broker;
 using Takerman.Dating.Services;
 using Takerman.Dating.Services.Abstraction;
+using Takerman.Mail;
 using Xunit.Microsoft.DependencyInjection;
 using Xunit.Microsoft.DependencyInjection.Abstracts;
 

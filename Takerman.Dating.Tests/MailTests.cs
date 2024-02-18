@@ -1,5 +1,5 @@
-using Takerman.Dating.Models.Mailing;
 using Takerman.Dating.Services.Abstraction;
+using Takerman.Mail;
 using Xunit.Abstractions;
 using Xunit.Microsoft.DependencyInjection.Abstracts;
 
@@ -41,7 +41,7 @@ namespace Takerman.Dating.Tests
                 To = "contact@sreshti.net"
             };
 
-            await Assert.ThrowsAsync<Exception>(async () => await _notificationService.SendEmailAsync(model));
+            await Assert.ThrowsAsync<Exception>(async () => await _notificationService.NotifyForNewMessageAsync(model));
         }
     }
 }
