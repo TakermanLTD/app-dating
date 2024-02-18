@@ -25,17 +25,17 @@ COPY Takerman.Dating.Services/. ./Takerman.Dating.Services/
 COPY Takerman.Dating.Models/. ./Takerman.Dating.Models/
 COPY Takerman.Dating.Tests/. ./Takerman.Dating.Tests/
 
+COPY ["takerman.dating.client/nuget.config", "./"]
+COPY ["takerman.dating.client/nuget.config", "takerman.dating.client/"]
+
 RUN sed -i "s|</configuration>|<packageSourceCredentials><github><add key=\"Username\" value=\"takerman\"/><add key=\"ClearTextPassword\" value=\"${NUGET_PASSWORD}\"/></github></packageSourceCredentials></configuration>|" nuget.config
 RUN dotnet nuget add source https://nuget.pkg.github.com/takermanltd/index.json --name github
 RUN dotnet nuget list source
 
-COPY ["takerman.dating.client/nuget.config", "takerman.dating.client/"]
-COPY ["takerman.dating.client/nuget.config", "./"]
 COPY ["Takerman.Dating.Server/Takerman.Dating.Server.csproj", "Takerman.Dating.Server/"]
 COPY ["takerman.dating.client/takerman.dating.client.esproj", "takerman.dating.client/"]
 RUN dotnet restore "./Takerman.Dating.Server/./Takerman.Dating.Server.csproj"
 COPY . .
-WORKDIR "/src/Takerman.Dating.Server"
 WORKDIR "/src/Takerman.Dating.Server"
 RUN dotnet clean "./Takerman.Dating.Server.csproj"
 RUN dotnet restore "./Takerman.Dating.Server.csproj"
