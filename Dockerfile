@@ -39,8 +39,13 @@ COPY . .
 
 WORKDIR "/src/takerman.dating.client"
 COPY package.json package.json 
-COPY .npmrc .npmrc
-RUN npm install
+RUN echo "//npm.pkg.github.com/:_authToken=$NUGET_PASSWORD" > .npmrc && \
+    echo "user.email=tivanov@takerman.net" > .npmrc && \
+    echo "user.name=takerman" > .npmrc && \
+    echo "user.username=takerman" > .npmrc && \
+    npm install --production && \
+    rm -f .npmrc
+RUN npm install --production
 RUN rm -f .npmrc
 
 WORKDIR "/src/Takerman.Dating.Server"
