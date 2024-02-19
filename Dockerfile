@@ -37,10 +37,12 @@ COPY ["takerman.dating.client/takerman.dating.client.esproj", "takerman.dating.c
 COPY ["takerman.dating.client/package.json", "package.json"]
 COPY . .
 
-RUN echo "registry=https://npm.pkg.github.com/takermanltd:_authToken=$NUGET_PASSWORD" > .npmrc
-RUN echo "user.email=tivanov@takerman.net" > .npmrc
-RUN echo "user.name=takerman" > .npmrc
-RUN echo "user.username=takerman" > .npmrc
+RUN npm login -u takerman -r https://npm.pkg.github.com -p ${NUGET_PASSWORD} << EOF
+
+# RUN echo "registry=https://npm.pkg.github.com/takermanltd:_authToken=$NUGET_PASSWORD" > .npmrc
+# RUN echo "user.email=tivanov@takerman.net" > .npmrc
+# RUN echo "user.name=takerman" > .npmrc
+# RUN echo "user.username=takerman" > .npmrc
 RUN npm install --production
 
 WORKDIR "/src/Takerman.Dating.Server"
