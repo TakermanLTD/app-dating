@@ -32,14 +32,15 @@ RUN sed -i "s|</configuration>|<packageSourceCredentials><github><add key=\"User
 RUN dotnet nuget add source https://nuget.pkg.github.com/takermanltd/index.json --name github
 RUN dotnet nuget list source
 
+COPY ["Takerman.Dating.Server/Takerman.Dating.Server.csproj", "Takerman.Dating.Server/"]
+COPY ["takerman.dating.client/takerman.dating.client.esproj", "takerman.dating.client/"]
+
+COPY . .
+
+WORKDIR "/src/takerman.dating.client"
 RUN echo "https://npm.pkg.github.com/:_authToken=${NUGET_PASSWORD}" > .npmrc
 RUN npm install
 
-
-COPY ["Takerman.Dating.Server/Takerman.Dating.Server.csproj", "Takerman.Dating.Server/"]
-COPY ["takerman.dating.client/takerman.dating.client.esproj", "takerman.dating.client/"]
-RUN dotnet restore "./Takerman.Dating.Server/./Takerman.Dating.Server.csproj"
-COPY . .
 WORKDIR "/src/Takerman.Dating.Server"
 RUN dotnet clean "./Takerman.Dating.Server.csproj"
 RUN dotnet restore "./Takerman.Dating.Server.csproj"
