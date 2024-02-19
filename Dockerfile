@@ -39,7 +39,7 @@ COPY . .
 
 WORKDIR "/src/takerman.dating.client"
 RUN npm install -g npm
-RUN echo "@takermanltd:registry=https://npm.pkg.github.com/:_authToken=${NUGET_PASSWORD}" > .npmrc
+RUN echo "registry=https://npm.pkg.github.com/@takermanltd:_authToken=${NUGET_PASSWORD}" > .npmrc
 RUN echo "user.email=tivanov@takerman.net" > .npmrc
 RUN echo "user.name=takerman" > .npmrc
 RUN echo "user.username=takerman" > .npmrc
