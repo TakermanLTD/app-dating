@@ -37,7 +37,6 @@ COPY ["takerman.dating.client/takerman.dating.client.esproj", "takerman.dating.c
 COPY ["takerman.dating.client/package.json", "package.json"]
 COPY . .
 
-RUN rm .npmrc
 RUN rm takerman.dating.client/.npmrc
 RUN echo "registry=https://npm.pkg.github.com/takermanltd:_authToken=$NUGET_PASSWORD" > .npmrc
 RUN echo "user.email=tivanov@takerman.net" > .npmrc
