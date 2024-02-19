@@ -38,8 +38,10 @@ COPY ["takerman.dating.client/takerman.dating.client.esproj", "takerman.dating.c
 COPY . .
 
 WORKDIR "/src/takerman.dating.client"
-RUN echo "https://npm.pkg.github.com/:_authToken=$NPM_TOKEN" > .npmrc
+COPY package.json package.json 
+COPY .npmrc .npmrc
 RUN npm install
+RUN rm -f .npmrc
 
 WORKDIR "/src/Takerman.Dating.Server"
 RUN dotnet clean "./Takerman.Dating.Server.csproj"
