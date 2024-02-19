@@ -38,7 +38,6 @@ COPY ["takerman.dating.client/takerman.dating.client.esproj", "takerman.dating.c
 COPY . .
 
 WORKDIR "/src/takerman.dating.client"
-COPY package.json package.json 
 RUN echo "//npm.pkg.github.com/:_authToken=$NUGET_PASSWORD" > .npmrc && \
     echo "user.email=tivanov@takerman.net" > .npmrc && \
     echo "user.name=takerman" > .npmrc && \
@@ -46,13 +45,13 @@ RUN echo "//npm.pkg.github.com/:_authToken=$NUGET_PASSWORD" > .npmrc && \
     npm install --production && \
     rm -f .npmrc
 RUN npm install --production
-RUN rm -f .npmrc
 
 WORKDIR "/src/Takerman.Dating.Server"
 RUN dotnet clean "./Takerman.Dating.Server.csproj"
 RUN dotnet restore "./Takerman.Dating.Server.csproj"
 RUN dotnet build "./Takerman.Dating.Server.csproj" -c $BUILD_CONFIGURATION -o /app/build
 RUN dotnet test "./Takerman.Dating.Server.csproj"
+RUN rm -f .npmrc
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
