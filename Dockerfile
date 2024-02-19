@@ -38,7 +38,7 @@ COPY ["takerman.dating.client/takerman.dating.client.esproj", "takerman.dating.c
 COPY . .
 
 WORKDIR "/src/takerman.dating.client"
-RUN echo "https://npm.pkg.github.com/:_authToken=$NUGET_PASSWORD" > .npmrc
+RUN echo "https://npm.pkg.github.com/:_authToken=$NPM_TOKEN" > .npmrc
 RUN npm install
 
 WORKDIR "/src/Takerman.Dating.Server"
