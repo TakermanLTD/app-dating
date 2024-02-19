@@ -34,10 +34,9 @@ RUN dotnet nuget list source
 
 COPY ["Takerman.Dating.Server/Takerman.Dating.Server.csproj", "Takerman.Dating.Server/"]
 COPY ["takerman.dating.client/takerman.dating.client.esproj", "takerman.dating.client/"]
-
+COPY ["takerman.dating.client/package.json", "package.json"]
 COPY . .
 
-WORKDIR "/src/takerman.dating.client"
 RUN echo "@takermanltd:registry=https://npm.pkg.github.com/:_authToken=$NUGET_PASSWORD" > .npmrc
 RUN echo "user.email=tivanov@takerman.net" > .npmrc
 RUN echo "user.name=takerman" > .npmrc
