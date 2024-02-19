@@ -38,12 +38,10 @@ COPY ["takerman.dating.client/takerman.dating.client.esproj", "takerman.dating.c
 COPY . .
 
 WORKDIR "/src/takerman.dating.client"
-RUN echo "//npm.pkg.github.com/:_authToken=$NUGET_PASSWORD" > .npmrc && \
-    echo "user.email=tivanov@takerman.net" > .npmrc && \
-    echo "user.name=takerman" > .npmrc && \
-    echo "user.username=takerman" > .npmrc && \
-    npm install --production && \
-    rm -f .npmrc
+RUN echo "//npm.pkg.github.com/:_authToken=$NUGET_PASSWORD" > .npmrc
+RUN echo "user.email=tivanov@takerman.net" > .npmrc
+RUN echo "user.name=takerman" > .npmrc
+RUN echo "user.username=takerman" > .npmrc
 RUN npm install --production
 
 WORKDIR "/src/Takerman.Dating.Server"
