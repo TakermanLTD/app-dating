@@ -24,6 +24,11 @@
       </p>
     </div>
   </div>
+  <br />
+  <div class="row">
+    <Choices v-if="date?.id != null" :date-id="date?.id" />
+  </div>
+  <br />
 </template>
 
 <script lang="js">
@@ -32,6 +37,7 @@ import breadcrumbs from '../components/Breadcrumbs.vue';
 import loader from '../components/Loader.vue';
 import heading from '../components/Heading.vue';
 import card from '../components/Card.vue';
+import Choices from '../components/Choices.vue';
 
 export default {
   data() {
@@ -65,7 +71,8 @@ export default {
     loader,
     breadcrumbs,
     heading,
-    card
+    card,
+    Choices
   }
 }
 </script>

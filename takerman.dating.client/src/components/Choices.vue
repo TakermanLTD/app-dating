@@ -1,0 +1,55 @@
+<template>
+    <div>
+        <hgroup>
+            <h2 class="text-center">Харесвания</h2>
+        </hgroup>
+        <div id="myChoices" class="text-center">
+            <div class="col" style="margin: 15px; width: 15rem; display: inline-block;" v-for="(choice, index) in this.choices" :key="index">
+                <div>
+                    <img :src="choice.avatar == null ? 'defaultAvatar.png' : 'data:image/jpeg;base64,' + btoa(choice.avatar)"
+                        class="img" width="150" height="150" /><br />
+                    <span>{{ choice.name }}</span>
+                </div>
+                <div>
+                    <label style="margin-right: 15px;" v-for="(radio, radioIndex) in choice.radios" :key="radioIndex" class="form-check-label">
+                        <input type="radio" class="form-check-input" :name="'choice_' + index" :checked="radio.isChecked">
+                        {{ radio.label }}
+                    </label>
+                </div>
+            </div>
+            <br />
+            <button class="btn btn-success" @click="saveChoices">Запази</button>
+            <div v-if="choice?.theirChoice != null" id="theirChoice">
+                Техния избор е: {{ choice.theirChoice }}
+                <div v-if="choice?.theirChoice === 'Yes' && choice.myChoice === 'Yes'">Поздравления! Имате съвпадение.
+                    Можете да чатите в чата <button>Чат</button></div>
+            </div>
+        </div>
+        <br />
+    </div>
+</template>
+
+<script lang="js">
+import { fetchWrapper } from '@/helpers';
+import { useAuthStore } from '@/stores';
+
+export default {
+    props: {
+        dateId: Number
+    },
+    data() {
+        return {
+            choices: []
+        }
+    },
+    async mounted() {
+        const authStore = useAuthStore();
+        this.choices = await fetchWrapper.get('Dates/GetChoices?userId=' + authStore.user.id + '&dateId=' + this.dateId);
+    },
+    methods: {
+        async saveChoices() {
+            await fetchWrapper.put('Date/SaveChoices', this.choices);
+        }
+    }
+}
+</script>

@@ -98,6 +98,35 @@ namespace Takerman.Dating.Services
             return card;
         }
 
+        public async Task<IEnumerable<DateChoicesDto>> GetChoices(int userId, int dateId)
+        {
+            var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == userId) ?? throw new UnauthorizedAccessException("There is no user with such Id");
+            var myChoices = await _context.DateUserChoices.Where(x => x.UserId == userId && x.DateId == dateId).ToListAsync();
+            var dateUserIds = await _context.Orders.Where(x => x.DateId == dateId).Select(x => x.UserId).ToListAsync();
+            var dateUsers = await _context.Users.Include(x=>x.Pictures).Where(x => dateUserIds.Contains(x.Id) && x.Gender != user.Gender).ToListAsync();
+
+            var result = new List<DateChoicesDto>();
+
+            foreach (var dateUser in dateUsers)
+            {
+                var choice = new DateChoicesDto();
+                var theirChoice = await _context.DateUserChoices.FirstOrDefaultAsync(x => x.UserId == dateUser.Id && x.DateId == dateId && x.VoteForId == userId);
+                var radios = new List<ChoiceRadioDto>()
+                {
+                    new() { Label = Enum.GetName(typeof(ChoiceType), ChoiceType.Yes), IsCheched = myChoices.FirstOrDefault(x=>x.VoteForId == dateUser.Id && x.ChoiceType == ChoiceType.Yes) != null},
+                    new() { Label = Enum.GetName(typeof(ChoiceType), ChoiceType.No), IsCheched = myChoices.FirstOrDefault(x=>x.VoteForId == dateUser.Id && x.ChoiceType == ChoiceType.No) != null},
+                    new() { Label = Enum.GetName(typeof(ChoiceType), ChoiceType.Friend), IsCheched = myChoices.FirstOrDefault(x=>x.VoteForId == dateUser.Id && x.ChoiceType == ChoiceType.Friend) != null}
+                };
+                choice.Radios = radios;
+                choice.TheirChoice = theirChoice == null ? string.Empty : Enum.GetName(typeof(ChoiceType), theirChoice.ChoiceType);
+                choice.Avatar = dateUser.Pictures.FirstOrDefault()?.Picture;
+                choice.Name = dateUser.FirstName + " " + dateUser.LastName;
+                result.Add(choice);
+            }
+
+            return result;
+        }
+
         public async Task<IEnumerable<DateUserChoice>> GetDateVotesByUser(int userId, int dateId)
         {
             throw new NotImplementedException();

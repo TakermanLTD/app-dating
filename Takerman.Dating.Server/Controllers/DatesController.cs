@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Takerman.Dating.Data;
 using Takerman.Dating.Models.DTOs;
 using Takerman.Dating.Services.Abstraction;
 
@@ -39,6 +40,12 @@ namespace Takerman.Dating.Server.Controllers
         public async Task<DateCardDto> UnsaveSpot(int userId, int dateId)
         {
             return await _datingService.UnsaveSpot(userId, dateId);
+        }
+
+        [HttpGet("GetChoices")]
+        public async Task<IEnumerable<DateChoicesDto>> GetChoices(int userId, int dateId)
+        {
+            return await _datingService.GetChoices(userId, dateId);
         }
     }
 }
