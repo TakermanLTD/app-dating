@@ -5,6 +5,10 @@
     <heading :heading="date?.title" />
     <card :id="date?.id" />
     <div style="height: 100px;" class="col">
+      <div v-if="date.status === 'Approved'">{{ this.timeRemaining }}</div>
+      <div v-else-if="date.status === 'Started'">
+        <button class="btn btn-success btn-lg" @click="enterDate">Влез в Срещата</button>
+      </div>
       <p class="center-text-vertically">
         {{ date.description }}
         <br />
@@ -26,12 +30,15 @@
   </div>
   <br />
   <div class="row">
-    <Choices v-if="date?.id != null" :date-id="date?.id" />
+    <Choices
+      v-if="(date && (date.status == 'Started' || date.status == 'Finished' || date.status == 'ResultsRevealed')) && date?.id != null"
+      :date-id="date?.id" />
   </div>
   <br />
 </template>
 
 <script lang="js">
+import moment from 'moment';
 import { fetchWrapper } from '@/helpers';
 import breadcrumbs from '../components/Breadcrumbs.vue';
 import loader from '../components/Loader.vue';
@@ -44,6 +51,7 @@ export default {
     return {
       id: 0,
       date: null,
+      timeRemaining: null,
       loading: false,
       breadcrumbs: [
         {
@@ -64,8 +72,25 @@ export default {
     if (urlParams.has('id')) {
       this.id = urlParams.get('id');
       this.date = await fetchWrapper.get('Dates/Get?id=' + this.id);
+      if (new Date(this.date?.startsOn) > new Date()) {
+        let countdownToStart = setInterval(async () => {
+          let remaining = new Date(this.date?.startsOn);
+          let now = new Date();
+          this.timeRemaining = moment(remaining - now).utc().format("HH:mm:ss");
+          if(new Date(this.date?.startsOn) <= new Date()) {
+            this.date.status = 'Started';
+            clearInterval(countdownToStart);
+            this.date = await fetchWrapper.get('Dates/SetStatus?id=' + this.id + '&status=' + this.date.status);
+          }
+        }, 1000);
+      }
     }
     this.loading = false;
+  },
+  methods: {
+    enterDate() {
+      window.open('https://zoom.com', '_blank', 'noreferrer');
+    }
   },
   components: {
     loader,

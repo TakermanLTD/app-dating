@@ -5,7 +5,7 @@
             <select id="frmDateType" placeholder="Тип среща" @change="applyFilter" v-model="filter.dateType"
                 class="form-control">
                 <option :value="0"></option>
-                <option v-for="dateType in dateTypes" :value="dateType.key">{{ dateType.value }}</option>
+                <option v-for="(dateType, dateTypeIndex) in dateTypes" :value="dateType.key" :key="dateTypeIndex">{{ dateType.value }}</option>
             </select>
         </div>
         <div class="col">
@@ -13,7 +13,7 @@
             <select id="frmEthnicity" placeholder="Етнос" @change="applyFilter" v-model="filter.ethnicity"
                 class="form-control">
                 <option :value="0"></option>
-                <option v-for="ethnicity in ethnicities" :value="ethnicity.key">{{ ethnicity.value }}</option>
+                <option v-for="(ethnicity, ethnicityKey) in ethnicities" :value="ethnicity.key" :key="ethnicityKey">{{ ethnicity.value }}</option>
             </select>
         </div>
         <div class="col">

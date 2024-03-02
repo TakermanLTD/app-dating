@@ -7,6 +7,8 @@ namespace Takerman.Dating.Services.Abstraction
     {
         Task<Date> Get(int id);
 
+        Task<DateCardDto> GetCard(int dateId);
+
         Task<DateCardDto> GetCard(int? userId, int dateId);
 
         Task<IEnumerable<Date>> GetAll();
@@ -14,6 +16,8 @@ namespace Takerman.Dating.Services.Abstraction
         Task<IEnumerable<DateCardDto>> GetAllAsCards(int? userId, FilterDto filter);
 
         Task<IEnumerable<Date>> Filter(DateFilterDto filter);
+
+        Task<DateCardDto> GetCardFromDate(Date date);
 
         Task<DateCardDto> GetCardFromDate(int? userId, Date date);
 
@@ -32,5 +36,7 @@ namespace Takerman.Dating.Services.Abstraction
         Task<IEnumerable<DateChoiceDto>> GetChoices(int userId, int dateId);
 
         Task SaveChoices(int userId, int dateId, IEnumerable<DateChoiceDto> choices);
+
+        Task<DateCardDto> SetStatus(int id, string status);
     }
 }

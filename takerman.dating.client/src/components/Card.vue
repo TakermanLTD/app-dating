@@ -1,5 +1,5 @@
 <template>
-    <div class="col card" style="margin: 15px; width: 18rem; display: inline-block;">
+    <div :class="'col card' + (this.isPast ? ' bg-light' : '')" style="margin: 15px; width: 18rem; display: inline-block;">
         <router-link :to="'date?id=' + this.date?.id + ''">
             <img class="card-img-top" src="/src/assets/img/date/date-thumbnail.jpeg" alt="Date">
         </router-link>
@@ -16,7 +16,7 @@
                         <td>Жени {{ this.date?.womenCount }}/{{ this.date?.minWomen }}</td>
                     </tr>
                     <tr>
-                        <td>{{ this.date?.startsOn ? moment(new Date(this.date?.startsOn)).format("DD MMM, hh:mm") :
+                        <td>{{ this.date?.startsOn ? moment(new Date(this.date?.startsOn)).format("DD MMM, HH:mm") :
                             'Предстои' }}
                         </td>
                         <td>Цена {{ this.date?.price }}лв.</td>
@@ -29,7 +29,7 @@
             <p v-else-if="this.date?.status === 'SavedSpot'" class="text-center">
                 <a @click="unsaveSpot(this.date)" class="btn btn-danger">Няма да присъствам</a>
             </p>
-            <p v-else-if="this.date?.status === 'Approved'" class="text-center">
+            <div v-else-if="this.date?.status === 'Approved'" class="text-center">
                 <PayButton v-if="this.path === '/date' && this.date?.price > 0" :date-id="this.date.id"
                     :on-approve="onApprove" :on-error="onError" class="pay-button">Купи</PayButton>
                 <router-link v-else class="btn btn-success" :to="'date?id=' + this.date.id + ''">Купи
@@ -44,9 +44,9 @@
                 <span class="sr-only"></span> Стана грешка при плащането. Моля опитайте пак или се свържете с нас през
                 контактната форма или чата
             </div>
-            </p>
+        </div>
             <p v-else-if="this.date?.status === 'Bought'" class="text-center">
-                <router-link to="orders"><strong>Вече сте закупили тази среща</strong></router-link>
+                <strong>Закупили сте тази среща</strong>
             </p>
             <p v-else-if="this.date?.status === 'Started'" class="text-center">
                 <strong>Срещата е започнала</strong>
@@ -84,6 +84,9 @@ export default {
         path() {
             var route = useRoute();
             return route.path;
+        },
+        isPast() {
+            return new Date(this.date?.startsOn) < new Date();
         }
     },
     components: {

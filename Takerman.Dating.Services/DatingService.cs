@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using System.Globalization;
 using Takerman.Dating.Data;
 using Takerman.Dating.Models.DTOs;
 using Takerman.Dating.Services.Abstraction;
@@ -62,14 +63,40 @@ namespace Takerman.Dating.Services
                     query = query.Where(x => (int)x.DateType == filter.DateType);
             }
 
-            var dates = await query.ToListAsync();
+            var dates = await query.OrderBy(x => x.Ethnicity).OrderBy(x => x.MaxAges).OrderBy(x => x.StartsOn).ToListAsync();
 
             foreach (var date in dates)
             {
+                await Maintenance(date);
+
                 var card = await GetCardFromDate(userId, date);
                 result.Add(card);
             }
             return result;
+        }
+
+        private async Task Maintenance(Date? date)
+        {
+            if (date.StartsOn == null || !date.StartsOn.HasValue)
+            {
+                date.Status = DateStatus.NotApproved;
+            }
+            else if (date.StartsOn > DateTime.Now)
+            {
+                date.Status = DateStatus.Approved;
+            }
+            else if (date.StartsOn.Value < DateTime.Now.AddDays(-2))
+            {
+                date.Status = DateStatus.ResultsRevealed;
+            }
+
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<DateCardDto> GetCard(int dateId)
+        {
+            var date = await Get(dateId);
+            return await GetCardFromDate(date);
         }
 
         public async Task<DateCardDto> GetCard(int? userId, int dateId)
@@ -78,23 +105,36 @@ namespace Takerman.Dating.Services
             return await GetCardFromDate(userId, date);
         }
 
-        public async Task<DateCardDto> GetCardFromDate(int? userId, Date date)
+        public async Task<DateCardDto> GetCardFromDate(Date date)
         {
             var card = _mapper.Map(date, new DateCardDto());
             card.Ethnicity = date.Ethnicity.GetDisplay();
             card.Status = Enum.GetName(date.Status);
+            card.DateType = date.DateType.GetDisplay();
+
+            if (date.StartsOn.HasValue)
+            {
+                card.StartsOn = date.StartsOn.Value.ToString(CultureInfo.InvariantCulture);
+            }
+
+            return card;
+        }
+
+        public async Task<DateCardDto> GetCardFromDate(int? userId, Date date)
+        {
+            var card = await GetCardFromDate(date);
+
             if (userId.HasValue)
             {
                 var isSpotSaved = _context.UserSavedSpots.Any(x => x.UserId == userId.Value && x.DateId == date.Id);
                 if (isSpotSaved)
                     card.Status = Enum.GetName(DateStatus.SavedSpot);
 
-                var isDateBought = _context.Orders.Any(x => x.UserId == userId.Value && x.DateId == date.Id);
-                if (isDateBought)
+                var isDateBought = _context.Orders.Any(x => x.UserId == userId.Value && x.DateId == date.Id && date.StartsOn > DateTime.Now);
+                if (isDateBought && date.Status != DateStatus.Started)
                     card.Status = Enum.GetName(DateStatus.Bought);
             }
-            card.DateType = date.DateType.GetDisplay();
-            card.StartsOn = date.StartsOn.HasValue ? date.StartsOn.Value.ToShortDateString() : string.Empty;
+
             return card;
         }
 
@@ -241,6 +281,15 @@ namespace Takerman.Dating.Services
         public async Task Vote(int userId, int choiceId, ChoiceType choiceType)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<DateCardDto> SetStatus(int id, string status)
+        {
+            var date = await Get(id);
+            date.Status = Enum.Parse<DateStatus>(status);
+            _context.SaveChanges();
+
+            return await GetCardFromDate(date);
         }
     }
 }
