@@ -29,6 +29,8 @@ namespace Takerman.Dating.Services.Abstraction
 
         Task<IEnumerable<DateCardDto>> GetSavedSpots(int userId);
 
-        Task<IEnumerable<DateChoicesDto>> GetChoices(int userId, int dateId);
+        Task<IEnumerable<DateChoiceDto>> GetChoices(int userId, int dateId);
+
+        Task SaveChoices(int userId, int dateId, IEnumerable<DateChoiceDto> choices);
     }
 }

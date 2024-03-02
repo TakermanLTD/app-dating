@@ -98,29 +98,32 @@ namespace Takerman.Dating.Services
             return card;
         }
 
-        public async Task<IEnumerable<DateChoicesDto>> GetChoices(int userId, int dateId)
+        public async Task<IEnumerable<DateChoiceDto>> GetChoices(int userId, int dateId)
         {
             var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == userId) ?? throw new UnauthorizedAccessException("There is no user with such Id");
             var myChoices = await _context.DateUserChoices.Where(x => x.UserId == userId && x.DateId == dateId).ToListAsync();
             var dateUserIds = await _context.Orders.Where(x => x.DateId == dateId).Select(x => x.UserId).ToListAsync();
-            var dateUsers = await _context.Users.Include(x=>x.Pictures).Where(x => dateUserIds.Contains(x.Id) && x.Gender != user.Gender).ToListAsync();
+            var dateUsers = await _context.Users.Include(x => x.Pictures).Where(x => dateUserIds.Contains(x.Id) && x.Gender != user.Gender).ToListAsync();
 
-            var result = new List<DateChoicesDto>();
+            var result = new List<DateChoiceDto>();
 
             foreach (var dateUser in dateUsers)
             {
-                var choice = new DateChoicesDto();
+                var choice = new DateChoiceDto();
                 var theirChoice = await _context.DateUserChoices.FirstOrDefaultAsync(x => x.UserId == dateUser.Id && x.DateId == dateId && x.VoteForId == userId);
+                var myChoice = myChoices.FirstOrDefault(x => x.VoteForId == dateUser.Id);
                 var radios = new List<ChoiceRadioDto>()
                 {
-                    new() { Label = Enum.GetName(typeof(ChoiceType), ChoiceType.Yes), IsCheched = myChoices.FirstOrDefault(x=>x.VoteForId == dateUser.Id && x.ChoiceType == ChoiceType.Yes) != null},
-                    new() { Label = Enum.GetName(typeof(ChoiceType), ChoiceType.No), IsCheched = myChoices.FirstOrDefault(x=>x.VoteForId == dateUser.Id && x.ChoiceType == ChoiceType.No) != null},
-                    new() { Label = Enum.GetName(typeof(ChoiceType), ChoiceType.Friend), IsCheched = myChoices.FirstOrDefault(x=>x.VoteForId == dateUser.Id && x.ChoiceType == ChoiceType.Friend) != null}
+                    new() { Label = Enum.GetName(typeof(ChoiceType), ChoiceType.Yes), IsChecked = myChoices.FirstOrDefault(x=>x.VoteForId == dateUser.Id && x.ChoiceType == ChoiceType.Yes) != null},
+                    new() { Label = Enum.GetName(typeof(ChoiceType), ChoiceType.No), IsChecked = myChoices.FirstOrDefault(x=>x.VoteForId == dateUser.Id && x.ChoiceType == ChoiceType.No) != null},
+                    new() { Label = Enum.GetName(typeof(ChoiceType), ChoiceType.Friend), IsChecked = myChoices.FirstOrDefault(x=>x.VoteForId == dateUser.Id && x.ChoiceType == ChoiceType.Friend) != null}
                 };
+                choice.VoteForId = dateUser.Id;
                 choice.Radios = radios;
                 choice.TheirChoice = theirChoice == null ? string.Empty : Enum.GetName(typeof(ChoiceType), theirChoice.ChoiceType);
                 choice.Avatar = dateUser.Pictures.FirstOrDefault()?.Picture;
                 choice.Name = dateUser.FirstName + " " + dateUser.LastName;
+                choice.MyChoice = myChoice == null ? string.Empty : Enum.GetName(typeof(ChoiceType), myChoice.ChoiceType);
                 result.Add(choice);
             }
 
@@ -139,7 +142,41 @@ namespace Takerman.Dating.Services
             foreach (var spot in savedSpots)
                 result.Add(await GetCard(userId, spot.DateId));
 
-            return result.ToList();
+            return [.. result];
+        }
+
+        public async Task SaveChoices(int userId, int dateId, IEnumerable<DateChoiceDto> choices)
+        {
+            foreach (var choice in choices)
+            {
+                var existing = await _context.DateUserChoices.FirstOrDefaultAsync(x => x.UserId == userId && x.DateId == dateId && x.VoteForId == choice.VoteForId);
+
+                var choiceForUser = choice.Radios.FirstOrDefault(x => x.IsChecked);
+
+                if (choiceForUser != null)
+                {
+                    if (existing != null)
+                    {
+                        existing.ChoiceType = Enum.Parse<ChoiceType>(choiceForUser.Label);
+                    }
+                    else
+                    {
+                        await _context.DateUserChoices.AddAsync(new DateUserChoice()
+                        {
+                            DateId = dateId,
+                            UserId = userId,
+                            VoteForId = choice.VoteForId,
+                            ChoiceType = Enum.Parse<ChoiceType>(choiceForUser.Label)
+                        });
+                    }
+                }
+                else
+                {
+                    _logger.LogWarning("It was tried to insert empty choice per user in the database.");
+                }
+            }
+
+            await _context.SaveChangesAsync();
         }
 
         public async Task<DateCardDto> SaveSpot(int userId, int dateId)

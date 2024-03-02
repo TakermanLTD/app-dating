@@ -43,9 +43,15 @@ namespace Takerman.Dating.Server.Controllers
         }
 
         [HttpGet("GetChoices")]
-        public async Task<IEnumerable<DateChoicesDto>> GetChoices(int userId, int dateId)
+        public async Task<IEnumerable<DateChoiceDto>> GetChoices(int userId, int dateId)
         {
             return await _datingService.GetChoices(userId, dateId);
+        }
+
+        [HttpPost("SaveChoices")]
+        public async Task SaveChoices(int userId, int dateId, IEnumerable<DateChoiceDto> choices)
+        {
+            await _datingService.SaveChoices(userId, dateId, choices);
         }
     }
 }

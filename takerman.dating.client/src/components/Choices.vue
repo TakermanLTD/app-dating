@@ -12,7 +12,7 @@
                 </div>
                 <div>
                     <label style="margin-right: 15px;" v-for="(radio, radioIndex) in choice.radios" :key="radioIndex" class="form-check-label">
-                        <input type="radio" class="form-check-input" :name="'choice_' + index" :checked="radio.isChecked">
+                        <input type="radio" @change="checkRadio(radio, choice.radios)" :value="radio.isChecked" class="form-check-input" :name="'choice_' + index" :checked="radio.isChecked == true">
                         {{ radio.label }}
                     </label>
                 </div>
@@ -48,7 +48,16 @@ export default {
     },
     methods: {
         async saveChoices() {
-            await fetchWrapper.put('Date/SaveChoices', this.choices);
+            const authStore = useAuthStore();
+            await fetchWrapper.post('Dates/SaveChoices?userId=' + authStore.user.id + '&dateId=' + this.dateId, this.choices);
+        },
+        checkRadio(radio, radios) {
+            for (let i = 0; i < radios.length; i++) {
+                const radio = radios[i];
+                radio.isChecked = false;
+            }
+
+            radio.isChecked = true;
         }
     }
 }

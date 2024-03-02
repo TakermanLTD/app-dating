@@ -4,6 +4,6 @@
     {
         public string Label { get; set; }
 
-        public bool IsCheched { get; set; }
+        public bool IsChecked { get; set; }
     }
 }
