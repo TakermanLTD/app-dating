@@ -5,9 +5,18 @@
     <heading :heading="date?.title" />
     <card :id="date?.id" />
     <div style="height: 100px;" class="col">
-      <div v-if="date.status === 'Approved'">{{ this.timeRemaining }}</div>
+      <div v-if="date.status === 'Approved'">
+        Време до започване <br />
+        <strong>{{ this.startTime }}</strong> часа
+      </div>
       <div v-else-if="date.status === 'Started'">
         <button class="btn btn-success btn-lg" @click="enterDate">Влез в Срещата</button>
+        До разкриване на резултатите <br />
+        <strong>{{ this.revealTime }}</strong> часа
+      </div>
+      <div v-else-if="date.status === 'Finished'">
+        До разкриване на резултатите <br />
+        <strong>{{ this.revealTime }}</strong> часа
       </div>
       <p class="center-text-vertically">
         {{ date.description }}
@@ -51,7 +60,8 @@ export default {
     return {
       id: 0,
       date: null,
-      timeRemaining: null,
+      startTime: null,
+      revealTime: null,
       loading: false,
       breadcrumbs: [
         {
@@ -69,27 +79,43 @@ export default {
     this.loading = true;
     let queryString = window.location.search;
     let urlParams = new URLSearchParams(queryString);
+
     if (urlParams.has('id')) {
       this.id = urlParams.get('id');
       this.date = await fetchWrapper.get('Dates/Get?id=' + this.id);
-      if (new Date(this.date?.startsOn) > new Date()) {
-        let countdownToStart = setInterval(async () => {
-          let remaining = new Date(this.date?.startsOn);
-          let now = new Date();
-          this.timeRemaining = moment(remaining - now).utc().format("HH:mm:ss");
-          if(new Date(this.date?.startsOn) <= new Date()) {
-            this.date.status = 'Started';
-            clearInterval(countdownToStart);
-            this.date = await fetchWrapper.get('Dates/SetStatus?id=' + this.id + '&status=' + this.date.status);
-          }
-        }, 1000);
-      }
+
+      let startsOn = new Date(this.date?.startsOn);
+      let countdownToStart = setInterval(async () => {
+        switch (this.date.status) {
+          case 'Approved':
+            this.startTime = moment(startsOn - new Date()).utc().format("HH:mm:ss");
+            break;
+
+          case 'Started':
+          case 'Finished':
+            let reveal = new Date(new Date(startsOn).setDate(startsOn.getDate() + 1));
+            this.revealTime = moment(reveal - new Date()).utc().format("HH:mm:ss");
+            if (reveal <= new Date()) {
+              clearInterval(countdownToStart);
+              revealResults();
+            }
+            break;
+
+          default:
+            this.startTime = '';
+            this.revealTime = '';
+            break;
+        }
+      }, 1000);
     }
     this.loading = false;
   },
   methods: {
     enterDate() {
-      window.open('https://zoom.com', '_blank', 'noreferrer');
+      window.open(this.date.videoLink, '_blank', 'noreferrer');
+    },
+    revealResults() {
+      alert('results revealed!');
     }
   },
   components: {
