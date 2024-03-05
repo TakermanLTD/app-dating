@@ -1,7 +1,8 @@
-import { createRouter, createWebHistory } from "vue-router"
+import { createRouter, createWebHistory } from "vue-router";
 import Home from '../views/Home.vue';
 import Contacts from '../views/Contacts.vue';
 import Profile from '../views/Profile.vue';
+import UserProfile from '../views/UserProfile.vue';
 import Date from '../views/Date.vue';
 import Registration from '../views/Registration.vue';
 import Login from '../views/Login.vue';
@@ -19,6 +20,7 @@ export const router = createRouter({
         { path: '/home', component: Home },
         { path: '/contacts', component: Contacts },
         { path: '/profile', component: Profile },
+        { path: '/userProfile', component: UserProfile },
         { path: '/date', component: Date },
         { path: '/orders', component: Orders },
         { path: '/register', component: Registration },

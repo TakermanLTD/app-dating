@@ -7,8 +7,11 @@
             <div class="col" style="margin: 15px; width: 15rem; display: inline-block;"
                 v-for="(choice, index) in this.choices" :key="index">
                 <div>
+                    <router-link :to="'/userProfile?id=' + choice.voteForId">
                     <img :src="choice.avatar == null ? 'defaultAvatar.png' : 'data:image/jpeg;base64,' + btoa(choice.avatar)"
-                        class="img" width="150" height="150" /><br />
+                        class="img" width="150" height="150" />
+                    </router-link>
+                    <br />
                     <span>{{ choice.name }}</span>
                 </div>
                 <div>
@@ -24,9 +27,9 @@
                             Техния избор е: <strong>{{ choice.theirChoice ? choice.theirChoice : 'Нищо' }}</strong>
                         </span> <br />
                         <div v-if="choice?.theirChoice === 'Yes' && choice.myChoice === 'Yes'">
-                            Съвпадение! Можете да чатите в чата  и да видите профила им. <br />
+                            Съвпадение! Можете да чатите.<br />
                             <button style="margin-right: 10px;" class="btn btn-info">Чат</button>
-                            <button class="btn btn-info">Профил</button>
+                            <router-link :to="'/userProfile?id=' + choice.voteForId">Профил</router-link>
                         </div>
                     </div>
                 </div>
