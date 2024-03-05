@@ -7,11 +7,8 @@ using System.Text;
 using Takerman.Dating.Data.DTOs;
 using Takerman.Dating.Services.Abstraction;
 
-public class JwtMiddleware(RequestDelegate next, IOptions<AppSettings> appSettings)
+public class JwtMiddleware(RequestDelegate _next, IOptions<AppSettings> _appSettings)
 {
-    private readonly RequestDelegate _next = next;
-    private readonly AppSettings _appSettings = appSettings.Value;
-
     public async Task Invoke(HttpContext context, IUserService userService)
     {
         var token = context.Request.Headers.Authorization.FirstOrDefault()?.Split(" ").Last();
@@ -27,7 +24,7 @@ public class JwtMiddleware(RequestDelegate next, IOptions<AppSettings> appSettin
         try
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
+            var key = Encoding.ASCII.GetBytes(_appSettings.Value.Secret);
             tokenHandler.ValidateToken(token, new TokenValidationParameters
             {
                 ValidateIssuerSigningKey = true,

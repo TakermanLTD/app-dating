@@ -6,10 +6,8 @@ using Takerman.Dating.Services.Abstraction;
 
 namespace Takerman.Dating.Services
 {
-    public class OrderService(DefaultContext context) : IOrderService
+    public class OrderService(DefaultContext _context) : IOrderService
     {
-        private readonly DefaultContext _context = context;
-
         private readonly IMapper _mapper = new MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<OrderDto, Order>();

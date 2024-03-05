@@ -10,13 +10,8 @@ using Takerman.Mail;
 
 namespace Takerman.Dating.Services
 {
-    public class NotificationService(IMailService mailService, IUserService userService, ILogger<NotificationService> logger, DefaultContext context) : INotificationService
+    public class NotificationService(IMailService _mailService, IUserService _userService, ILogger<NotificationService> _logger, DefaultContext _context) : INotificationService
     {
-        private readonly IUserService _userService = userService;
-        private readonly ILogger<NotificationService> _logger = logger;
-        private readonly IMailService _mailService = mailService;
-        private readonly DefaultContext _context = context;
-
         public async Task SubscribeForNewsletterAsync(Newsletter model)
         {
             var newsletter = await _context.Newsletters.FirstOrDefaultAsync(x => x.Email.ToLower() == model.Email.ToLower());

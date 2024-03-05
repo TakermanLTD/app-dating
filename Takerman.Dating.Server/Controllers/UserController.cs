@@ -13,10 +13,8 @@ namespace Takerman.Dating.Server.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class UserController(IUserService userService, INotificationService notificationService) : ControllerBase
+    public class UserController(IUserService _userService, INotificationService _notificationService) : ControllerBase
     {
-        private readonly IUserService _userService = userService;
-        private readonly INotificationService _notificationService = notificationService;
         private readonly IMapper _mapper = new MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<RegisterDto, User>();

@@ -3,10 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Takerman.Dating.Server.Middleware
 {
-    internal sealed class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger) : IExceptionHandler
+    public sealed class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> _logger) : IExceptionHandler
     {
-        private readonly ILogger<GlobalExceptionHandler> _logger = logger;
-
         public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken cancellationToken)
         {
             var message = exception.Message + (exception.InnerException == null ? string.Empty : exception.InnerException.Message);

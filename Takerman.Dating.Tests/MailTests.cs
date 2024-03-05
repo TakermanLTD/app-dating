@@ -7,7 +7,6 @@ namespace Takerman.Dating.Tests
 {
     public class MailTests : TestBed<TestFixture>
     {
-        private const string DOMAIN = "https://localhost:5147";
         private readonly INotificationService _notificationService;
         private readonly IUserService _userService;
 

@@ -14,10 +14,8 @@ using Takerman.Dating.Services.Authentication;
 
 namespace Takerman.Dating.Services
 {
-    public class UserService(IOptions<AppSettings> appSettings, DefaultContext context) : IUserService
+    public class UserService(IOptions<AppSettings> _appSettings, DefaultContext _context) : IUserService
     {
-        private readonly AppSettings _appSettings = appSettings.Value;
-        private readonly DefaultContext _context = context;
         private readonly IMapper _mapper = new MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<User, User>();
@@ -127,7 +125,7 @@ namespace Takerman.Dating.Services
             try
             {
                 var tokenHandler = new JwtSecurityTokenHandler();
-                var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
+                var key = Encoding.ASCII.GetBytes(_appSettings.Value.Secret);
                 var tokenDescriptor = new SecurityTokenDescriptor
                 {
                     Subject = new ClaimsIdentity(new[] { new Claim("id", user.Id.ToString()) }),

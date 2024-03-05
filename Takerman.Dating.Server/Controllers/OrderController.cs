@@ -7,11 +7,8 @@ namespace Takerman.Dating.Server.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class OrderController(IOrderService orderService, INotificationService notificationService) : ControllerBase
+    public class OrderController(IOrderService _orderService, INotificationService _notificationService) : ControllerBase
     {
-        private readonly IOrderService _orderService = orderService;
-        private readonly INotificationService _notificationService = notificationService;
-
         [HttpGet("Get")]
         public async Task<Order> Get(int id)
         {

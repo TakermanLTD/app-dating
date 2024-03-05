@@ -5,11 +5,8 @@ namespace Takerman.Dating.Server.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class OptionsController(IOptionsService optionsService, ILogger<OptionsController> logger) : ControllerBase
+    public class OptionsController(IOptionsService _optionsService, ILogger<OptionsController> _logger) : ControllerBase
     {
-        private readonly IOptionsService _optionsService = optionsService;
-        private readonly ILogger<OptionsController> _logger = logger;
-
         [HttpGet("GetEthnicities")]
         public IEnumerable<KeyValuePair<int, string>> GetEthnicities()
         {

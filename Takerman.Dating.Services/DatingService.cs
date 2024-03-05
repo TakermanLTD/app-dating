@@ -8,11 +8,8 @@ using Takerman.Dating.Services.Abstraction;
 
 namespace Takerman.Dating.Services
 {
-    public class DatingService(DefaultContext context, ILogger<DatingService> logger) : IDatingService
+    public class DatingService(DefaultContext _context, ILogger<DatingService> _logger) : IDatingService
     {
-        private readonly DefaultContext _context = context;
-        private readonly ILogger<DatingService> _logger = logger;
-
         private readonly IMapper _mapper = new MapperConfiguration(cfg =>
         {
             cfg.CreateMap<DateCardDto, Date>();

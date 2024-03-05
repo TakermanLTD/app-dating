@@ -3,10 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Takerman.Dating.Server.Middleware
 {
-    internal sealed class BadRequestExceptionHandler(ILogger<BadRequestExceptionHandler> logger) : IExceptionHandler
+    public sealed class BadRequestExceptionHandler(ILogger<BadRequestExceptionHandler> _logger) : IExceptionHandler
     {
-        private readonly ILogger<BadRequestExceptionHandler> _logger = logger;
-
         public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken cancellationToken)
         {
             if (exception is not BadHttpRequestException badRequestException)
