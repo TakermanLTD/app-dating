@@ -37,6 +37,6 @@ namespace Takerman.Dating.Services.Abstraction
 
         Task SaveChoices(int userId, int dateId, IEnumerable<DateChoiceDto> choices);
 
-        Task<DateCardDto> SetStatus(int id, string status);
+        Task<DateCardDto> SetStatus(DateStatusDto status);
     }
 }

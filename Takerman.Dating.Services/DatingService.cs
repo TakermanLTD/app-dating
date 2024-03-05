@@ -288,10 +288,10 @@ namespace Takerman.Dating.Services
             throw new NotImplementedException();
         }
 
-        public async Task<DateCardDto> SetStatus(int id, string status)
+        public async Task<DateCardDto> SetStatus(DateStatusDto status)
         {
-            var date = await Get(id);
-            date.Status = Enum.Parse<DateStatus>(status);
+            var date = await Get(status.Id);
+            date.Status = Enum.Parse<DateStatus>(status.Status);
             _context.SaveChanges();
 
             return await GetCardFromDate(date);

@@ -54,12 +54,12 @@ namespace Takerman.Dating.Server.Controllers
             await _datingService.SaveChoices(userId, dateId, choices);
         }
 
-        [HttpGet("SetStatus")]
-        public async Task<DateCardDto> SetStatus(int id, string status)
+        [HttpPost("SetStatus")]
+        public async Task<DateCardDto> SetStatus(DateStatusDto status)
         {
-            await _datingService.SetStatus(id, status);
+            await _datingService.SetStatus(status);
 
-            return await _datingService.GetCard(id);
+            return await _datingService.GetCard(status.Id);
         }
     }
 }

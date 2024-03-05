@@ -97,7 +97,7 @@ export default {
             this.revealTime = moment(reveal - new Date()).utc().format("HH:mm:ss");
             if (reveal <= new Date()) {
               clearInterval(countdownToStart);
-              revealResults();
+              await this.revealResults();
             }
             break;
 
@@ -114,8 +114,9 @@ export default {
     enterDate() {
       window.open(this.date.videoLink, '_blank', 'noreferrer');
     },
-    revealResults() {
-      alert('results revealed!');
+    async revealResults() {
+      this.date = await fetchWrapper.post('Dates/SetStatus', { id: this.id, status: 'ResultsRevealed' });
+      this.date.status = 'ResultsRevealed';
     }
   },
   components: {

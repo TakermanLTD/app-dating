@@ -19,6 +19,16 @@
                             :name="'choice_' + index" :checked="radio.isChecked == true">
                         {{ radio.label }}
                     </label>
+                    <div v-if="this.date?.status == 'ResultsRevealed' && choice?.theirChoice != null">
+                        <span>
+                            Техния избор е: <strong>{{ choice.theirChoice ? choice.theirChoice : 'Нищо' }}</strong>
+                        </span> <br />
+                        <div v-if="choice?.theirChoice === 'Yes' && choice.myChoice === 'Yes'">
+                            Съвпадение! Можете да чатите в чата  и да видите профила им. <br />
+                            <button style="margin-right: 10px;" class="btn btn-info">Чат</button>
+                            <button class="btn btn-info">Профил</button>
+                        </div>
+                    </div>
                 </div>
             </div>
             <br />
@@ -29,11 +39,6 @@
                     <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                     <span class="sr-only"></span> Запазихте избора си успешно
                 </div>
-            </div>
-            <div v-if="choice?.theirChoice != null" id="theirChoice">
-                Техния избор е: {{ choice.theirChoice }}
-                <div v-if="choice?.theirChoice === 'Yes' && choice.myChoice === 'Yes'">Поздравления! Имате съвпадение.
-                    Можете да чатите в чата <button>Чат</button></div>
             </div>
         </div>
         <br />
