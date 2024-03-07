@@ -9,7 +9,8 @@ import Login from '../views/Login.vue';
 import ResetPasswordRequest from '../views/ResetPasswordRequest.vue';
 import ResetPassword from '../views/ResetPassword.vue';
 import Activate from '../views/Activate.vue';
-import Orders from '../views/MyDates.vue';
+import MyDates from '../views/MyDates.vue';
+import Matches from '../views/Matches.vue';
 import { useAuthStore } from '@/stores';
 
 export const router = createRouter({
@@ -22,7 +23,8 @@ export const router = createRouter({
         { path: '/profile', component: Profile },
         { path: '/userProfile', component: UserProfile },
         { path: '/date', component: Date },
-        { path: '/orders', component: Orders },
+        { path: '/my-dates', component: MyDates },
+        { path: '/matches', component: Matches },
         { path: '/register', component: Registration },
         { path: '/login', component: Login },
         { path: '/reset-password-request', component: ResetPasswordRequest },

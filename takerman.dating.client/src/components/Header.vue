@@ -23,7 +23,9 @@
                             <li v-if="this.user != null"><router-link class="nav-link scrollto"
                                     to="/profile">Детайли</router-link></li>
                             <li v-if="this.user != null"><router-link class="nav-link scrollto"
-                                    to="/orders">Мои срещи</router-link></li>
+                                    to="/my-dates">Мои срещи</router-link></li>
+                            <li v-if="this.user != null"><router-link class="nav-link scrollto"
+                                    to="/matches">Съвпадения</router-link></li>
                             <li v-if="this.user == null"><router-link class="nav-link scrollto"
                                     to="/register">Регистрация</router-link></li>
                             <li v-if="this.user == null"><router-link class="nav-link scrollto"

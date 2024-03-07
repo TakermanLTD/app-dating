@@ -3,18 +3,17 @@
         <heading heading="Профил" />
         <br />
         <div v-if="this.loading">Loading...</div>
-        <div v-if="this.user != null">
+        <div style="margin-bottom: 50px;" class="text-center" v-if="this.user != null">
             <img :src="user.pictures == null ? 'defaultAvatar.png' : 'data:image/jpeg;base64,' + btoa(choice.pictures[0])" class="img" width="150" height="150" /><br />
-            <span>{{ this.user.firstName }} {{ this.user.lastName }} <br /></span>
-            <span v-if="this.user.email">Email: {{ this.user.email }} <br /></span>
-            <span v-if="this.user.city">City: {{ this.user.city }} <br /></span>
-            <span v-if="this.user.country">Country: {{ this.user.country }} <br /></span>
-            <span v-if="this.user.phone">Phone: {{ this.user.phone }} <br /></span>
-            <span v-if="this.user.facebook">Facebook: {{ this.user.facebook }} <br /></span>
-            <span v-if="this.user.instagram">Instagram: {{ this.user.instagram }} <br /></span>
-            <span v-if="this.user.gender">Gender: {{ this.user.gender }} <br /></span>
-            <span v-if="this.user.ethnicity">Ethnicity: {{ this.user.ethnicity }} <br /></span>
-            <button class="btn btn-info">Chat</button>
+            <span v-if="this.user.firstName && this.user.lastName"><strong>Име:</strong> {{ this.user.firstName }} {{ this.user.lastName }} <br /></span>
+            <span v-if="this.user.email"><strong>Имейл:</strong> {{ this.user.email }} <br /></span>
+            <span v-if="this.user.country"><strong>Държава:</strong> {{ this.user.country }} <br /></span>
+            <span v-if="this.user.city"><strong>Град:</strong> {{ this.user.city }} <br /></span>
+            <span v-if="this.user.phone"><strong>Телефон:</strong> {{ this.user.phone }} <br /></span>
+            <span v-if="this.user.facebook"><strong>Facebook:</strong> {{ this.user.facebook }} <br /></span>
+            <span v-if="this.user.instagram"><strong>Instagram:</strong> {{ this.user.instagram }} <br /></span>
+            <span v-if="this.user.gender"><strong>Пол:</strong> {{ this.user.gender == 1 ? 'Мъж' : 'Жена' }} <br /></span>
+            <span v-if="this.user.ethnicity"><strong>Етнос:</strong> {{ this.user.ethnicity }} <br /></span>
         </div>
     </div>
 </template>

@@ -293,5 +293,41 @@ namespace Takerman.Dating.Services
 
             return await GetCardFromDate(date);
         }
+
+        public async Task<IEnumerable<int>> GetMatchesIDs(int userId)
+        {
+            var result = new List<int>();
+            var myYes = await _context.DateUserChoices.Where(x => x.UserId == userId && x.ChoiceType == ChoiceType.Yes).ToListAsync();
+            var theirYes = await _context.DateUserChoices.Where(x => x.VoteForId == userId && x.ChoiceType == ChoiceType.Yes).ToListAsync();
+            foreach (var match in theirYes)
+            {
+                if (myYes.Select(x => x.DateId).Contains(match.DateId))
+                {
+                    result.Add(match.UserId);
+                }
+            }
+            return result;
+        }
+
+        public async Task<IEnumerable<MatchDto>> GetMatches(int userId)
+        {
+            var matchesIDs = await GetMatchesIDs(userId);
+
+            var result = new List<MatchDto>();
+
+            foreach (var matchId in matchesIDs)
+            {
+                var user = await _context.Users.Include(x => x.Pictures).FirstOrDefaultAsync(x => x.Id == matchId);
+
+                result.Add(new MatchDto()
+                {
+                    UserId = matchId,
+                    Name = user.FirstName + " " + user.LastName,
+                    Avatar = user.Pictures.FirstOrDefault()?.Picture
+                });
+            }
+
+            return result;
+        }
     }
 }
