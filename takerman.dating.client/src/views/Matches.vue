@@ -8,17 +8,19 @@
       </div>
       <div class="row">
         <div class="col-3 text-center">
-          <div v-for="(user, userKey) in this.matches" :key="userKey">
+          <div v-for="(match, matchKey) in this.matches" :key="matchKey">
             <div>
-              <img @click="chat(user.userId)" :src="user.avatar == null ? 'defaultAvatar.png' : 'data:image/jpeg;base64,' + btoa(user.avatar)" class="img" width="150" height="150" />
+              <img @click="chat(match.userId)"
+                :src="match.avatar == null ? 'defaultAvatar.png' : 'data:image/jpeg;base64,' + btoa(match.avatar)"
+                class="img" width="150" height="150" />
               <br />
-              <span>{{ user.name }}</span>
+              <span>{{ match.name }}</span>
             </div>
-            <router-link :to="'/userProfile?id=' + user.userId">Виж профил</router-link>
+            <router-link :to="'/userProfile?id=' + match.userId">Виж профил</router-link>
           </div>
         </div>
         <div class="col-9">
-          <textarea class="form-control" style="width: 100%; height: 100%;"></textarea>
+          <Chat v-if="this.toUserId" :toUserId="this.toUserId" />
         </div>
       </div>
     </div>
@@ -31,10 +33,13 @@ import { useAuthStore } from '@/stores';
 import breadcrumbs from '../components/Breadcrumbs.vue';
 import loader from '../components/Loader.vue';
 import heading from '../components/Heading.vue';
+import Chat from '../components/Chat.vue';
 
 export default {
   data() {
     return {
+      userId: null,
+      toUserId: null,
       matches: null,
       loading: false,
       breadcrumbs: [
@@ -46,15 +51,19 @@ export default {
   async created() {
     this.loading = true;
     const authStore = useAuthStore();
-    this.matches = await fetchWrapper.get('Dates/GetMatches?userId=' + authStore.user.id);
+    this.userId = authStore.user.id;
+    this.matches = await fetchWrapper.get('Dates/GetMatches?userId=' + this.userId);
+    if (this.matches?.length > 0) {
+      this.toUserId = this.matches[0].userId;
+    }
     this.loading = false;
   },
   methods: {
     chat(userId) {
-      
+      this.toUserId = userId;
     }
   },
-  components: { breadcrumbs, loader, heading }
+  components: { breadcrumbs, loader, heading, Chat }
 }
 </script>
 

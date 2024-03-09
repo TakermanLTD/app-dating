@@ -65,7 +65,12 @@ export default defineConfig({
             '^/Notification': {
                 target: 'https://localhost:7203/',
                 secure: false
-            }
+            },
+            '^/chatHub': {
+                target: 'https://localhost:7203/',
+                secure: false,
+                ws: true
+            },
         },
         port: 5175,
         https: {
