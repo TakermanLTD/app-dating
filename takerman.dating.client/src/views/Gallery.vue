@@ -1,12 +1,12 @@
 <template>
     <div class="container">
-        <img :src="avatar == null || avatar == '' ? 'defaultAvatar.png' : ('data:image/jpeg;base64,' + avatar)"
-            class="img" width="150" height="150" />
+        <img :src="this.avatar == null || this.avatar == '' ? 'defaultAvatar.png' : this.avatar" class="img" width="150"
+            height="150" />
         <button class="btn btn-primary" @click="this.unsetAvatar">Махни профилната</button> <br />
         <input id="fileUpload" @change="this.upload" type="file" multiple class="btn btn-primary" />
         <div v-if="this.loading === true">Зарежда...</div>
-        <div class="pull-left" v-if="this.pictures && this.pictures.length > 0" v-for="(picture, pictureKey) in  this.pictures "
-            :key="pictureKey">
+        <div class="pull-left" v-if="this.pictures && this.pictures.length > 0"
+            v-for="(picture, pictureKey) in  this.pictures " :key="pictureKey">
             <img :src="picture.data" class="img" :title="'Uploaded on' + picture.uploadOn" width="150" height="150" />
             <button class="btn btn-danger" @click="remove(picture.id)">Изтрий</button>
             <button class="btn btn-primary" @click="setAvatar(picture.id)">Профилна</button>
@@ -29,10 +29,15 @@ export default {
         const authStore = useAuthStore();
         this.userId = authStore.user.id;
         this.pictures = await this.getPictures();
+        this.loadAvatar();
     },
     methods: {
         async loadAvatar() {
-            this.avatar = await fetchWrapper.get('Options/GetAvatar?userId=' + this.userId);
+            fetch('Options/GetAvatar?userId=' + this.userId)
+                .then((response) => response.text())
+                .then((text) => {
+                    this.avatar = text;
+                });
         },
         async getPictures() {
             this.loading = true;
@@ -73,13 +78,26 @@ export default {
         async setAvatar(id) {
             await fetchWrapper.put('Options/SetAvatar?userId=' + this.userId + '&id=' + id)
                 .then((result) => {
-                    this.avatar = result;
+                    fetch('Options/GetAvatar?userId=' + this.userId)
+                        .then((response) => response.text())
+                        .then((text) => {
+                            this.avatar = text;
+                        });
                 });
         },
         async remove(id) {
             await fetchWrapper.delete('Options/DeletePicture?id=' + id)
                 .then((response) => {
-                    this.pictures.splice(id);
+                    for (let i = 0; i < this.pictures.length; i++) {
+                        const picture = this.pictures[i];
+                        if (picture.id === id) {
+                            if (this.avatar == picture.data) {
+                                this.avatar = null;
+                                this.setAvatar(0);
+                            }
+                            this.pictures.splice(i, 1);
+                        }
+                    }
                 });
         },
         async unsetAvatar() {
@@ -93,7 +111,7 @@ export default {
                 var fr = new FileReader();
                 fr.readAsDataURL(file);
                 fr.onload = () => {
-                    resolve(fr.result)
+                    resolve(fr.result);
                 };
                 fr.onerror = function (error) {
                     console.log('Error: ', error);

@@ -34,9 +34,10 @@ namespace Takerman.Dating.Server.Controllers
         }
 
         [HttpGet("GetAvatar")]
-        public Task<string> GetAvatar(int userId) 
+        public async Task<string> GetAvatar(int userId) 
         {
-            return _optionsService.GetAvatar(userId);
+            var result =  await _optionsService.GetAvatar(userId);
+            return result;
         }
 
         [HttpPut("UnsetAvatar")]

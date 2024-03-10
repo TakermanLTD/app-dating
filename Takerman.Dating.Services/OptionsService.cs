@@ -63,7 +63,7 @@ namespace Takerman.Dating.Services
             }
         }
 
-        public async Task<string> SetAvatar(int userId, int id)
+        public async Task SetAvatar(int userId, int id)
         {
             var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == userId);
             if (user != null)
@@ -71,10 +71,6 @@ namespace Takerman.Dating.Services
                 user.AvatarId = id;
                 await _context.SaveChangesAsync();
             }
-
-            var result = await GetPicture(id);
-
-            return result;
         }
 
         public async Task<string> GetPicture(int id)
@@ -106,20 +102,14 @@ namespace Takerman.Dating.Services
 
         public async Task<string> GetAvatar(int userId)
         {
-            var result = string.Empty;
             var user = _context.Users.FirstOrDefault(x => x.Id == userId);
+            
+            if (user == null || user.AvatarId.HasValue == false)
+                return null;
 
-            if (user != null && user.AvatarId.HasValue)
-            {
-                var avatar = await _context.UserPictures.FirstOrDefaultAsync(x => x.Id == user.AvatarId.Value);
+            var result = await _context.UserPictures.FirstOrDefaultAsync(x => x.Id == user.AvatarId.Value);
 
-                if (avatar != null)
-                {
-                    result = avatar.Data;
-                }
-            }
-
-            return result;
+            return result?.Data;
         }
     }
 }

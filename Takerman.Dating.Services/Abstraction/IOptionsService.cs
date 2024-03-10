@@ -16,7 +16,7 @@ namespace Takerman.Dating.Services.Abstraction
 
         Task<string> GetPicture(int id);
 
-        Task<string> SetAvatar(int userId, int id);
+        Task SetAvatar(int userId, int id);
 
         Task<IEnumerable<DatePicture>> GetDatePictures(int dateId);
 

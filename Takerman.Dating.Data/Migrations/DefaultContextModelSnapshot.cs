@@ -126,6 +126,7 @@ namespace Takerman.Dating.Data.Migrations
 
                     b.Property<string>("Data")
                         .IsRequired()
+                        .HasMaxLength(2147483647)
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("DateId")
@@ -384,6 +385,7 @@ namespace Takerman.Dating.Data.Migrations
 
                     b.Property<string>("Data")
                         .IsRequired()
+                        .HasMaxLength(2147483647)
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("UploadedOn")
