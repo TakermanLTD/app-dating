@@ -15,7 +15,7 @@ namespace Takerman.Dating.Models.DTOs
 
         public string TheirChoice { get; set; } = string.Empty;
 
-        public byte[]? Avatar { get; set; } = null;
+        public string? Avatar { get; set; } = null;
 
         public string Name { get; set; } = "User";
 

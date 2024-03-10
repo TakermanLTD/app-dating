@@ -11,6 +11,7 @@ import ResetPassword from '../views/ResetPassword.vue';
 import Activate from '../views/Activate.vue';
 import MyDates from '../views/MyDates.vue';
 import Matches from '../views/Matches.vue';
+import Gallery from "../views/Gallery.vue";
 import { useAuthStore } from '@/stores';
 
 export const router = createRouter({
@@ -21,7 +22,8 @@ export const router = createRouter({
         { path: '/home', component: Home },
         { path: '/contacts', component: Contacts },
         { path: '/profile', component: Profile },
-        { path: '/userProfile', component: UserProfile },
+        { path: '/user-profile', component: UserProfile },
+        { path: '/user-gallery', component: Gallery },
         { path: '/date', component: Date },
         { path: '/my-dates', component: MyDates },
         { path: '/matches', component: Matches },

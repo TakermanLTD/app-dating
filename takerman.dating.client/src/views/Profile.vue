@@ -91,6 +91,9 @@
                         </div>
                     </div>
                 </div>
+                <div class="form-group row">
+                    <router-link to="/user-gallery"><button class="btn btn-primary text-center">Галерия</button></router-link>
+                </div>
                 <br />
                 <hgroup>
                     <h4>Парола</h4>
@@ -168,7 +171,7 @@ export default {
         };
     },
     async beforeCreate() {
-        this.ethnicities = await fetchWrapper.get('User/GetEthnicities');
+        this.ethnicities = await fetchWrapper.get('Options/GetEthnicities');
         const authStore = useAuthStore();
         const data = await fetchWrapper.get('User/Get?id=' + authStore.user.id);
         this.fields.id = data.id;

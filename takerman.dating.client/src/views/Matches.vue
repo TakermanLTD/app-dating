@@ -16,7 +16,7 @@
               <br />
               <span>{{ match.name }}</span>
             </div>
-            <router-link :to="'/userProfile?id=' + match.userId">Виж профил</router-link>
+            <router-link :to="'/user-profile?id=' + match.userId">Виж профил</router-link>
           </div>
         </div>
         <div class="col-9">

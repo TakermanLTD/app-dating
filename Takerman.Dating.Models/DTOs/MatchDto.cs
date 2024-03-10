@@ -4,7 +4,7 @@
     {
         public int UserId { get; set; }
 
-        public byte[] Avatar { get; set; }
+        public string Avatar { get; set; }
 
         public string Name { get; set; }
     }

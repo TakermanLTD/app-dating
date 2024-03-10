@@ -112,16 +112,5 @@ namespace Takerman.Dating.Server.Controllers
 
             await _userService.UpdateAsync(user);
         }
-
-        [HttpGet("GetEthnicities")]
-        public async Task<IEnumerable<KeyValuePair<int, string>>> GetEthnicities()
-        {
-            var result = new List<KeyValuePair<int, string>>();
-            
-            foreach (var item in Enum.GetValues<Ethnicity>())
-                result.Add(new KeyValuePair<int, string>((int)item, item.GetType().GetMember(Enum.GetName(item)).First().GetCustomAttribute<DisplayAttribute>().Name));
-            
-            return result;
-        }
     }
 }

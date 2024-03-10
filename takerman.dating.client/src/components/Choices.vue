@@ -7,7 +7,7 @@
             <div class="col" style="margin: 15px; width: 15rem; display: inline-block;"
                 v-for="(choice, index) in this.choices" :key="index">
                 <div>
-                    <router-link :to="'/userProfile?id=' + choice.voteForId">
+                    <router-link :to="'/user-profile?id=' + choice.voteForId">
                     <img :src="choice.avatar == null ? 'defaultAvatar.png' : 'data:image/jpeg;base64,' + btoa(choice.avatar)"
                         class="img" width="150" height="150" />
                     </router-link>
@@ -29,7 +29,7 @@
                         <div v-if="choice?.theirChoice === 'Yes' && choice.myChoice === 'Yes'">
                             Съвпадение! Можете да чатите.<br />
                             <button style="margin-right: 10px;" class="btn btn-info">Чат</button>
-                            <router-link :to="'/userProfile?id=' + choice.voteForId">Профил</router-link>
+                            <router-link :to="'/user-profile?id=' + choice.voteForId">Профил</router-link>
                         </div>
                     </div>
                 </div>
