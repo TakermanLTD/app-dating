@@ -1,24 +1,20 @@
-﻿using Takerman.Dating.Data;
-using Takerman.Dating.Models.DTOs;
+﻿using Microsoft.AspNetCore.Http;
+using Takerman.Dating.Data;
 
 namespace Takerman.Dating.Services.Abstraction
 {
     public interface ICdnService
     {
-        string GetPictureUrl(string bucket, string name);
-
         Task<IEnumerable<UserPicture>> GetUserPictures(int userId);
-
-        Task<string> UnsetAvatar(int userId);
 
         Task<bool> DeletePicture(int id);
 
-        Task SetAvatar(int userId, string name);
+        Task SetAvatar(int userId, string url);
 
-        Task<IEnumerable<UserPicture>> UploadUserPictures(UploadUserPicturesDto pictures);
+        Task<IEnumerable<UserPicture>> UploadUserPictures(int userId, IEnumerable<IFormFile> files);
 
         string GetAvatar(int userId);
-
-        string GetDefaultAvatar();
+        
+        Task<string> SetDefaultAvatar(int userId);
     }
 }

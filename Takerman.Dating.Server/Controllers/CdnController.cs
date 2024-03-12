@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Takerman.Dating.Data;
 using Takerman.Dating.Models.DTOs;
+using Takerman.Dating.Services;
 using Takerman.Dating.Services.Abstraction;
 
 namespace Takerman.Dating.Server.Controllers
@@ -27,22 +28,22 @@ namespace Takerman.Dating.Server.Controllers
             return _cdnService.GetAvatar(userId);
         }
 
-        [HttpPut("UnsetAvatar")]
-        public Task UnsetAvatar(int userId)
-        {
-            return _cdnService.UnsetAvatar(userId);
-        }
-
-        [HttpPut("SetAvatar")]
+        [HttpGet("SetAvatar")]
         public Task SetAvatar(int userId, string url)
         {
             return _cdnService.SetAvatar(userId, url);
         }
 
-        [HttpPost("UploadUserPictures")]
-        public Task<IEnumerable<UserPicture>> UploadUserPictures(UploadUserPicturesDto pictures)
+        [HttpGet("SetDefaultAvatar")]
+        public Task<string> SetDefaultAvatar(int userId)
         {
-            return _cdnService.UploadUserPictures(pictures);
+            return _cdnService.SetDefaultAvatar(userId);
+        }
+
+        [HttpPost("UploadUserPictures")]
+        public Task<IEnumerable<UserPicture>> UploadUserPictures(int userId, IEnumerable<IFormFile> files)
+        {
+            return _cdnService.UploadUserPictures(userId, files);
         }
     }
 }

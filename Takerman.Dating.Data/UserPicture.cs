@@ -14,8 +14,10 @@ namespace Takerman.Dating.Data
 
         public virtual User? User { get; set; } = null;
 
-        public string Name { get; set; }
+        public string Url { get; set; }
 
         public DateTime UploadedOn { get; set; } = DateTime.Now;
+
+        public string PublicId { get; set; } = string.Empty;
     }
 }
