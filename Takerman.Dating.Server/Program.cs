@@ -11,6 +11,12 @@ using Takerman.Dating.Services.Hubs;
 using Takerman.Mail;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Configuration
+    .SetBasePath(builder.Environment.ContentRootPath)
+    .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+    .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true)
+    .AddEnvironmentVariables();
+
 var hostname = Dns.GetHostName();
 
 Log.Logger = new LoggerConfiguration()
