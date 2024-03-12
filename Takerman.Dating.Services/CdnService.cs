@@ -54,7 +54,7 @@ namespace Takerman.Dating.Services
 
             try
             {
-                var result = await _cdn.DeleteResourcesAsync(picture.Url);
+                var result = await _cdn.DeleteResourcesAsync(picture.PublicId);
 
                 return result.StatusCode == HttpStatusCode.OK;
             }
