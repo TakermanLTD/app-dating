@@ -48,8 +48,6 @@ namespace Takerman.Dating.Services
                 _context.UserPictures.Remove(picture);
 
                 await _context.SaveChangesAsync();
-
-                return true;
             }
 
             try

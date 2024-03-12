@@ -6,14 +6,7 @@
         <div id="myChoices" class="text-center">
             <div class="col" style="margin: 15px; width: 15rem; display: inline-block;"
                 v-for="(choice, index) in this.choices" :key="index">
-                <div>
-                    <router-link :to="'/user-profile?id=' + choice.voteForId">
-                    <img :src="choice.avatar"
-                        class="img" width="150" height="150" />
-                    </router-link>
-                    <br />
-                    <span>{{ choice.name }}</span>
-                </div>
+                <Avatar v-if="choice.voteForId" :userId="choice.voteForId" />
                 <div>
                     <label style="margin-right: 15px;" v-for="(radio, radioIndex) in choice.radios" :key="radioIndex"
                         class="form-check-label">
@@ -51,6 +44,7 @@
 <script lang="js">
 import { fetchWrapper } from '@/helpers';
 import { useAuthStore } from '@/stores';
+import Avatar from './Avatar.vue';
 
 export default {
     props: {
@@ -67,6 +61,9 @@ export default {
         isPast() {
             return new Date(this.date?.startsOn) < new Date();
         }
+    },
+    components: {
+        Avatar
     },
     async mounted() {
         const authStore = useAuthStore();

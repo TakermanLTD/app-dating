@@ -10,13 +10,10 @@
         <div class="col-3 text-center">
           <div v-for="(match, matchKey) in this.matches" :key="matchKey">
             <div>
-              <img @click="chat(match.userId)"
-                :src="match.avatar"
-                class="img" width="150" height="150" />
+              <Avatar @click="chat(match.userId)" :userId="match.userId" />
               <br />
               <span>{{ match.name }}</span>
             </div>
-            <router-link :to="'/user-profile?id=' + match.userId">Виж профил</router-link>
           </div>
         </div>
         <div class="col-9">
@@ -34,6 +31,7 @@ import breadcrumbs from '../components/Breadcrumbs.vue';
 import loader from '../components/Loader.vue';
 import heading from '../components/Heading.vue';
 import Chat from '../components/Chat.vue';
+import Avatar from '../components/Avatar.vue';
 
 export default {
   data() {
@@ -63,7 +61,7 @@ export default {
       this.toUserId = userId;
     }
   },
-  components: { breadcrumbs, loader, heading, Chat }
+  components: { breadcrumbs, loader, heading, Chat, Avatar }
 }
 </script>
 

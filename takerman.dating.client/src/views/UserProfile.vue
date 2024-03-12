@@ -4,7 +4,7 @@
         <br />
         <div v-if="this.loading">Loading...</div>
         <div style="margin-bottom: 50px;" class="text-center" v-if="this.user != null">
-            <img :src="choice.pictures[0]" class="img" width="150" height="150" /><br />
+            <Avatar :userId="this.user.id" />
             <span v-if="this.user.firstName && this.user.lastName"><strong>Име:</strong> {{ this.user.firstName }} {{ this.user.lastName }} <br /></span>
             <span v-if="this.user.email"><strong>Имейл:</strong> {{ this.user.email }} <br /></span>
             <span v-if="this.user.country"><strong>Държава:</strong> {{ this.user.country }} <br /></span>
@@ -21,6 +21,7 @@
 <script lang="js">
 import { fetchWrapper } from '@/helpers';
 import heading from '../components/Heading.vue';
+import Avatar from '../components/Avatar.vue';
 
 export default {
     data() {
@@ -30,7 +31,7 @@ export default {
         };
     },
     components: {
-        heading
+        heading, Avatar
     },
     async created() {
         this.loading = true;

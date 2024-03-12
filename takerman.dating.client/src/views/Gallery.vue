@@ -18,6 +18,7 @@
 <script>
 import { fetchWrapper } from '@/helpers';
 import { useAuthStore } from '@/stores';
+import Avatar from '../components/Avatar.vue';
 export default {
     data() {
         return {
@@ -31,13 +32,13 @@ export default {
         const authStore = useAuthStore();
         this.userId = authStore.user.id;
         this.pictures = await this.getPictures();
-        this.loadAvatar();
+        let result = await fetch('Cdn/GetAvatar?userId=' + this.userId);
+        this.avatar = await result.text();
+    },
+    components: {
+        Avatar
     },
     methods: {
-        async loadAvatar() {
-            let result = await fetch('Cdn/GetAvatar?userId=' + this.userId);
-            this.avatar = await result.text();
-        },
         async getPictures() {
             this.loading = true;
             let result = await fetchWrapper.get('Cdn/GetUserPictures?userId=' + this.userId);
