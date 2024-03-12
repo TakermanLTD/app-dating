@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Takerman.Dating.Models.Broker;
+using Takerman.Dating.Models.Configuration;
 using Takerman.Dating.Services;
 using Takerman.Dating.Services.Abstraction;
 using Takerman.Mail;

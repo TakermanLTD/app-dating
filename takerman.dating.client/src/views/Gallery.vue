@@ -1,13 +1,12 @@
 <template>
     <div class="container">
-        <img :src="this.avatar == null || this.avatar == '' ? 'defaultAvatar.png' : this.avatar" class="img" width="150"
-            height="150" />
+        <img :src="this.avatar" class="img" width="150" height="150" />
         <button class="btn btn-primary" @click="this.unsetAvatar">Махни профилната</button> <br />
-        <input id="fileUpload" @change="this.upload" type="file" multiple class="btn btn-primary" />
+        <input id="fileUpload" @change="this.upload" type="file" class="btn btn-primary" />
         <div v-if="this.loading === true">Зарежда...</div>
         <div class="pull-left" v-if="this.pictures && this.pictures.length > 0"
             v-for="(picture, pictureKey) in  this.pictures " :key="pictureKey">
-            <img :src="picture.data" class="img" :title="'Uploaded on' + picture.uploadOn" width="150" height="150" />
+            <img :src="picture.url" class="img" :title="'Uploaded on' + picture.uploadOn" width="150" height="150" />
             <button class="btn btn-danger" @click="remove(picture.id)">Изтрий</button>
             <button class="btn btn-primary" @click="setAvatar(picture.id)">Профилна</button>
         </div>
@@ -33,35 +32,30 @@ export default {
     },
     methods: {
         async loadAvatar() {
-            fetch('Options/GetAvatar?userId=' + this.userId)
-                .then((response) => response.text())
-                .then((text) => {
-                    this.avatar = text;
-                });
+            let result = await fetch('Cdn/GetAvatar?userId=' + this.userId);
+            this.avatar = await result.text();
         },
         async getPictures() {
             this.loading = true;
-            let result = await fetchWrapper.get('Options/GetUserPictures?id=' + this.userId);
+            let result = await fetchWrapper.get('Cdn/GetUserPictures?userId=' + this.userId);
             this.loading = false;
             return result;
         },
         async upload(e) {
-            try {
-                this.loading = true;
-                let result = [];
-                let files = e.currentTarget.files;
+            this.loading = true;
+            let file = e.currentTarget.files[0];
 
-                for (let i = 0; i < files.length; i++) {
-                    let file = files[i];
-                    let encodedFile = await this.encodeFile(file);
-                    result.push({
-                        userId: this.userId,
-                        data: encodedFile
-                    });
-                }
+            var model = {
+                userId: this.userId,
+                picture: []
+            };
+            var reader = new FileReader();
+            reader.readAsArrayBuffer(file);
+            reader.onloadend = async function (evt) {
+                if (evt.target.readyState == FileReader.DONE) {
+                    model.picture = new Uint8Array(evt.target.result);
 
-                await fetchWrapper.post('Options/UploadUserPictures', result)
-                    .then((response) => {
+                    await fetchWrapper.post('Cdn/UploadUserPictures', model).then((response) => {
                         this.loading = false;
                         for (let i = 0; i < response.length; i++) {
                             const picture = response[i];
@@ -70,28 +64,20 @@ export default {
                         this.loading = false;
                         document.getElementById('fileUpload').value = null;
                     });
-            } catch (error) {
-                this.loading = false;
-                console.log(error);
+                }
             }
         },
-        async setAvatar(id) {
-            await fetchWrapper.put('Options/SetAvatar?userId=' + this.userId + '&id=' + id)
-                .then((result) => {
-                    fetch('Options/GetAvatar?userId=' + this.userId)
-                        .then((response) => response.text())
-                        .then((text) => {
-                            this.avatar = text;
-                        });
-                });
+        async setAvatar(url) {
+            this.avatar = url;
+            await fetch('Cdn/SetAvatar?userId=' + this.userId + '&url=' + url);
         },
         async remove(id) {
-            await fetchWrapper.delete('Options/DeletePicture?id=' + id)
+            await fetchWrapper.delete('Cdn/DeletePicture?id=' + id)
                 .then((response) => {
                     for (let i = 0; i < this.pictures.length; i++) {
                         const picture = this.pictures[i];
                         if (picture.id === id) {
-                            if (this.avatar == picture.data) {
+                            if (this.avatar == picture.url) {
                                 this.avatar = null;
                                 this.setAvatar(0);
                             }
@@ -101,22 +87,10 @@ export default {
                 });
         },
         async unsetAvatar() {
-            await fetchWrapper.put('Options/UnsetAvatar?userId=' + this.userId)
-                .then((result) => {
-                    this.avatar = null;
-                });
+            let result = await fetch('Cdn/UnsetAvatar?userId=' + this.userId);
+            return await result.text();
         },
         encodeFile(file) {
-            return new Promise((resolve) => {
-                var fr = new FileReader();
-                fr.readAsDataURL(file);
-                fr.onload = () => {
-                    resolve(fr.result);
-                };
-                fr.onerror = function (error) {
-                    console.log('Error: ', error);
-                }
-            });
         }
     }
 };

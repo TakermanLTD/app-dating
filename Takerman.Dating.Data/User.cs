@@ -58,6 +58,6 @@ namespace Takerman.Dating.Data
 
         public virtual ICollection<DateUserChoice> Choices { get; set; } = null;
 
-        public int? AvatarId { get; set; } = null;
+        public string? Avatar { get; set; } = null;
     }
 }

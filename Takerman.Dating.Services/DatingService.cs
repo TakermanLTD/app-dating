@@ -163,7 +163,7 @@ namespace Takerman.Dating.Services
                 choice.VoteForId = dateUser.Id;
                 choice.Radios = radios;
                 choice.TheirChoice = theirChoice == null ? string.Empty : Enum.GetName(typeof(ChoiceType), theirChoice.ChoiceType);
-                choice.Avatar = dateUser.Pictures.FirstOrDefault()?.Data;
+                choice.Avatar = dateUser.Pictures.FirstOrDefault()?.Name;
                 choice.Name = dateUser.FirstName + " " + dateUser.LastName;
                 choice.MyChoice = myChoice == null ? string.Empty : Enum.GetName(typeof(ChoiceType), myChoice.ChoiceType);
                 result.Add(choice);
@@ -323,7 +323,7 @@ namespace Takerman.Dating.Services
                 {
                     UserId = matchId,
                     Name = user.FirstName + " " + user.LastName,
-                    Avatar = user.Pictures.FirstOrDefault()?.Data
+                    Avatar = user.Pictures.FirstOrDefault()?.Name
                 });
             }
 

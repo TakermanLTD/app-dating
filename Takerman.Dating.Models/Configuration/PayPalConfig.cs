@@ -1,4 +1,4 @@
-﻿namespace Takerman.Dating.Models.Broker
+﻿namespace Takerman.Dating.Models.Configuration
 {
     public class PayPalConfig
     {

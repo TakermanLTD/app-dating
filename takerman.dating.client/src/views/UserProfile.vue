@@ -4,7 +4,7 @@
         <br />
         <div v-if="this.loading">Loading...</div>
         <div style="margin-bottom: 50px;" class="text-center" v-if="this.user != null">
-            <img :src="user.pictures == null ? 'defaultAvatar.png' : 'data:image/jpeg;base64,' + btoa(choice.pictures[0])" class="img" width="150" height="150" /><br />
+            <img :src="choice.pictures[0]" class="img" width="150" height="150" /><br />
             <span v-if="this.user.firstName && this.user.lastName"><strong>Име:</strong> {{ this.user.firstName }} {{ this.user.lastName }} <br /></span>
             <span v-if="this.user.email"><strong>Имейл:</strong> {{ this.user.email }} <br /></span>
             <span v-if="this.user.country"><strong>Държава:</strong> {{ this.user.country }} <br /></span>

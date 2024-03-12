@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Takerman.Dating.Data
@@ -16,8 +14,7 @@ namespace Takerman.Dating.Data
 
         public virtual User? User { get; set; } = null;
 
-        [MaxLength(int.MaxValue)]
-        public string Data { get; set; }
+        public string Name { get; set; }
 
         public DateTime UploadedOn { get; set; } = DateTime.Now;
     }

@@ -1,10 +1,9 @@
-using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 using System.Net;
 using Takerman.Dating.Data;
 using Takerman.Dating.Data.DTOs;
-using Takerman.Dating.Models.Broker;
+using Takerman.Dating.Models.Configuration;
 using Takerman.Dating.Server.Middleware;
 using Takerman.Dating.Services;
 using Takerman.Dating.Services.Abstraction;
@@ -40,8 +39,10 @@ builder.Services.AddTransient<IDatingService, DatingService>();
 builder.Services.AddTransient<IOptionsService, OptionsService>();
 builder.Services.AddTransient<IMailService, MailService>();
 builder.Services.AddTransient<IChatService, ChatService>();
+builder.Services.AddTransient<ICdnService, CdnService>();
 builder.Services.Configure<RabbitMqConfig>(builder.Configuration.GetSection(nameof(RabbitMqConfig)));
 builder.Services.Configure<PayPalConfig>(builder.Configuration.GetSection(nameof(PayPalConfig)));
+builder.Services.Configure<CdnConfig>(builder.Configuration.GetSection(nameof(CdnConfig)));
 
 var app = builder.Build();
 
@@ -55,7 +56,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
     app.UseDeveloperExceptionPage();
 }
-
 
 app.UseSerilogRequestLogging();
 

@@ -8,7 +8,7 @@
                 v-for="(choice, index) in this.choices" :key="index">
                 <div>
                     <router-link :to="'/user-profile?id=' + choice.voteForId">
-                    <img :src="choice.avatar == null ? 'defaultAvatar.png' : 'data:image/jpeg;base64,' + btoa(choice.avatar)"
+                    <img :src="choice.avatar"
                         class="img" width="150" height="150" />
                     </router-link>
                     <br />

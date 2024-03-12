@@ -1,7 +1,7 @@
 <template>
     <div>
         <router-link :to="'/user-profile?id=' + user.userId">
-            <img :src="user.avatar == null ? 'defaultAvatar.png' : 'data:image/jpeg;base64,' + btoa(user.avatar)"
+            <img :src="user.avatar == null"
                 class="img" width="150" height="150" />
         </router-link>
         <br />

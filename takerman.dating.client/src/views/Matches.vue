@@ -11,7 +11,7 @@
           <div v-for="(match, matchKey) in this.matches" :key="matchKey">
             <div>
               <img @click="chat(match.userId)"
-                :src="match.avatar == null ? 'defaultAvatar.png' : 'data:image/jpeg;base64,' + btoa(match.avatar)"
+                :src="match.avatar"
                 class="img" width="150" height="150" />
               <br />
               <span>{{ match.name }}</span>
