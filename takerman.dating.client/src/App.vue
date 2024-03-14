@@ -1,25 +1,23 @@
 <template>
-    <Header></Header>
+    <AppHeader />
     <main style="margin-top: 100px">
         <router-view></router-view>
     </main>
-    <!-- <Chat /> -->
-    <Footer />
+    <SupportChat />
+    <AppFooter />
 </template>
 
 <script lang="js">
-import { useAuthStore } from '@/stores';
-import Header from './components/Header.vue';
-import Footer from './components/Footer.vue';
+import AppHeader from './components/Header.vue';
+import AppFooter from './components/Footer.vue';
+import SupportChat from './components/SupportChat.vue';
 
 export default {
     components: {
-        Header,
-        Footer
-    },
-    mounted() {
-        const authStore = useAuthStore();
-    },
+        AppHeader,
+        AppFooter,
+        SupportChat
+    }
 }
 </script>
 
