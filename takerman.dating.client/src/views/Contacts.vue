@@ -42,7 +42,7 @@
                 <div class="bg-light p-30 mb-3">
                     <p class="mb-2"><i class="fa fa-map-marker-alt text-primary mr-3"></i>{{ $t('contacts.street') }}</p>
                     <p class="mb-2"><i class="fa fa-envelope text-primary mr-3"></i>{{ $t('contacts.email') }}</p>
-                    <p class="mb-2"><i class="fa fa-phone-alt text-primary mr-3"></i>{{ $t('contacts.tel') }}</p>
+                    <p class="mb-2"><i class="fa fa-phone-alt text-primary mr-3"></i>{{ $t('contacts.phone') }}</p>
                 </div>
             </div>
         </div>

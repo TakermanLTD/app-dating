@@ -3,7 +3,7 @@
         <div class="container-fluid bg-dark text-secondary mt-5 pt-5">
             <div class="row px-xl-5 pt-5">
                 <div class="col-lg-4 col-md-12 mb-5 pr-3 pr-xl-5">
-                    <h5 class="text-secondary text-uppercase mb-4">{{ $t('footer.contact.itle') }}</h5>
+                    <h5 class="text-secondary text-uppercase mb-4">{{ $t('footer.contact.title') }}</h5>
                     <p class="mb-4">{{ $t('footer.contact.intro') }}</p>
                     <p class="mb-2"><i class="fa fa-map-marker-alt text-primary mr-3"></i>{{ $t('footer.contact.street') }}</p>
                     <p class="mb-2"><i class="fa fa-envelope text-primary mr-3"></i>{{ $t('footer.contact.email') }}</p>
@@ -44,7 +44,7 @@
                     </p>
                 </div>
                 <div class="col-md-6 px-xl-0 text-center text-md-right">
-                    <img class="img-fluid" src="../assets/img/payments.png" alt="">
+                    <img class="img-fluid" src="/src/assets/img/payments.png" alt="">
                 </div>
             </div>
         </div>

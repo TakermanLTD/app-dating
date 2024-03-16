@@ -10,15 +10,16 @@
                 </div>
                 <div class="col-lg-4 col-6 text-left">
                     <div class="header-social-links d-flex align-items-center">
-                        <a href="https://www.facebook.com/sreshti/" target="_blank" class="facebook"><i class="bi bi-facebook"></i></a>
-                        <a href="https://www.instagram.com/sreshti/" target="_blank" class="instagram"><i class="bi bi-instagram"></i></a>
-                        <a href="https://www.tiktok.com/@sreshti" target="_blank" class="tiktok"><i class="bi bi-tiktok"></i></a>
+                        <a href="https://facebook.com/sreshti/" target="_blank" class="facebook"><i class="bi bi-facebook"></i></a>
+                        <a href="https://instagram.com/sreshti/" target="_blank" class="instagram"><i class="bi bi-instagram"></i></a>
+                        <a href="https://tiktok.com/@sreshti" target="_blank" class="tiktok"><i class="bi bi-tiktok"></i></a>
                     </div>
                 </div>
                 <div class="col-lg-4 col-6 text-right">
                     <p class="m-0">{{ $t('header.customerSupportTitle') }}</p>
                     <h5 class="m-0">{{ $t('header.customerSupportNumber') }}</h5>
                 </div>
+                <LanguageSelector />
             </div>
         </div>
 
@@ -41,7 +42,7 @@
                                 <div class="nav-item dropdown">
                                     <router-link to="/profile" class="nav-link dropdown-toggle" data-toggle="dropdown">{{ $t('nav.profile') }} <i class="fa fa-angle-down mt-1"></i></router-link>
                                     <div class="dropdown-menu bg-primary rounded-0 border-0 m-0">
-                                        <router-link class="dropdown-item" to="/profile">{{ $t('nav.profile') }}</router-link>
+                                        <router-link class="dropdown-item" to="/profile">{{ $t('nav.myProfile') }}</router-link>
                                         <router-link class="dropdown-item" to="/my-dates">{{ $t('nav.myDates') }}</router-link>
                                         <router-link class="dropdown-item" to="/matches">{{ $t('nav.matches') }}</router-link>
                                         <router-link class="dropdown-item" to="/register">{{ $t('nav.register') }}</router-link>
@@ -53,7 +54,7 @@
                             <div class="navbar-nav ml-auto py-0 d-none d-lg-block">
                                 <a href="" class="btn px-0">
                                     <i class="fas fa-heart text-primary"></i>
-                                    <span class="badge text-secondary border border-secondary rounded-circle" style="padding-bottom: 2px;">{{ this.savedSpots.length }}</span>
+                                    <span class="badge text-secondary border border-secondary rounded-circle" style="padding-bottom: 2px;">{{ this.savedSpotslength }}</span>
                                 </a>
                             </div>
                         </div>
@@ -67,12 +68,17 @@
 <script lang="js">
 import { storeToRefs } from 'pinia';
 import { useAuthStore } from '@/stores';
+import LanguageSelector from './LanguageSelector.vue';
 
 export default {
     data() {
         return {
-            user: null
+            user: null,
+            savedSpotslength: 0
         }
+    },
+    components: {
+        LanguageSelector
     },
     mounted() {
         const authStore = useAuthStore();
