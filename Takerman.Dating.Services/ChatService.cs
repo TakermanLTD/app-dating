@@ -16,7 +16,7 @@ namespace Takerman.Dating.Services
                     ToUserId = x.ToUserId,
                     Message = x.Message,
                     SentOn = x.SentOn
-                }).OrderBy(x => x.SentOn).ToListAsync();
+                }).OrderByDescending(x => x.SentOn).ToListAsync();
         }
 
         public async Task SendChatMessageAsync(ChatMessageDto message)

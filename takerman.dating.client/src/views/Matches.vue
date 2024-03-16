@@ -2,23 +2,18 @@
   <breadcrumbs :paths="breadcrumbs" />
   <section class="container">
     <loader v-if="this.loading == true" />
-    <div v-else>
-      <div class="container">
-        <heading heading="Съвпадения" />
-      </div>
-      <div class="row">
-        <div class="col-3 text-center">
-          <div v-for="(match, matchKey) in this.matches" :key="matchKey">
-            <div>
-              <Avatar @click="chat(match.userId)" :userId="match.userId" />
-              <br />
-              <span>{{ match.name }}</span>
-            </div>
+    <div v-else class="row">
+      <div class="col-2 text-center">
+        <div v-for="(match, matchKey) in this.matches" :key="matchKey">
+          <div>
+            <Avatar @click="chat(match.userId)" :userId="match.userId" />
+            <br />
+            <span>{{ match.name }}</span>
           </div>
         </div>
-        <div class="col-9">
-          <Chat v-if="this.toUserId" :toUserId="this.toUserId" />
-        </div>
+      </div>
+      <div class="col-10">
+        <Chat v-if="this.toUserId" :toUserId="this.toUserId" />
       </div>
     </div>
   </section>

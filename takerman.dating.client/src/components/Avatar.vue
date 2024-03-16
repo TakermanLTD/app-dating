@@ -1,14 +1,13 @@
 <template>
-    <div>
-        <router-link v-if="this.avatarUrl" :to="'/user-profile?id=' + this.userId">
-            <img :src="this.avatarUrl" class="img" width="150" height="150" />
-        </router-link>
-    </div>
+    <router-link v-if="this.avatarUrl" :to="'/user-profile?id=' + this.userId">
+        <img :src="this.avatarUrl" class="img" width="150" height="150" />
+    </router-link>
 </template>
 <script>
 export default {
     props: {
-        userId: Number
+        userId: Number,
+        userUrl: String
     },
     data() {
         return {

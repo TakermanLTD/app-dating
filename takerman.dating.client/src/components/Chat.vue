@@ -3,7 +3,7 @@
         <div class="row">
             <input class="form-control" v-model="message" @keyup.enter="sendMessage" placeholder="Message" />
         </div>
-        <div style="overflow-y: auto; height: 600px;" class="row">
+        <div style="overflow-y: auto; height: 600px;">
             <span :title="moment(new Date(msg.sentOn)).format('DD MMM, HH:mm')" v-for="(msg, index) in messages" :key="index" :style="(msg.toUserId == this.userId ? 'text-align: right' : 'text-align: left')">
                 {{ msg.message }} <br />
             </span>
@@ -39,7 +39,7 @@ export default {
             .build();
 
         this.connection.on("ReceiveMessage", (userId, toUserId, message) => {
-            this.messages.push({
+            this.messages.unshift({
                 userId: userId,
                 toUserId: toUserId,
                 message: message,

@@ -65,7 +65,7 @@
             </div>
             <div class="col-lg-9 col-md-8">
                 <div class="row pb-3">
-                    <div class="col-12 pb-1">
+                    <!-- <div class="col-12 pb-1">
                         <div class="d-flex align-items-center justify-content-between mb-4">
                             <div>
                                 <button class="btn btn-sm btn-light"><i class="fa fa-th-large"></i></button>
@@ -90,7 +90,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                     <loader v-if="this.loading" />
                     <div v-else-if="!dates || dates.length == 0" class="text-center">
                         <h3>{{ $t('dates.status.nodates') }}</h3>
@@ -133,7 +133,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-12">
+                    <!-- <div class="col-12">
                         <nav>
                             <ul class="pagination justify-content-center">
                                 <li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>
@@ -143,7 +143,7 @@
                                 <li class="page-item"><a class="page-link" href="#">Next</a></li>
                             </ul>
                         </nav>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>
