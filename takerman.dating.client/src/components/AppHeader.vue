@@ -2,24 +2,16 @@
     <header>
         <div class="container-fluid">
             <div class="row align-items-center bg-light py-3 px-xl-5 d-none d-lg-flex">
-                <div class="col-lg-4">
-                    <a href="" class="text-decoration-none">
+                <div class="col-lg-6">
+                    <router-link to="/" class="text-decoration-none">
                         <span class="h1 text-uppercase text-primary bg-dark px-2">{{ $t('header.titleFirst') }}</span>
                         <span class="h1 text-uppercase text-dark bg-primary px-2 ml-n1">{{ $t('header.titleSecond') }}</span>
-                    </a>
+                    </router-link>
                 </div>
-                <div class="col-lg-4 col-6 text-left">
-                    <div class="header-social-links d-flex align-items-center">
-                        <a href="https://facebook.com/sreshti/" target="_blank" class="facebook"><i class="bi bi-facebook"></i></a>
-                        <a href="https://instagram.com/sreshti/" target="_blank" class="instagram"><i class="bi bi-instagram"></i></a>
-                        <a href="https://tiktok.com/@sreshti" target="_blank" class="tiktok"><i class="bi bi-tiktok"></i></a>
-                    </div>
+                <div class="col-lg-6 col-8 text-right">
+                    <!-- <p class="m-0">{{ $t('header.customerSupportTitle') }}</p>
+                    <h5 class="m-0">{{ $t('header.customerSupportNumber') }}</h5> -->
                 </div>
-                <div class="col-lg-4 col-6 text-right">
-                    <p class="m-0">{{ $t('header.customerSupportTitle') }}</p>
-                    <h5 class="m-0">{{ $t('header.customerSupportNumber') }}</h5>
-                </div>
-                <LanguageSelector />
             </div>
         </div>
 
@@ -52,10 +44,17 @@
                                 </div>
                             </div>
                             <div class="navbar-nav ml-auto py-0 d-none d-lg-block">
-                                <a href="" class="btn px-0">
+                                <router-link to="" class="btn px-0">
                                     <i class="fas fa-heart text-primary"></i>
                                     <span class="badge text-secondary border border-secondary rounded-circle" style="padding-bottom: 2px;">{{ this.savedSpotslength }}</span>
-                                </a>
+                                </router-link>
+                                <LanguageSelector />
+                                <CurrencySelector />
+                                <!-- <div class="header-social-links d-flex align-items-center">
+                                    <a href="https://facebook.com/sreshti/" target="_blank" class="facebook"><i class="fa fa-facebook"></i></a>
+                                    <a href="https://instagram.com/sreshti/" target="_blank" class="instagram"><i class="fa fa-instagram"></i></a>
+                                    <a href="https://tiktok.com/@sreshti" target="_blank" class="tiktok"><i class="fa fa-tiktok"></i></a>
+                                </div> -->
                             </div>
                         </div>
                     </nav>
@@ -69,6 +68,8 @@
 import { storeToRefs } from 'pinia';
 import { useAuthStore } from '@/stores';
 import LanguageSelector from './LanguageSelector.vue';
+import CurrencySelector from './CurrencySelector.vue';
+import { routerKey } from 'vue-router';
 
 export default {
     data() {
@@ -78,7 +79,8 @@ export default {
         }
     },
     components: {
-        LanguageSelector
+        LanguageSelector,
+        CurrencySelector
     },
     mounted() {
         const authStore = useAuthStore();

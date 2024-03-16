@@ -3,6 +3,8 @@ import { createPinia } from 'pinia';
 import router from "./helpers/router.js"
 import App from './App.vue';
 import { Tolgee, DevTools, VueTolgee, FormatSimple, BackendFetch } from '@tolgee/vue';
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap";
 import './assets/css/style.css';
 
 

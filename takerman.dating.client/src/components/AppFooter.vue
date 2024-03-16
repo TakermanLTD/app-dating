@@ -14,21 +14,20 @@
                         <div class="col-md-4 mb-5">
                             <h5 class="text-secondary text-uppercase mb-4">{{ $t('footer.menu.title') }}</h5>
                             <div class="d-flex flex-column justify-content-start">
-                                <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>{{ $t('footer.menu.home') }}</a>
-                                <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>{{ $t('footer.menu.about') }}</a>
-                                <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>{{ $t('footer.menu.contacts') }}</a>
-                                <a class="text-secondary" href="#"><i class="fa fa-angle-right mr-2"></i>{{ $t('footer.menu.contacts') }}</a>
+                                <router-link class="text-secondary mb-2" to="/"><i class="fa fa-angle-right mr-2"></i>{{ $t('footer.menu.home') }}</router-link>
+                                <router-link class="text-secondary mb-2" to="/about"><i class="fa fa-angle-right mr-2"></i>{{ $t('footer.menu.about') }}</router-link>
+                                <router-link class="text-secondary" to="/contacts"><i class="fa fa-angle-right mr-2"></i>{{ $t('footer.menu.contacts') }}</router-link>
                             </div>
                         </div>
                         <div class="col-md-4 mb-5">
                             <h5 class="text-secondary text-uppercase mb-4">{{ $t('footer.menu.account') }}</h5>
                             <div class="d-flex flex-column justify-content-start">
-                                <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>{{ $t('footer.menu.profile') }}</a>
-                                <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>{{ $t('footer.menu.register') }}</a>
-                                <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>{{ $t('footer.menu.login') }}</a>
-                                <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>{{ $t('footer.menu.matches') }}</a>
-                                <a class="text-secondary mb-2" href="#"><i class="fa fa-angle-right mr-2"></i>{{ $t('footer.menu.wishlist') }}</a>
-                                <a class="text-secondary" href="#"><i class="fa fa-angle-right mr-2"></i>{{ $t('footer.menu.orders') }}</a>
+                                <router-link class="text-secondary mb-2" to="/profile"><i class="fa fa-angle-right mr-2"></i>{{ $t('footer.menu.profile') }}</router-link>
+                                <router-link class="text-secondary mb-2" to="/register"><i class="fa fa-angle-right mr-2"></i>{{ $t('footer.menu.register') }}</router-link>
+                                <router-link class="text-secondary mb-2" to="/login"><i class="fa fa-angle-right mr-2"></i>{{ $t('footer.menu.login') }}</router-link>
+                                <router-link class="text-secondary mb-2" to="/matches"><i class="fa fa-angle-right mr-2"></i>{{ $t('footer.menu.matches') }}</router-link>
+                                <router-link class="text-secondary mb-2" to="/wishlist"><i class="fa fa-angle-right mr-2"></i>{{ $t('footer.menu.wishlist') }}</router-link>
+                                <router-link class="text-secondary" to="/orders"><i class="fa fa-angle-right mr-2"></i>{{ $t('footer.menu.orders') }}</router-link>
                             </div>
                         </div>
                         <div class="col-md-4 mb-5">
