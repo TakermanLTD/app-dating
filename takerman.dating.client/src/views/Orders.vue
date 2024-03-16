@@ -43,7 +43,7 @@ export default {
       loading: false,
       breadcrumbs: [
         { name: '/', title: 'Начало' },
-        { name: 'my-dates', title: 'Мои срещи' }
+        { name: 'orders', title: 'Мои срещи' }
       ]
     };
   },

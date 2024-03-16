@@ -37,7 +37,7 @@
             <div v-if="this.paymentStatus === 'success'" class="alert alert-success" role="alert">
                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                 <span class="sr-only"></span> Закупихте срещата успешно. Можете да я видите от менюто <router-link
-                    to="my-dates">'Мои срещи'</router-link>
+                    to="orders">'Мои срещи'</router-link>
             </div>
             <div v-else-if="this.paymentStatus === 'failed'" class="alert alert-danger" role="alert">
                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>

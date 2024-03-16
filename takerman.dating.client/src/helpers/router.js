@@ -4,12 +4,13 @@ import Contacts from '../views/Contacts.vue';
 import Profile from '../views/Profile.vue';
 import UserProfile from '../views/UserProfile.vue';
 import Date from '../views/Date.vue';
+import Dates from '../views/Dates.vue';
 import Registration from '../views/Registration.vue';
 import Login from '../views/Login.vue';
 import ResetPasswordRequest from '../views/ResetPasswordRequest.vue';
 import ResetPassword from '../views/ResetPassword.vue';
 import Activate from '../views/Activate.vue';
-import MyDates from '../views/MyDates.vue';
+import Orders from '../views/Orders.vue';
 import Matches from '../views/Matches.vue';
 import Gallery from "../views/Gallery.vue";
 import { useAuthStore } from '@/stores';
@@ -25,7 +26,8 @@ export const router = createRouter({
         { path: '/user-profile', component: UserProfile },
         { path: '/user-gallery', component: Gallery },
         { path: '/date', component: Date },
-        { path: '/my-dates', component: MyDates },
+        { path: '/dates', component: Dates },
+        { path: '/orders', component: Orders },
         { path: '/matches', component: Matches },
         { path: '/register', component: Registration },
         { path: '/login', component: Login },

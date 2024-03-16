@@ -35,7 +35,7 @@
                                     <router-link to="/profile" class="nav-link dropdown-toggle" data-toggle="dropdown">{{ $t('nav.profile') }} <i class="fa fa-angle-down mt-1"></i></router-link>
                                     <div class="dropdown-menu bg-primary rounded-0 border-0 m-0">
                                         <router-link class="dropdown-item" to="/profile">{{ $t('nav.myProfile') }}</router-link>
-                                        <router-link class="dropdown-item" to="/my-dates">{{ $t('nav.myDates') }}</router-link>
+                                        <router-link class="dropdown-item" to="/orders">{{ $t('nav.orders') }}</router-link>
                                         <router-link class="dropdown-item" to="/matches">{{ $t('nav.matches') }}</router-link>
                                         <router-link class="dropdown-item" to="/register">{{ $t('nav.register') }}</router-link>
                                         <router-link class="dropdown-item" to="/login">{{ $t('nav.login') }}</router-link>
