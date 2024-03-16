@@ -1,13 +1,13 @@
 <template>
-    <section id="breadcrumbs" class="breadcrumbs">
-        <div class="container">
-            <ol>
-                <li v-for="path in paths">
-                    <router-link :to="path.name">{{ path.title }}</router-link>
-                </li>
-            </ol>
+    <div class="container-fluid">
+        <div class="row px-xl-5">
+            <div class="col-12">
+                <nav class="breadcrumb bg-light mb-30">
+                    <router-link :to="path.name" v-for="(path, pathKey) in paths" :key="pathKey" class="breadcrumb-item text-dark">{{ path.title }}</router-link>
+                </nav>
+            </div>
         </div>
-    </section>
+    </div>
 </template>
 <script lang="js">
 export default {
@@ -16,5 +16,4 @@ export default {
     }
 }
 </script>
-<style scoped>
-</style>
+<style scoped></style>

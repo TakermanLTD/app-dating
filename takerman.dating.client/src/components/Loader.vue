@@ -1,5 +1,5 @@
 <template>
-    <div>{{ content ? content : 'Зареждане...' }}</div>
+    <div>{{ content ? content : $t('common.loading') }}</div>
 </template>
 <script lang="js">
 export default {

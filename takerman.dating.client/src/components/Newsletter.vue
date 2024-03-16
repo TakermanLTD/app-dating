@@ -1,17 +1,24 @@
 <template>
-    <div class="col-lg-4 col-md-6 footer-newsletter">
-        <h4>Получавай новини</h4>
-        <p>Въведете имейла си ако желаете да получавате новини</p>
+    <div>
+        <h5 class="text-secondary text-uppercase mb-4">{{ $t('footer.newsletter.title') }}</h5>
+        <p>{{ $t('footer.newsletter.intro') }}</p>
         <form id="newsletterForm" @submit="this.subscribe">
-            <input v-model="this.fields.email" type="email" name="email" required>
-            <input type="submit" value="Запиши ме">
+            <div class="input-group">
+                <input v-model="this.fields.email" class="form-control" type="email" name="email" required :placeholder="$t('footer.newsletter.inputPlaceholder')">
+                <div class="input-group-append">
+                    <button type="submit" class="btn btn-primary">{{ $t('footer.newsletter.buttonText') }}</button>
+                </div>
+            </div>
         </form>
         <div class="my-3">
-            <div v-show="this.loading === true" class="loading" style="display: block;">Зареждане...</div>
-            <div v-show="this.error !== ''" class="error-message" style="display: block;">{{ this.error
-            }}</div>
-            <div v-show="this.success !== ''" class="sent-message" style="display: block;">{{
-                this.success }}</div>
+            <div v-show="this.loading === true" class="loading" style="display: block;">{{ $t('common.loading') }}...</div>
+            <div v-show="this.error !== ''" class="error-message" style="display: block;">{{ this.error }}</div>
+            <div v-show="this.success !== ''" class="sent-message" style="display: block;">{{ this.success }}</div>
+        </div>
+        <h6 class="text-secondary text-uppercase mt-4 mb-3">{{ $t('footer.social.title') }}</h6>
+        <div class="d-flex">
+            <a class="btn btn-primary btn-square mr-2" :href="$t('footer.social.facebook')"><i class="fab fa-facebook-f"></i></a>
+            <a class="btn btn-primary btn-square" :href="$t('footer.social.instagram')"><i class="fab fa-instagram"></i></a>
         </div>
     </div>
 </template>

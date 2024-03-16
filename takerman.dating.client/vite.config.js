@@ -5,6 +5,9 @@ import plugin from '@vitejs/plugin-vue';
 import fs from 'fs';
 import path from 'path';
 import child_process from 'child_process';
+import 'owl.carousel/dist/assets/owl.carousel.css';
+import 'owl.carousel';
+import 'easing';
 
 const baseFolder =
     process.env.APPDATA !== undefined && process.env.APPDATA !== ''

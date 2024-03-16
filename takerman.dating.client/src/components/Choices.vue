@@ -1,8 +1,6 @@
 <template>
     <div v-if="this.choices?.length > 0">
-        <hgroup>
-            <h2 class="text-center">Харесвания</h2>
-        </hgroup>
+        <Heading :heading="$t('choices.title')" />
         <div id="myChoices" class="text-center">
             <div class="col" style="margin: 15px; width: 15rem; display: inline-block;"
                 v-for="(choice, index) in this.choices" :key="index">
@@ -45,6 +43,7 @@
 import { fetchWrapper } from '@/helpers';
 import { useAuthStore } from '@/stores';
 import Avatar from './Avatar.vue';
+import Heading from './Heading.vue';
 
 export default {
     props: {
@@ -63,7 +62,7 @@ export default {
         }
     },
     components: {
-        Avatar
+        Avatar, Heading
     },
     async mounted() {
         const authStore = useAuthStore();

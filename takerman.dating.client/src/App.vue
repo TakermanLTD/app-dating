@@ -3,20 +3,17 @@
     <main style="margin-top: 100px">
         <router-view></router-view>
     </main>
-    <SupportChat />
     <AppFooter />
 </template>
 
 <script lang="js">
-import AppHeader from './components/Header.vue';
-import AppFooter from './components/Footer.vue';
-import SupportChat from './components/SupportChat.vue';
+import AppHeader from './components/AppHeader.vue';
+import AppFooter from './components/AppFooter.vue';
 
 export default {
     components: {
         AppHeader,
-        AppFooter,
-        SupportChat
+        AppFooter
     }
 }
 </script>
