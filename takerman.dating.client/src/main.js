@@ -5,8 +5,11 @@ import App from './App.vue';
 import { Tolgee, DevTools, VueTolgee, FormatSimple, BackendFetch } from '@tolgee/vue';
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap";
-import '../public/css/style.css';
-
+import "easing";
+import "/src/assets/lib/animate/animate.min.css";
+import "/src/assets/lib/owlcarousel/assets/owl.carousel.min.css";
+import "/src/assets/css/style.css";
+import "/src/assets/js/main.js";
 
 const tolgee = Tolgee()
     .use(DevTools())

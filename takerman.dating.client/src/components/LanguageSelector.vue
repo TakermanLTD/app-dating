@@ -1,6 +1,6 @@
 <template>
     <div class="btn-group mx-2">
-        <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">{{ this.selectedLanguage.toUpperCase() }}</button>
+        <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">{{ $t('common.lang_' + this.selectedLanguage) }}</button>
         <div class="dropdown-menu dropdown-menu-right">
             <button @click="changeLanguage(language)" v-for="(language, languageKey) in this.languages" :key="languageKey" class="dropdown-item" type="button">
                 {{ $t('common.lang_' + language) }}
