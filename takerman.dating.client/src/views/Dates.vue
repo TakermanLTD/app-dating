@@ -2,65 +2,36 @@
     <div class="container-fluid">
         <div class="row px-xl-5">
             <div class="col-lg-3 col-md-4">
-                <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">{{ $t('dates.filter.type') }}</span></h5>
-                <div class="bg-light p-4 mb-30">
-                    <form>
-                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                            <input type="checkbox" class="custom-control-input" checked id="price-all">
-                            <label class="custom-control-label" for="price-all">All Price</label>
-                            <span class="badge border font-weight-normal">1000</span>
-                        </div>
-                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                            <input type="checkbox" class="custom-control-input" id="price-1">
-                            <label class="custom-control-label" for="price-1">$0 - $100</label>
-                            <span class="badge border font-weight-normal">150</span>
-                        </div>
-                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                            <input type="checkbox" class="custom-control-input" id="price-2">
-                            <label class="custom-control-label" for="price-2">$100 - $200</label>
-                            <span class="badge border font-weight-normal">295</span>
-                        </div>
-                    </form>
+                <div class="text-left">
+                    <label for="frmDateType">Тип среща</label> <br />
+                    <select id="frmDateType" placeholder="Тип среща" @change="applyFilter" v-model="filter.dateType"
+                            class="form-control">
+                        <option :value="0">{{ $t('dates.filter.all') }}</option>
+                        <option v-for="dateType in dateTypes" :value="dateType.key">{{ dateType.value }}</option>
+                    </select>
                 </div>
-                <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">{{ $t('dates.filter.ethnicity') }}</span></h5>
-                <div class="bg-light p-4 mb-30">
-                    <form>
-                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                            <input type="checkbox" class="custom-control-input" checked id="color-all">
-                            <label class="custom-control-label" for="price-all">All Color</label>
-                            <span class="badge border font-weight-normal">1000</span>
-                        </div>
-                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                            <input type="checkbox" class="custom-control-input" id="color-1">
-                            <label class="custom-control-label" for="color-1">Black</label>
-                            <span class="badge border font-weight-normal">150</span>
-                        </div>
-                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                            <input type="checkbox" class="custom-control-input" id="color-2">
-                            <label class="custom-control-label" for="color-2">White</label>
-                            <span class="badge border font-weight-normal">295</span>
-                        </div>
-                    </form>
+                <div class="text-left">
+                    <label for="frmEthnicity">Етнос</label> <br />
+                    <select id="frmEthnicity" placeholder="Етнос" @change="applyFilter" v-model="filter.ethnicity"
+                            class="form-control">
+                        <option :value="0">{{ $t('dates.filter.all') }}</option>
+                        <option v-for="ethnicity in ethnicities" :value="ethnicity.key">{{ ethnicity.value }}</option>
+                    </select>
                 </div>
-                <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">{{ $t('dates.filter.ages') }}</span></h5>
-                <div class="bg-light p-4 mb-30">
-                    <form>
-                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                            <input type="checkbox" class="custom-control-input" checked id="size-all">
-                            <label class="custom-control-label" for="size-all">All Size</label>
-                            <span class="badge border font-weight-normal">1000</span>
-                        </div>
-                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                            <input type="checkbox" class="custom-control-input" id="size-1">
-                            <label class="custom-control-label" for="size-1">XS</label>
-                            <span class="badge border font-weight-normal">150</span>
-                        </div>
-                        <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                            <input type="checkbox" class="custom-control-input" id="size-2">
-                            <label class="custom-control-label" for="size-2">S</label>
-                            <span class="badge border font-weight-normal">295</span>
-                        </div>
-                    </form>
+                <div class="text-left">
+                    <label for="frmMinAges">Мин. години</label> <br />
+                    <input id="frmMinAges" placeholder="Мин. години" @change="applyFilter" type="number" class="form-control"
+                           v-model="filter.minAges" />
+                </div>
+                <div class="text-left">
+                    <label id="frmMaxAges" for="frmMaxAges">макс години</label> <br />
+                    <input placeholder="макс години" @change="applyFilter" type="number" class="form-control"
+                           v-model="filter.maxAges" />
+                </div>
+                <div class="text-left">
+                    <label for="frmMaxPrice">Макс цена</label> <br />
+                    <input id="frmMaxPrice" placeholder="Макс цена" @change="applyFilter" type="number" class="form-control"
+                           v-model="filter.maxPrice" />
                 </div>
             </div>
             <div class="col-lg-9 col-md-8">
@@ -123,11 +94,11 @@
                                             </tr>
                                             <tr>
                                                 <td class="font-weight-normal">{{ $t('dates.card.menCount') }}:</td>
-                                                <td><strong>{{ date.minMen }}/{{ date.menCount }}</strong></td>
+                                                <td><strong>{{ date.menCount }}/{{ date.minMen }}</strong></td>
                                             </tr>
                                             <tr>
                                                 <td class="font-weight-normal">{{ $t('dates.card.womenCount') }}:</td>
-                                                <td><strong>{{ date.wominMen }}/{{ date.womenCount }}</strong></td>
+                                                <td><strong>{{ date.womenCount }}/{{ date.minWomen }}</strong></td>
                                             </tr>
                                         </table>
                                     </div>
