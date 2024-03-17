@@ -25,6 +25,8 @@ export default {
         var languageCookie = cookies.get('language');
         if (languageCookie) {
             this.selectedLanguage = languageCookie;
+        } else {
+            cookies.set('language', this.selectedLanguage);
         }
     },
     methods: {

@@ -14,13 +14,15 @@ export default {
     data() {
         return {
             selectedCurrency: 'EUR',
-            currencies: ['EUR','USD', 'RUB', 'LEI', 'LEV']
+            currencies: ['EUR', 'USD', 'RUB', 'LEI', 'LEV']
         }
     },
     mounted() {
         var currencyCookie = cookies.get('currency');
         if (currencyCookie) {
             this.selectedCurrency = currencyCookie;
+        } else {
+            cookies.set('currency', this.selectedCurrency);
         }
     },
     methods: {

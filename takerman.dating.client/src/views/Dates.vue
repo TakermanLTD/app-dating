@@ -96,42 +96,44 @@
                         <h3>{{ $t('dates.status.nodates') }}</h3>
                     </div>
                     <div v-else v-for="(date, dateKey) in this.dates" :key="dateKey" class="col-lg-4 col-md-6 col-sm-6 pb-1">
-                        <div class="product-item bg-light mb-4">
-                            <div class="product-img position-relative overflow-hidden">
-                                <img class="img-fluid w-100" src="../assets/img/date/date-thumbnail.jpeg" alt="">
-                                <div class="product-action">
-                                    <router-link class="btn btn-outline-dark btn-square" to=""><i class="fa fa-shopping-cart"></i></router-link>
-                                    <router-link class="btn btn-outline-dark btn-square" to=""><i class="far fa-heart"></i></router-link>
+                        <router-link class="h6 text-decoration-none text-truncate" :to="'date?id=' + date.id">
+                            <div class="product-item bg-light mb-4">
+                                <div class="product-img position-relative overflow-hidden">
+                                    <img class="img-fluid w-100" src="../assets/img/date/date-thumbnail.jpeg" alt="">
+                                    <div class="product-action">
+                                        <router-link class="btn btn-outline-dark btn-square" to=""><i class="fa fa-shopping-cart"></i></router-link>
+                                        <router-link class="btn btn-outline-dark btn-square" to=""><i class="far fa-heart"></i></router-link>
+                                    </div>
+                                </div>
+                                <div class="text-center py-4">
+                                    {{ date.title }}
+                                    <div class="d-flex align-items-center justify-content-center mt-2">
+                                        <table class="tbl tbl-fluid">
+                                            <tr>
+                                                <td class="font-weight-normal">{{ $t('dates.card.ethnicity') }}:</td>
+                                                <td><strong>{{ date.ethnicity }}</strong></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="font-weight-normal">{{ $t('dates.card.price') }}:</td>
+                                                <td><strong>{{ date.price }} {{ this.currency }}</strong></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="font-weight-normal">{{ $t('dates.card.ages') }}:</td>
+                                                <td><strong>{{ date.minAges }} - {{ date.maxAges }}</strong></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="font-weight-normal">{{ $t('dates.card.menCount') }}:</td>
+                                                <td><strong>{{ date.minMen }}/{{ date.menCount }}</strong></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="font-weight-normal">{{ $t('dates.card.womenCount') }}:</td>
+                                                <td><strong>{{ date.wominMen }}/{{ date.womenCount }}</strong></td>
+                                            </tr>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="text-center py-4">
-                                <router-link class="h6 text-decoration-none text-truncate" :to="'date?id=' + date.id">{{ date.title }}</router-link>
-                                <div class="d-flex align-items-center justify-content-center mt-2">
-                                    <table class="tbl tbl-fluid">
-                                        <tr>
-                                            <td>{{ $t('dates.card.ethnicity') }}:</td>
-                                            <td><strong>{{ date.ethnicity }}</strong></td>
-                                        </tr>
-                                        <tr>
-                                            <td>{{ $t('dates.card.price') }}:</td>
-                                            <td><strong>{{ date.price }} {{ this.currency }}</strong></td>
-                                        </tr>
-                                        <tr>
-                                            <td>{{ $t('dates.card.ages') }}:</td>
-                                            <td><strong>{{ date.minAges }} - {{ date.maxAges }}</strong></td>
-                                        </tr>
-                                        <tr>
-                                            <td>{{ $t('dates.card.menCount') }}:</td>
-                                            <td><strong>{{ date.minMen }}/{{ date.menCount }}</strong></td>
-                                        </tr>
-                                        <tr>
-                                            <td>{{ $t('dates.card.womenCount') }}:</td>
-                                            <td><strong>{{ date.wominMen }}/{{ date.womenCount }}</strong></td>
-                                        </tr>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
+                        </router-link>
                     </div>
                     <!-- <div class="col-12">
                         <nav>
