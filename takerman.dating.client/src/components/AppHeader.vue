@@ -29,16 +29,16 @@
                         <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                             <div class="navbar-nav mr-auto py-0">
                                 <router-link class="nav-item nav-link" to="/">{{ $t('nav.home') }}</router-link>
+                                <router-link v-if="this.user != null" class="nav-item nav-link" to="/orders">{{ $t('nav.myDates') }}</router-link>
+                                <router-link v-if="this.user != null" class="nav-item nav-link" to="/matches">{{ $t('nav.chat') }}</router-link>
                                 <router-link class="nav-item nav-link" to="/contacts">{{ $t('nav.contacts') }}</router-link>
                                 <div class="nav-item dropdown">
-                                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">{{ $t('nav.profile') }} <i class="fa fa-angle-down mt-1"></i></a>
+                                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">{{ $t('nav.account') }} <i class="fa fa-angle-down mt-1"></i></a>
                                     <div class="dropdown-menu bg-primary rounded-0 border-0 m-0">
-                                        <router-link v-if="this.isLoggedIn" class="dropdown-item" to="/profile">{{ $t('nav.myProfile') }}</router-link>
-                                        <router-link v-if="this.isLoggedIn" class="dropdown-item" to="/orders">{{ $t('nav.orders') }}</router-link>
-                                        <router-link v-if="this.isLoggedIn" class="dropdown-item" to="/matches">{{ $t('nav.matches') }}</router-link>
-                                        <router-link v-if="!this.isLoggedIn" class="dropdown-item" to="/register">{{ $t('nav.register') }}</router-link>
-                                        <router-link v-if="!this.isLoggedIn" class="dropdown-item" to="/login">{{ $t('nav.login') }}</router-link>
-                                        <router-link v-if="this.isLoggedIn" class="dropdown-item" to="/logout" @click="this.logout">{{ $t('nav.logout') }}</router-link>
+                                        <router-link v-if="this.user != null" class="dropdown-item" to="/profile">{{ $t('nav.profile') }}</router-link>
+                                        <router-link v-if="this.user == null" class="dropdown-item" to="/register">{{ $t('nav.register') }}</router-link>
+                                        <router-link v-if="this.user == null" class="dropdown-item" to="/login">{{ $t('nav.login') }}</router-link>
+                                        <router-link v-if="this.user != null" class="dropdown-item" to="/logout" @click="this.logout">{{ $t('nav.logout') }}</router-link>
                                     </div>
                                 </div>
                             </div>
@@ -73,8 +73,7 @@ export default {
     data() {
         return {
             user: null,
-            savedSpotslength: 0,
-            isLoggedIn: false
+            savedSpotslength: 0
         }
     },
     components: {
@@ -85,7 +84,6 @@ export default {
         const authStore = useAuthStore();
         let { user: authUser } = storeToRefs(authStore);
         this.user = authUser;
-        this.isLoggedIn = this.user != null ? true : false;
     },
     methods: {
         logout() {
@@ -95,7 +93,6 @@ export default {
             // eslint-disable-next-line no-unused-vars
             authUser = null;
             this.user = null;
-            this.isLoggedIn = false;
         }
     },
 }
