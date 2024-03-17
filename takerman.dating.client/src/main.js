@@ -5,7 +5,7 @@ import App from './App.vue';
 import { Tolgee, DevTools, VueTolgee, FormatSimple, BackendFetch } from '@tolgee/vue';
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap";
-import './assets/css/style.css';
+import '../public/css/style.css';
 
 
 const tolgee = Tolgee()
