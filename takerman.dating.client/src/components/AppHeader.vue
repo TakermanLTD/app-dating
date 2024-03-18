@@ -31,7 +31,6 @@
                                 <router-link class="nav-item nav-link" to="/">{{ $t('nav.home') }}</router-link>
                                 <router-link v-if="this.user != null" class="nav-item nav-link" to="/orders">{{ $t('nav.myDates') }}</router-link>
                                 <router-link v-if="this.user != null" class="nav-item nav-link" to="/matches">{{ $t('nav.chat') }}</router-link>
-                                <router-link class="nav-item nav-link" to="/contacts">{{ $t('nav.contacts') }}</router-link>
                                 <div class="nav-item dropdown">
                                     <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">{{ $t('nav.account') }} <i class="fa fa-angle-down mt-1"></i></a>
                                     <div class="dropdown-menu bg-primary rounded-0 border-0 m-0">

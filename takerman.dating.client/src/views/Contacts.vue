@@ -5,26 +5,24 @@
             <div class="col-lg-7 mb-5">
                 <div class="contact-form bg-light p-30">
                     <div id="success"></div>
-                    <form name="sentMessage" id="contactForm" novalidate="novalidate">
-                        <div class="control-group">
-                            <input v-model="fields.name" type="text" class="form-control" id="name" :placeholder="$t('contacts.name')"
-                                   required="required" :data-validation-required-message="$t('contacts.name.placeholder')" />
-                            <p class="help-block text-danger"></p>
-                        </div>
-                        <div class="control-group">
-                            <input v-model="fields.from" type="email" class="form-control" id="email" :placeholder="$t('contacts.email')"
-                                   required="required" :data-validation-required-message="$t('contacts.email.placeholder')" />
-                            <p class="help-block text-danger"></p>
-                        </div>
-                        <div class="control-group">
-                            <textarea v-model="fields.body" class="form-control" rows="8" id="message" :placeholder="$t('contacts.message')"
-                                      required="required" :data-validation-required-message="$t('contacts.message.placeholder')"></textarea>
-                            <p class="help-block text-danger"></p>
-                        </div>
-                        <div>
-                            <button class="btn btn-primary py-2 px-4" type="submit" id="sendMessageButton">{{ $t('contacts.sendButton') }}</button>
-                        </div>
-                    </form>
+                    <div class="control-group">
+                        <input v-model="fields.name" type="text" class="form-control" id="name" :placeholder="$t('contacts.name')"
+                               required="required" :data-validation-required-message="$t('contacts.name.placeholder')" />
+                        <p class="help-block text-danger"></p>
+                    </div>
+                    <div class="control-group">
+                        <input v-model="fields.from" type="email" class="form-control" id="email" :placeholder="$t('contacts.email')"
+                               required="required" :data-validation-required-message="$t('contacts.email.placeholder')" />
+                        <p class="help-block text-danger"></p>
+                    </div>
+                    <div class="control-group">
+                        <textarea v-model="fields.body" class="form-control" rows="8" id="message" :placeholder="$t('contacts.message')"
+                                  required="required" :data-validation-required-message="$t('contacts.message.placeholder')"></textarea>
+                        <p class="help-block text-danger"></p>
+                    </div>
+                    <div>
+                        <button class="btn btn-primary py-2 px-4" @click="this.send">{{ $t('contacts.sendButton') }}</button>
+                    </div>
                     <div class="my-3">
                         <div v-show="this.loading === true" class="loading" style="display: block;">Зареждане...
                         </div>

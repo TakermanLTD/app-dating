@@ -1,14 +1,14 @@
 <template>
   <breadcrumbs :paths="breadcrumbs" />
-  <section class="container">
+  <div class="container-fluid">
     <loader v-if="this.loading == true" />
     <div v-else class="row">
       <div class="col-2 text-center">
         <div v-for="(match, matchKey) in this.matches" :key="matchKey">
           <div>
-            <Avatar @click="chat(match.userId)" :userId="match.userId" />
+            <img @click="chat(match.userId)" :src="match.avatarUrl" class="img match-avatar" width="120" height="120" />
             <br />
-            <span>{{ match.name }}</span>
+            <router-link v-if="match.avatarUrl" :to="'/user-profile?id=' + match.userId">{{ match.name }}</router-link>
           </div>
         </div>
       </div>
@@ -16,7 +16,7 @@
         <Chat v-if="this.toUserId" :toUserId="this.toUserId" />
       </div>
     </div>
-  </section>
+  </div>
 </template>
 
 <script lang="js">
@@ -48,6 +48,10 @@ export default {
     this.matches = await fetchWrapper.get('Dates/GetMatches?userId=' + this.userId);
     if (this.matches?.length > 0) {
       this.toUserId = this.matches[0].userId;
+      for (let i = 0; i < this.matches.length; i++) {
+        let result = await fetch('Cdn/GetAvatar?userId=' + this.matches[i].userId);
+        this.matches[i].avatarUrl = await result.text();
+      }
     }
     this.loading = false;
   },
@@ -60,4 +64,8 @@ export default {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.match-avatar {
+  cursor: pointer;
+}
+</style>
