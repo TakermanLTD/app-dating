@@ -42,7 +42,7 @@
                                 </div>
                             </div>
                             <div class="navbar-nav ml-auto py-0 d-none d-lg-block">
-                                <router-link to="" class="btn px-0">
+                                <router-link to="/orders" class="btn px-0">
                                     <i class="fas fa-heart text-primary"></i>
                                     <span class="badge text-secondary border border-secondary rounded-circle" style="padding-bottom: 2px;">{{ this.savedSpotslength }}</span>
                                 </router-link>
