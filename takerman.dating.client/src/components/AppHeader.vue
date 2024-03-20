@@ -65,6 +65,7 @@
 <script lang="js">
 import { storeToRefs } from 'pinia';
 import { useAuthStore } from '@/stores';
+import { fetchWrapper } from '@/helpers';
 import LanguageSelector from './LanguageSelector.vue';
 import CurrencySelector from './CurrencySelector.vue';
 
@@ -79,10 +80,15 @@ export default {
         LanguageSelector,
         CurrencySelector
     },
-    mounted() {
+    async mounted() {
         const authStore = useAuthStore();
         let { user: authUser } = storeToRefs(authStore);
         this.user = authUser;
+        let spots = await fetchWrapper.get('Dates/GetSavedSpots?userId=' + this.user.id);
+        this.savedSpotslength = spots.length;
+        this.emitter.on('addToSpotCount', (evt) => {
+            this.savedSpotslength += evt.eventContent;
+        })
     },
     methods: {
         logout() {

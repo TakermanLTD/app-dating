@@ -17,7 +17,7 @@
                     </tr>
                     <tr>
                         <td>{{ this.date?.startsOn ? moment(new Date(this.date?.startsOn)).format("DD MMM, HH:mm") :
-                            'Предстои' }}
+        'Предстои' }}
                         </td>
                         <td>Цена {{ this.date?.price }}лв.</td>
                     </tr>
@@ -31,20 +31,20 @@
             </p>
             <div v-else-if="this.date?.status === 'Approved'" class="text-center">
                 <PayButton v-if="this.path === '/date' && this.date?.price > 0" :date-id="this.date.id"
-                    :on-approve="onApprove" :on-error="onError" class="pay-button">Купи</PayButton>
+                           :on-approve="onApprove" :on-error="onError" class="pay-button">Купи</PayButton>
                 <router-link v-else class="btn btn-success" :to="'date?id=' + this.date.id + ''">Купи
                     срещата</router-link>
-            <div v-if="this.paymentStatus === 'success'" class="alert alert-success" role="alert">
-                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                <span class="sr-only"></span> Закупихте срещата успешно. Можете да я видите от менюто <router-link
-                    to="orders">'Мои срещи'</router-link>
+                <div v-if="this.paymentStatus === 'success'" class="alert alert-success" role="alert">
+                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                    <span class="sr-only"></span> Закупихте срещата успешно. Можете да я видите от менюто <router-link
+                                 to="orders">'Мои срещи'</router-link>
+                </div>
+                <div v-else-if="this.paymentStatus === 'failed'" class="alert alert-danger" role="alert">
+                    <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                    <span class="sr-only"></span> Стана грешка при плащането. Моля опитайте пак или се свържете с нас през
+                    контактната форма или чата
+                </div>
             </div>
-            <div v-else-if="this.paymentStatus === 'failed'" class="alert alert-danger" role="alert">
-                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                <span class="sr-only"></span> Стана грешка при плащането. Моля опитайте пак или се свържете с нас през
-                контактната форма или чата
-            </div>
-        </div>
             <p v-else-if="this.date?.status === 'Bought'" class="text-center">
                 <strong>Закупили сте тази среща</strong>
             </p>
@@ -76,9 +76,6 @@ export default {
             paymentStatus: '',
             userId: 0
         }
-    },
-    emits: {
-        onUnsaveSpot: null
     },
     computed: {
         path() {
@@ -132,6 +129,7 @@ export default {
                         this.date.status = result.status;
                         this.date.menCount = result.menCount;
                         this.date.womenCount = result.womenCount;
+                        this.emitter.emit('addToSpotCount', { 'eventContent': 1 });
                     });
             }
         },
@@ -145,7 +143,7 @@ export default {
                         this.date.status = result.status;
                         this.date.menCount = result.menCount;
                         this.date.womenCount = result.womenCount;
-                        this.$emit('onUnsaveSpot');
+                        this.emitter.emit('addToSpotCount', { 'eventContent': -1 });
                     });
             }
         }
