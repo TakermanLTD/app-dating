@@ -1,8 +1,7 @@
 <template>
   <breadcrumbs :paths="this.breadcrumbs" />
   <loader v-if="this.loading" />
-
-  <div class="container-fluid pb-5">
+  <div v-else-if="this.date" class="container-fluid pb-5">
     <div class="row px-xl-5">
       <div class="col-lg-5 mb-30">
         <div id="product-carousel" class="carousel slide" data-ride="carousel">
@@ -52,7 +51,37 @@
             </div>
           </div>
           <div class="d-flex align-items-center mb-4 pt-2">
-            <button class="btn btn-primary px-3"><i class="fa fa-shopping-cart mr-1"></i> Buy</button>
+            <p v-if="this.date?.status === 'NotApproved'" class="text-center">
+              <a @click="saveSpot(this.date)" class="btn btn-primary">Запази място</a>
+            </p>
+            <p v-else-if="this.date?.status === 'SavedSpot'" class="text-center">
+              <a @click="unsaveSpot(this.date)" class="btn btn-danger">Няма да присъствам</a>
+            </p>
+            <div v-else-if="this.date?.status === 'Approved'" class="text-center">
+              <PayButton v-if="this.path === '/date' && this.date?.price > 0" :date-id="this.date.id"
+                         :on-approve="onApprove" :on-error="onError" class="pay-button">Купи</PayButton>
+              <router-link v-else class="btn btn-success" :to="'date?id=' + this.date.id + ''">Купи
+                срещата</router-link>
+              <div v-if="this.paymentStatus === 'success'" class="alert alert-success" role="alert">
+                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                <span class="sr-only"></span> Закупихте срещата успешно. Можете да я видите от менюто <router-link
+                             to="orders">'Мои срещи'</router-link>
+              </div>
+              <div v-else-if="this.paymentStatus === 'failed'" class="alert alert-danger" role="alert">
+                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                <span class="sr-only"></span> Стана грешка при плащането. Моля опитайте пак или се свържете с нас през
+                контактната форма или чата
+              </div>
+            </div>
+            <p v-else-if="this.date?.status === 'Bought'" class="text-center">
+              <strong>Закупили сте тази среща</strong>
+            </p>
+            <p v-else-if="this.date?.status === 'Started'" class="text-center">
+              <strong>Срещата е започнала</strong>
+            </p>
+            <p v-else class="text-center">
+              <strong>Срещата е завършила</strong>
+            </p>
           </div>
           <div class="d-flex pt-2">
             <strong class="text-dark mr-2">{{ $t('social.shareOn') }}:</strong>
@@ -84,21 +113,26 @@
 
 <script lang="js">
 import moment from 'moment';
+import { useAuthStore } from '@/stores';
+import PayButton from '../components/PayButton.vue';
+import { router } from '@/helpers';
 import { fetchWrapper } from '@/helpers';
 import breadcrumbs from '../components/Breadcrumbs.vue';
 import loader from '../components/Loader.vue';
 import heading from '../components/Heading.vue';
-import card from '../components/Card.vue';
 import Choices from '../components/Choices.vue';
 
 export default {
   data() {
     return {
       id: 0,
+      userId: null,
       date: null,
       startTime: null,
       revealTime: null,
       loading: false,
+      moment: moment,
+      paymentStatus: '',
       breadcrumbs: [
         {
           name: '/',
@@ -116,9 +150,12 @@ export default {
     let queryString = window.location.search;
     let urlParams = new URLSearchParams(queryString);
 
+    const authStore = useAuthStore();
+    if (authStore.user)
+      this.userId = authStore.user.id;
     if (urlParams.has('id')) {
       this.id = urlParams.get('id');
-      this.date = await fetchWrapper.get('Dates/Get?id=' + this.id);
+      this.date = await fetchWrapper.get('Dates/Get?id=' + this.id + '&userId=' + this.userId);
 
       let startsOn = new Date(this.date?.startsOn);
       let countdownToStart = setInterval(async () => {
@@ -153,14 +190,65 @@ export default {
     async revealResults() {
       this.date = await fetchWrapper.post('Dates/SetStatus', { id: this.id, status: 'ResultsRevealed' });
       this.date.status = 'ResultsRevealed';
+    },
+    async onApprove(e, o) {
+      this.paymentStatus = 'success';
+
+      const data = {
+        dateId: this.date?.id,
+        userId: this.userId,
+        paymentId: e.paymentID,
+        payerId: e.payerID,
+        orderId: e.orderID,
+        paymentSource: e.paymentSource
+      }
+
+      await fetchWrapper.post('Order/Create', data);
+
+      const payButton = document.getElementsByClassName('pay-button');
+      for (let i = 0; i < payButton.length; i++) {
+        const element = payButton[i];
+        element.style.display = 'none';
+      }
+    },
+    onError(e) {
+      this.paymentStatus = 'fail';
+    },
+    async saveSpot(date) {
+      const authStore = useAuthStore();
+      if (!authStore.user) {
+        router.push('/login?returnUrl=/date?id=' + this.date?.id);
+      } else {
+        await fetchWrapper.get('Dates/SaveSpot' + (authStore.user == null ? '' : '?userId=' + authStore.user.id + '&dateId=' + this.date.id))
+          .then((result) => {
+            this.date.status = result.status;
+            this.date.menCount = result.menCount;
+            this.date.womenCount = result.womenCount;
+            this.emitter.emit('addToSpotCount', { 'eventContent': 1 });
+          });
+      }
+    },
+    async unsaveSpot(date) {
+      const authStore = useAuthStore();
+      if (!authStore.user) {
+        router.push('/login?returnUrl=/date?id=' + this.date?.id);
+      } else {
+        await fetchWrapper.get('Dates/UnsaveSpot' + (authStore.user == null ? '' : '?userId=' + authStore.user.id + '&dateId=' + this.date.id))
+          .then((result) => {
+            this.date.status = result.status;
+            this.date.menCount = result.menCount;
+            this.date.womenCount = result.womenCount;
+            this.emitter.emit('addToSpotCount', { 'eventContent': -1 });
+          });
+      }
     }
   },
   components: {
     loader,
     breadcrumbs,
     heading,
-    card,
-    Choices
+    Choices,
+    PayButton
   }
 }
 </script>
