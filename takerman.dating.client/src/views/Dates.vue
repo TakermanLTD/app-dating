@@ -3,7 +3,7 @@
         <div class="row px-xl-5">
             <div class="col-lg-3 col-md-4">
                 <div class="text-left">
-                    <label for="frmDateType">Тип среща</label> <br />
+                    <label>Тип среща</label> <br />
                     <select id="frmDateType" placeholder="Тип среща" @change="applyFilter" v-model="filter.dateType"
                             class="form-control">
                         <option :value="0">{{ $t('dates.filter.all') }}</option>
@@ -11,7 +11,7 @@
                     </select>
                 </div>
                 <div class="text-left">
-                    <label for="frmEthnicity">Етнос</label> <br />
+                    <label>Етнос</label> <br />
                     <select id="frmEthnicity" placeholder="Етнос" @change="applyFilter" v-model="filter.ethnicity"
                             class="form-control">
                         <option :value="0">{{ $t('dates.filter.all') }}</option>
@@ -19,17 +19,17 @@
                     </select>
                 </div>
                 <div class="text-left">
-                    <label for="frmMinAges">Мин. години</label> <br />
+                    <label>Мин. години</label> <br />
                     <input id="frmMinAges" placeholder="Мин. години" @change="applyFilter" type="number" class="form-control"
                            v-model="filter.minAges" />
                 </div>
                 <div class="text-left">
-                    <label id="frmMaxAges" for="frmMaxAges">макс години</label> <br />
-                    <input placeholder="макс години" @change="applyFilter" type="number" class="form-control"
+                    <label>макс години</label> <br />
+                    <input id="frmMaxAges" placeholder="макс години" @change="applyFilter" type="number" class="form-control"
                            v-model="filter.maxAges" />
                 </div>
                 <div class="text-left">
-                    <label for="frmMaxPrice">Макс цена</label> <br />
+                    <label>Макс цена</label> <br />
                     <input id="frmMaxPrice" placeholder="Макс цена" @change="applyFilter" type="number" class="form-control"
                            v-model="filter.maxPrice" />
                 </div>
@@ -41,7 +41,7 @@
                         <h3>{{ $t('dates.status.nodates') }}</h3>
                     </div>
                     <div v-else>
-                        <card :id="date.id" v-for="(date, dateKey) in this.dates" :key="dateKey" />
+                        <card :id="date?.id" v-for="(date, dateKey) in this.dates" :key="dateKey" />
                         <!-- <div class="col-12 pb-1">
                         <div class="d-flex align-items-center justify-content-between mb-4">
                             <div>
