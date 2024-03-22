@@ -48,6 +48,8 @@ namespace Takerman.Dating.Data
 
         public bool IsActive { get; set; }
 
+        public bool IsAdmin { get; set; } = false;
+
         public required Gender Gender { get; set; }
 
         public Ethnicity? Ethnicity { get; set; }

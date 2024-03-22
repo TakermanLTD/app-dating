@@ -3,6 +3,7 @@ using Serilog;
 using System.Net;
 using Takerman.Dating.Data;
 using Takerman.Dating.Data.DTOs;
+using Takerman.Dating.Data.Initialization;
 using Takerman.Dating.Models.Configuration;
 using Takerman.Dating.Server.Middleware;
 using Takerman.Dating.Services;
@@ -38,6 +39,7 @@ builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
 builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
 builder.Services.AddDbContext<DefaultContext>(options => options.UseSqlServer(connectionString));
+builder.Services.AddTransient<IContextInitializer, ContextInitializer>();
 builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<INotificationService, NotificationService>();
 builder.Services.AddTransient<IOrderService, OrderService>();
@@ -51,6 +53,9 @@ builder.Services.Configure<PayPalConfig>(builder.Configuration.GetSection(nameof
 builder.Services.Configure<CdnConfig>(builder.Configuration.GetSection(nameof(CdnConfig)));
 
 var app = builder.Build();
+
+using var scope = app.Services.CreateAsyncScope();
+await scope.ServiceProvider.GetRequiredService<IContextInitializer>().InitializeAsync();
 
 app.UseDefaultFiles();
 
@@ -77,4 +82,4 @@ app.MapFallbackToFile("/index.html");
 
 app.MapHub<ChatHub>("/chatHub");
 
-app.Run();
+await app.RunAsync();
