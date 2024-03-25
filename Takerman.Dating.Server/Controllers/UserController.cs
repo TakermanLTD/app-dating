@@ -65,6 +65,12 @@ namespace Takerman.Dating.Server.Controllers
             return await _userService.GetAsync(id);
         }
 
+        [HttpGet("GetAll")]
+        public async Task<IEnumerable<User>> GetAll()
+        {
+            return await _userService.GetAllAsync();
+        }
+
         [HttpPut("ChangePassword")]
         public async Task ChangePassword(int id, string password)
         {

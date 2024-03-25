@@ -15,8 +15,14 @@ namespace Takerman.Dating.Server.Controllers
             return await _datingService.GetCard(userId, id);
         }
 
-        [HttpPost("GetAll")]
-        public async Task<IEnumerable<DateCardDto>> GetAll(int? userId, FilterDto filter)
+        [HttpGet("GetAll")]
+        public async Task<IEnumerable<Date>> GetAll()
+        {
+            return await _datingService.GetAll();
+        }
+
+        [HttpPost("GetAllAsCards")]
+        public async Task<IEnumerable<DateCardDto>> GetAllAsCards(int? userId, FilterDto filter)
         {
             return await _datingService.GetAllAsCards(userId, filter);
         }

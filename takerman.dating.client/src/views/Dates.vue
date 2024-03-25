@@ -118,7 +118,7 @@ export default {
             try {
                 this.loading = true;
                 const authStore = useAuthStore();
-                this.dates = await fetchWrapper.post('Dates/GetAll' + (authStore.user == null ? '' : '?userId=' + authStore.user.id), this.filter);
+                this.dates = await fetchWrapper.post('Dates/GetAllAsCards' + (authStore.user == null ? '' : '?userId=' + authStore.user.id), this.filter);
                 this.loading = false;
             } catch (error) {
                 this.loading = false;

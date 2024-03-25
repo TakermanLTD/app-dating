@@ -9,4 +9,5 @@ public class AuthenticateResponse(User user, string token)
     public string LastName { get; set; } = user.LastName;
     public string Email { get; set; } = user.Email;
     public string Token { get; set; } = token;
+    public bool IsAdmin { get; set; } = user.IsAdmin;
 }

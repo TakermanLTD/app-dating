@@ -69,6 +69,10 @@ export default defineConfig({
                 target: 'https://localhost:7203/',
                 secure: false
             },
+            '^/Admin': {
+                target: 'https://localhost:7203/',
+                secure: false
+            },
             '^/Cdn': {
                 target: 'https://localhost:7203/',
                 secure: false

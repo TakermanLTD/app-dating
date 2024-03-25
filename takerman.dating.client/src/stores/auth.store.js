@@ -12,7 +12,7 @@ export const useAuthStore = defineStore({
     actions: {
         async login(email, password) {
             const user = await fetchWrapper.post(`${baseUrl}/Authenticate`, { email, password });
-            this.user = user;
+            this.user = await user;
             localStorage.setItem('user', JSON.stringify(user));
             router.push('/home');
             return user;

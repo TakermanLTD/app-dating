@@ -25,5 +25,7 @@ namespace Takerman.Dating.Services.Abstraction
         Task<ResetPasswordRequest> GenerateResetPasswordRequest(int userId);
 
         Task UpdateAsync(ProfileDto user);
+
+        Task<IEnumerable<User>> GetAllAsync();
     }
 }

@@ -175,5 +175,10 @@ namespace Takerman.Dating.Services
         {
             return await _context.ResetPasswordRequests.FirstOrDefaultAsync(x => x.Code == code);
         }
+
+        public async Task<IEnumerable<User>> GetAllAsync()
+        {
+            return await _context.Users.ToListAsync();
+        }
     }
 }

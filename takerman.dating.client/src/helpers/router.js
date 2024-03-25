@@ -13,6 +13,7 @@ import Activate from '../views/Activate.vue';
 import Orders from '../views/Orders.vue';
 import Matches from '../views/Matches.vue';
 import Gallery from "../views/Gallery.vue";
+import Admin from "../views/Admin.vue";
 import { useAuthStore } from '@/stores';
 
 export const router = createRouter({
@@ -34,6 +35,7 @@ export const router = createRouter({
         { path: '/reset-password-request', component: ResetPasswordRequest },
         { path: '/reset-password', component: ResetPassword },
         { path: '/activate', component: Activate },
+        { path: '/admin', component: Admin },
         { path: '/logout', component: Home }
     ]
 });
