@@ -18,5 +18,11 @@ namespace Takerman.Dating.Server.Controllers
         {
             return _optionsService.GetDateTypes();
         }
+
+        [HttpGet("GetDateStatuses")]
+        public IEnumerable<KeyValuePair<int, string>> GetDateStatuses()
+        {
+            return _optionsService.GetDateStatuses();
+        }
     }
 }

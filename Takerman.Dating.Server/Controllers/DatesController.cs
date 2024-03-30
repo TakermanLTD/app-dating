@@ -70,5 +70,17 @@ namespace Takerman.Dating.Server.Controllers
 
             return await _datingService.GetCard(status.Id);
         }
+
+        [HttpPost("Save")]
+        public async Task Save(Date date)
+        {
+            await _datingService.Save(date);
+        }
+
+        [HttpDelete("Delete")]
+        public async Task Delete(int id)
+        {
+            await _datingService.Delete(id);
+        }
     }
 }

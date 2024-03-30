@@ -27,7 +27,11 @@
                 <td>{{ date.id }}</td>
                 <td> <input type="text" :v-model="date.title" class="form-control" :value="date.title" /></td>
                 <td> <input type="text" :v-model="date.startsOn" class="form-control" :value="moment(new Date(date.startsOn)).format('DD MMM, HH:mm')" style="width: 140px;" /></td>
-                <td>{{ date.status }}</td>
+                <td>
+                    <select class="form-control" :value="date.status">
+                        <option v-for="(status, statusKey) in this.statuses" :value="status.key" :key="statusKey" @click="date.status = status.key">{{ status.value }}</option>
+                    </select>
+                </td>
                 <td> <input type="text" style="width: 80px;" :v-model="date.minMen" class="form-control" :value="date.minMen" /></td>
                 <td> <input type="text" style="width: 80px;" :v-model="date.menCount" class="form-control" :value="date.menCount" /></td>
                 <td> <input type="text" style="width: 80px;" :v-model="date.minWomen" class="form-control" :value="date.minWomen" /></td>
@@ -35,7 +39,11 @@
                 <td> <input type="text" style="width: 80px;" :v-model="date.minAges" class="form-control" :value="date.minAges" /></td>
                 <td> <input type="text" style="width: 80px;" :v-model="date.maxAges" class="form-control" :value="date.maxAges" /></td>
                 <td> <input type="text" style="width: 80px;" :v-model="date.price" class="form-control" :value="date.price" /></td>
-                <td>{{ date.ethnicity }}</td>
+                <td>
+                    <select class="form-control" :value="date.ethnicity">
+                        <option v-for="(ethnicity, ethnicityKey) in this.ethnicities" :value="ethnicity.key" :key="ethnicityKey" @click="date.ethnicity = ethnicity.key">{{ ethnicity.value }}</option>
+                    </select>
+                </td>
                 <td> <input type="text" :v-model="date.videoLink" class="form-control" :value="date.videoLink" /></td>
                 <td>
                     <button @click="saveDate(date)" class="btn btn-success">save</button>
@@ -86,7 +94,8 @@ export default {
             ethnicities: [],
             dateTypes: [],
             dates: [],
-            users: []
+            users: [],
+            statuses: []
         };
     },
     async mounted() {
@@ -94,21 +103,21 @@ export default {
         this.dateTypes = await fetchWrapper.get('Options/GetDateTypes');
         this.dates = await fetchWrapper.get('Dates/GetAll');
         this.users = await fetchWrapper.get('User/GetAll');
+        this.statuses = await fetchWrapper.get('Options/GetDateStatuses');
     },
     component: {},
     methods: {
         async saveDate(date) {
-            await fetchWrapper.get('Dates/Save', date);
+            await fetchWrapper.post('Dates/Save', date);
         },
         async removeDate(date) {
-            await fetchWrapper.get('Dates/Delete', date);
+            await fetchWrapper.delete('Dates/Delete', date.id);
         },
         async saveUser(date) {
-            
-            await fetchWrapper.get('Users/Save', date);
+            await fetchWrapper.post('Users/Save', date);
         },
         async removeUser(date) {
-            await fetchWrapper.get('Users/Delete', date);
+            await fetchWrapper.delete('Users/Delete', date);
         }
     },
     components: {}

@@ -329,5 +329,18 @@ namespace Takerman.Dating.Services
 
             return result;
         }
+
+        public async Task Save(Date date)
+        {
+            _context.Dates.Update(date);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task Delete(int id)
+        {
+            var date = await Get(id);
+            _context.Remove(date);
+            await _context.SaveChangesAsync();
+        }
     }
 }

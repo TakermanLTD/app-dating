@@ -23,5 +23,12 @@ namespace Takerman.Dating.Services
                 .Select(x => new KeyValuePair<int, string>((int)x, x.GetDisplay()))
                 .ToList();
         }
+
+        public IEnumerable<KeyValuePair<int, string>> GetDateStatuses()
+        {
+            return Enum.GetValues<DateStatus>()
+                .Select(x => new KeyValuePair<int, string>((int)x, Enum.GetName(typeof(DateStatus), x)))
+                .ToList();
+        }
     }
 }
