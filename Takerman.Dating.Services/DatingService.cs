@@ -332,6 +332,8 @@ namespace Takerman.Dating.Services
 
         public async Task Save(Date date)
         {
+            date.Orders = await _context.Orders.Where(x => x.DateId == date.Id).ToListAsync();
+            date.Attendees = await _context.UserSavedSpots.Where(x => x.DateId == date.Id).Select(x => x.User).ToListAsync();
             _context.Dates.Update(date);
             await _context.SaveChangesAsync();
         }

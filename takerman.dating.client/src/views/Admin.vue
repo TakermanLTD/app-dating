@@ -26,19 +26,19 @@
             <tr v-for="(date, dateKey) in this.dates" :key="dateKey">
                 <td>{{ date.id }}</td>
                 <td> <input type="text" :v-model="date.title" class="form-control" :value="date.title" /></td>
-                <td> <input type="text" :v-model="date.startsOn" class="form-control" :value="moment(new Date(date.startsOn)).format('DD MMM, HH:mm')" style="width: 140px;" /></td>
+                <td> <input type="datetime" :v-model="date.startsOn" class="form-control" :value="moment(new Date(date.startsOn)).format('DD MMM, HH:mm')" style="width: 140px;" /></td>
                 <td>
                     <select class="form-control" :value="date.status">
                         <option v-for="(status, statusKey) in this.statuses" :value="status.key" :key="statusKey" @click="date.status = status.key">{{ status.value }}</option>
                     </select>
                 </td>
-                <td> <input type="text" style="width: 80px;" :v-model="date.minMen" class="form-control" :value="date.minMen" /></td>
-                <td> <input type="text" style="width: 80px;" :v-model="date.menCount" class="form-control" :value="date.menCount" /></td>
-                <td> <input type="text" style="width: 80px;" :v-model="date.minWomen" class="form-control" :value="date.minWomen" /></td>
-                <td> <input type="text" style="width: 80px;" :v-model="date.womenCount" class="form-control" :value="date.womenCount" /></td>
-                <td> <input type="text" style="width: 80px;" :v-model="date.minAges" class="form-control" :value="date.minAges" /></td>
-                <td> <input type="text" style="width: 80px;" :v-model="date.maxAges" class="form-control" :value="date.maxAges" /></td>
-                <td> <input type="text" style="width: 80px;" :v-model="date.price" class="form-control" :value="date.price" /></td>
+                <td> <input type="number" style="width: 80px;" class="form-control" :value="date.minMen" /></td>
+                <td> <input type="number" style="width: 80px;" class="form-control" :value="date.menCount" /></td>
+                <td> <input type="number" style="width: 80px;" :v-model="date.minWomen" class="form-control" :value="date.minWomen" /></td>
+                <td> <input type="number" style="width: 80px;" :v-model="date.womenCount" class="form-control" :value="date.womenCount" /></td>
+                <td> <input type="number" style="width: 80px;" :v-model="date.minAges" class="form-control" :value="date.minAges" /></td>
+                <td> <input type="number" style="width: 80px;" :v-model="date.maxAges" class="form-control" :value="date.maxAges" /></td>
+                <td> <input type="number" style="width: 80px;" :v-model="date.price" class="form-control" :value="date.price" /></td>
                 <td>
                     <select class="form-control" :value="date.ethnicity">
                         <option v-for="(ethnicity, ethnicityKey) in this.ethnicities" :value="ethnicity.key" :key="ethnicityKey" @click="date.ethnicity = ethnicity.key">{{ ethnicity.value }}</option>
@@ -108,6 +108,8 @@ export default {
     component: {},
     methods: {
         async saveDate(date) {
+            date.orders = [];
+            date.attendees = [];
             await fetchWrapper.post('Dates/Save', date);
         },
         async removeDate(date) {
