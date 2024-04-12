@@ -22,7 +22,7 @@
       <div class="col-lg-7 h-auto mb-30">
         <div class="h-100 bg-light p-30">
           <h3>{{ this.date.title }}</h3>
-          <div class="d-flex mb-3">
+          <!-- <div class="d-flex mb-3">
             <div class="text-primary mr-2">
               <small class="fas fa-star"></small>
               <small class="fas fa-star"></small>
@@ -30,24 +30,33 @@
               <small class="fas fa-star-half-alt"></small>
               <small class="far fa-star"></small>
             </div>
-          </div>
-          <h3 class="font-weight-semi-bold mb-4">{{ this.date.price }}</h3>
+          </div> -->
+          <h3 class="font-weight-semi-bold mb-4">{{ $t('common.price') }}: {{ $t('common.currencySign') }} {{ this.date.price }}</h3>
           <p class="mb-4">{{ this.date.shortDescription }}</p>
+          <div class="d-flex pt-2">
+            <strong class="text-dark mr-2">{{ $t('social.shareOn') }}:</strong>
+            <div class="d-inline-flex">
+              <a class="text-dark px-2" :href="$t('social.facebook.url')">
+                <i class="fab fa-facebook-f"></i>
+              </a>
+              <a class="text-dark px-2" :href="$t('social.instagram.url')">
+                <i class="fab fa-twitter"></i>
+              </a>
+            </div>
+          </div>
           <div class="d-flex mb-7">
-            <div>
-              <div v-if="date.status === 'Approved'">
-                Време до започване <br />
-                <strong>{{ this.startTime }}</strong> часа
-              </div>
-              <div v-else-if="date.status === 'Started'">
-                <button class="btn btn-success btn-lg" @click="enterDate">Влез в Срещата</button>
-                До разкриване на резултатите <br />
-                <strong>{{ this.revealTime }}</strong> часа
-              </div>
-              <div v-else-if="date.status === 'Finished'">
-                До разкриване на резултатите <br />
-                <strong>{{ this.revealTime }}</strong> часа
-              </div>
+            <div v-if="this.date.status === 'Approved' || this.startTime || this.date.status ==='SavedSpot'">
+              Време до започване <br />
+              <strong>{{ this.startTime }}</strong> часа
+            </div>
+            <div v-else-if="this.date.status === 'Started'">
+              <button class="btn btn-success btn-lg" @click="enterDate">Влез в Срещата</button>
+              До разкриване на резултатите <br />
+              <strong>{{ this.revealTime }}</strong> часа
+            </div>
+            <div v-else-if="this.date.status === 'Finished'">
+              До разкриване на резултатите <br />
+              <strong>{{ this.revealTime }}</strong> часа
             </div>
           </div>
           <div class="d-flex align-items-center mb-4 pt-2">
@@ -82,17 +91,6 @@
             <p v-else class="text-center">
               <strong>Срещата е завършила</strong>
             </p>
-          </div>
-          <div class="d-flex pt-2">
-            <strong class="text-dark mr-2">{{ $t('social.shareOn') }}:</strong>
-            <div class="d-inline-flex">
-              <a class="text-dark px-2" :href="$t('social.facebook.url')">
-                <i class="fab fa-facebook-f"></i>
-              </a>
-              <a class="text-dark px-2" :href="$t('social.instagram.url')">
-                <i class="fab fa-twitter"></i>
-              </a>
-            </div>
           </div>
         </div>
       </div>
@@ -145,7 +143,16 @@ export default {
       ]
     };
   },
-  async created() {
+  computed: {
+    path() {
+      var route = useRoute();
+      return route.path;
+    },
+    isPast() {
+      return new Date(this.date?.startsOn) < new Date();
+    }
+  },
+  async mounted() {
     this.loading = true;
     let queryString = window.location.search;
     let urlParams = new URLSearchParams(queryString);
