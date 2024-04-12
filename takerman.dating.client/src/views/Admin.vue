@@ -25,26 +25,28 @@
             </tr>
             <tr v-for="(date, dateKey) in this.dates" :key="dateKey">
                 <td>{{ date.id }}</td>
-                <td> <input type="text" :v-model="date.title" class="form-control" :value="date.title" /></td>
-                <td> <input type="datetime" :v-model="date.startsOn" class="form-control" :value="moment(new Date(date.startsOn)).format('DD MMM, HH:mm')" style="width: 140px;" /></td>
+                <td> <input @input="event => date.title = event.target.value" type="text" :v-model="date.title" class="form-control" :value="date.title" /></td>
+                <td> <input @input="event => date.startsOn = new Date(event.target.value)" type="datetime" :v-model="date.startsOn" class="form-control" :value="new Date(date.startsOn).toLocaleString()" style="width: 140px;" /></td>
                 <td>
-                    <select class="form-control" :value="date.status">
+                    <select v-model="date.status"  class="form-control" :value="date.status">
                         <option v-for="(status, statusKey) in this.statuses" :value="status.key" :key="statusKey" @click="date.status = status.key">{{ status.value }}</option>
                     </select>
                 </td>
-                <td> <input type="number" style="width: 80px;" class="form-control" :value="date.minMen" /></td>
-                <td> <input type="number" style="width: 80px;" class="form-control" :value="date.menCount" /></td>
-                <td> <input type="number" style="width: 80px;" :v-model="date.minWomen" class="form-control" :value="date.minWomen" /></td>
-                <td> <input type="number" style="width: 80px;" :v-model="date.womenCount" class="form-control" :value="date.womenCount" /></td>
-                <td> <input type="number" style="width: 80px;" :v-model="date.minAges" class="form-control" :value="date.minAges" /></td>
-                <td> <input type="number" style="width: 80px;" :v-model="date.maxAges" class="form-control" :value="date.maxAges" /></td>
-                <td> <input type="number" style="width: 80px;" :v-model="date.price" class="form-control" :value="date.price" /></td>
+                <td> <input type="number" @input="event => date.minMen = event.target.value" style="width: 80px;" :v-model="date.minMen" class="form-control" :value="date.minMen" /></td>
+                <td> <input type="number" @input="event => date.menCount = event.target.value" style="width: 80px;" :v-model="date.menCount" class="form-control" :value="date.menCount" /></td>
+                <td> <input type="number" @input="event => date.minWomen = event.target.value" style="width: 80px;" :v-model="date.minWomen" class="form-control" :value="date.minWomen" /></td>
+                <td> <input type="number" @input="event => date.womenCount = event.target.value" style="width: 80px;" :v-model="date.womenCount" class="form-control" :value="date.womenCount" /></td>
+                <td> <input type="number" @input="event => date.minAges = event.target.value" style="width: 80px;" :v-model="date.minAges" class="form-control" :value="date.minAges" /></td>
+                <td> <input type="number" @input="event => date.maxAges = event.target.value" style="width: 80px;" :v-model="date.maxAges" class="form-control" :value="date.maxAges" /></td>
+                <td> <input type="number" @input="event => date.price = event.target.value" style="width: 80px;" :v-model="date.price" class="form-control" :value="date.price" /></td>
                 <td>
-                    <select class="form-control" :value="date.ethnicity">
+                    <select v-model="date.ethnicity" class="form-control" :value="date.ethnicity">
                         <option v-for="(ethnicity, ethnicityKey) in this.ethnicities" :value="ethnicity.key" :key="ethnicityKey" @click="date.ethnicity = ethnicity.key">{{ ethnicity.value }}</option>
                     </select>
                 </td>
-                <td> <input type="text" :v-model="date.videoLink" class="form-control" :value="date.videoLink" /></td>
+                <td>
+                    <input type="text" @input="event => date.videoLink = event.target.value" :v-model="date.videoLink" class="form-control" :value="date.videoLink" />
+                </td>
                 <td>
                     <button @click="saveDate(date)" class="btn btn-success">save</button>
                     <button @click="removeDate(date)" class="btn btn-danger">remove</button>
