@@ -26,9 +26,11 @@
             <tr v-for="(date, dateKey) in this.dates" :key="dateKey">
                 <td>{{ date.id }}</td>
                 <td> <input @input="event => date.title = event.target.value" type="text" :v-model="date.title" class="form-control" :value="date.title" /></td>
-                <td> <input @input="event => date.startsOn = new Date(event.target.value)" type="datetime" :v-model="date.startsOn" class="form-control" :value="new Date(date.startsOn).toLocaleString()" style="width: 140px;" /></td>
                 <td>
-                    <select v-model="date.status"  class="form-control" :value="date.status">
+                    <VueDatePicker  v-model="date.startsOn" />
+                </td>
+                <td>
+                    <select v-model="date.status" class="form-control" :value="date.status">
                         <option v-for="(status, statusKey) in this.statuses" :value="status.key" :key="statusKey" @click="date.status = status.key">{{ status.value }}</option>
                     </select>
                 </td>
@@ -87,6 +89,8 @@
 
 <script lang="js">
 import { fetchWrapper } from '@/helpers';
+import VueDatePicker  from '@vuepic/vue-datepicker';
+import '@vuepic/vue-datepicker/dist/main.css'
 import moment from 'moment';
 
 export default {
@@ -107,7 +111,6 @@ export default {
         this.users = await fetchWrapper.get('User/GetAll');
         this.statuses = await fetchWrapper.get('Options/GetDateStatuses');
     },
-    component: {},
     methods: {
         async saveDate(date) {
             date.orders = [];
@@ -124,7 +127,7 @@ export default {
             await fetchWrapper.delete('Users/Delete', date);
         }
     },
-    components: {}
+    components: {VueDatePicker }
 }
 </script>
 
