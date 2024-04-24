@@ -83,8 +83,8 @@ namespace Takerman.Dating.Server.Controllers
             return await _userService.ActivateAsync(code);
         }
 
-        [HttpPost("Create")]
-        public async Task<User> Create([FromBody] RegisterDto data)
+        [HttpPost("Add")]
+        public async Task<User> Add([FromBody] RegisterDto data)
         {
             var user = _mapper.Map<User>(data);
             user.IsActive = true;
@@ -94,6 +94,12 @@ namespace Takerman.Dating.Server.Controllers
             await _notificationService.NotifyForCreatedUser(result, HttpContext.Request.Host.Value);
 
             return result;
+        }
+
+        [HttpPost("AdminAdd")]
+        public async Task<User> AdminAdd([FromBody] User user)
+        {
+            return await _userService.CreateAsync(user);
         }
 
         //[Authorize]
@@ -108,14 +114,21 @@ namespace Takerman.Dating.Server.Controllers
         }
 
         //[Authorize]
-        [HttpPut("Update")]
-        public async Task Update([FromBody] ProfileDto user)
+        [HttpPut("Save")]
+        public async Task Save([FromBody] ProfileDto user)
         {
             if (!string.IsNullOrEmpty(user.Password) && user.Password.Equals(user.ConfirmPassword, StringComparison.CurrentCultureIgnoreCase))
             {
                 user.Password = user.Password;
             }
 
+            await _userService.UpdateAsync(user);
+        }
+
+        //[Authorize]
+        [HttpPut("AdminSave")]
+        public async Task AdminSave([FromBody] User user)
+        {
             await _userService.UpdateAsync(user);
         }
     }

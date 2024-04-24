@@ -344,5 +344,12 @@ namespace Takerman.Dating.Services
             _context.Remove(date);
             await _context.SaveChangesAsync();
         }
+
+        public async Task<Date> Add(Date date)
+        {
+            await _context.Dates.AddAsync(date);
+            await _context.SaveChangesAsync();
+            return date;
+        }
     }
 }

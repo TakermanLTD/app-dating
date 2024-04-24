@@ -71,6 +71,12 @@ namespace Takerman.Dating.Server.Controllers
             return await _datingService.GetCard(status.Id);
         }
 
+        [HttpPost("Add")]
+        public async Task<Date> Add(Date date)
+        {
+            return await _datingService.Add(date);
+        }
+
         [HttpPost("Save")]
         public async Task Save(Date date)
         {

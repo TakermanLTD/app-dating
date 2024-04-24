@@ -205,7 +205,7 @@ export default {
                         return;
                     }
                 }
-                const response = await fetchWrapper.put("User/Update", this.fields);
+                const response = await fetchWrapper.put("User/Save", this.fields);
                 this.loading = false;
                 if (response == "" || response.status == 200) {
                     this.status = 'Редактиран успешно';

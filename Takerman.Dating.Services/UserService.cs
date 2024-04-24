@@ -90,7 +90,12 @@ namespace Takerman.Dating.Services
             if (!string.IsNullOrEmpty(user.Password))
                 result.Password = GetHashedPassword(user.Password);
 
-            _context.Users.Update(result);
+            await UpdateAsync(result);
+        }
+
+        public async Task UpdateAsync(User user)
+        {
+            _context.Users.Update(user);
             await _context.SaveChangesAsync();
         }
 

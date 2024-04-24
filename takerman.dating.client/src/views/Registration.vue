@@ -129,7 +129,7 @@ export default {
                     this.statusClass = 'danger';
                     return;
                 }
-                let response = await fetchWrapper.post('User/Create', this.fields);
+                let response = await fetchWrapper.post('User/Add', this.fields);
                 this.loading = false;
                 if (response && response.id != 0) {
                     if (response.status == 204) {
