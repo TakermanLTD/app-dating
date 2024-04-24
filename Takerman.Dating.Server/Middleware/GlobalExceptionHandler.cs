@@ -15,7 +15,7 @@ namespace Takerman.Dating.Server.Middleware
             {
                 Status = StatusCodes.Status500InternalServerError,
                 Title = "Server error",
-                Detail = "An exception occured. Please send us an email with details to contact@sreshti.net"
+                Detail = "An exception occurred. Please send us an email with details to contact@sreshti.net"
             };
 
             httpContext.Response.StatusCode = problemDetails.Status.Value;

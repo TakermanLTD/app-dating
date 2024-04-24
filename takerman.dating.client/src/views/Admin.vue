@@ -190,6 +190,7 @@ export default {
         async addDate() {
             this.newDate.orders = [];
             this.newDate.attendees = [];
+            this.newDate.dateType = 1;
             let result = await fetchWrapper.post('Dates/Add', this.newDate);
             this.dates.push(result);
         },

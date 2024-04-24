@@ -115,9 +115,7 @@ namespace Takerman.Dating.Services
             card.DateType = date.DateType.GetDisplay();
 
             if (date.StartsOn.HasValue)
-            {
                 card.StartsOn = date.StartsOn.Value.ToString(CultureInfo.InvariantCulture);
-            }
 
             return card;
         }
