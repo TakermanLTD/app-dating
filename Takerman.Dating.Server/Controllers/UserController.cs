@@ -1,8 +1,5 @@
 using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.ComponentModel.DataAnnotations;
-using System.Reflection;
 using Takerman.Dating.Data;
 using Takerman.Dating.Data.DTOs;
 using Takerman.Dating.Models.DTOs;
@@ -99,6 +96,7 @@ namespace Takerman.Dating.Server.Controllers
         [HttpPost("AdminAdd")]
         public async Task<User> AdminAdd([FromBody] User user)
         {
+            user.IsActive = true;
             return await _userService.CreateAsync(user);
         }
 

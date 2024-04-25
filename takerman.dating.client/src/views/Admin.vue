@@ -214,7 +214,7 @@ export default {
         async saveDate(date) {
             date.orders = [];
             date.attendees = [];
-            await fetchWrapper.post('Dates/Save', date);
+            await fetchWrapper.put('Dates/Save', date);
             alert('saved');
         },
         async saveDates() {
