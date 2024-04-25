@@ -44,7 +44,7 @@ namespace Takerman.Dating.Data
 
         public Ethnicity Ethnicity { get; set; }
 
-        public virtual ICollection<User> Attendees { get; set; } = null;
+        // public virtual ICollection<User> Attendees { get; set; } = null;
 
         public virtual ICollection<Order> Orders { get; set; } = null;
 
