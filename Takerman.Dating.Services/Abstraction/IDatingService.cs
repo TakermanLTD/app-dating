@@ -46,7 +46,13 @@ namespace Takerman.Dating.Services.Abstraction
         Task<Date> Add(Date date);
 
         Task Save(Date date);
-        
+
         Task Delete(int id);
+
+        Task SaveAll(IEnumerable<Date> dates);
+
+        Task DeleteAll();
+
+        Task DeleteSpots();
     }
 }

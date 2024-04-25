@@ -77,16 +77,34 @@ namespace Takerman.Dating.Server.Controllers
             return await _datingService.Add(date);
         }
 
-        [HttpPost("Save")]
-        public async Task Save(Date date)
+        [HttpPut("Save")]
+        public async Task Save([FromBody] Date date)
         {
             await _datingService.Save(date);
+        }
+
+        [HttpPut("SaveAll")]
+        public async Task SaveAll([FromBody] IEnumerable<Date> dates)
+        {
+            await _datingService.SaveAll(dates);
         }
 
         [HttpDelete("Delete")]
         public async Task Delete(int id)
         {
             await _datingService.Delete(id);
+        }
+
+        [HttpDelete("DeleteAll")]
+        public async Task DeleteAll()
+        {
+            await _datingService.DeleteAll();
+        }
+
+        [HttpDelete("DeleteSpots")]
+        public async Task DeleteSpots()
+        {
+            await _datingService.DeleteSpots();
         }
     }
 }

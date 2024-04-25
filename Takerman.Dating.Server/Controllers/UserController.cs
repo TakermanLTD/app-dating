@@ -131,5 +131,17 @@ namespace Takerman.Dating.Server.Controllers
         {
             await _userService.UpdateAsync(user);
         }
+
+        [HttpPut("SaveAll")]
+        public async Task SaveAll([FromBody] IEnumerable<User> users)
+        {
+            await _userService.SaveAll(users);
+        }
+
+        [HttpPut("DeleteAll")]
+        public async Task DeleteAll()
+        {
+            await _userService.DeleteAll();
+        }
     }
 }

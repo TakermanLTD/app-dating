@@ -149,7 +149,7 @@ namespace Takerman.Dating.Services
         public async Task<User> GetByEmailAsync(string email)
         {
             var result = await _context.Users.FirstOrDefaultAsync(x => x.Email.ToLower() == email.ToLower());
-            
+
             return result;
         }
 
@@ -184,6 +184,18 @@ namespace Takerman.Dating.Services
         public async Task<IEnumerable<User>> GetAllAsync()
         {
             return await _context.Users.ToListAsync();
+        }
+
+        public async Task SaveAll(IEnumerable<User> users)
+        {
+            _context.Users.UpdateRange(users);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeleteAll()
+        {
+            _context.Users.RemoveRange(_context.Users);
+            await _context.SaveChangesAsync();
         }
     }
 }

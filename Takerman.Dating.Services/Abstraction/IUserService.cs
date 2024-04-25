@@ -29,5 +29,9 @@ namespace Takerman.Dating.Services.Abstraction
         Task<IEnumerable<User>> GetAllAsync();
 
         Task UpdateAsync(User user);
+
+        Task SaveAll(IEnumerable<User> users);
+
+        Task DeleteAll();
     }
 }

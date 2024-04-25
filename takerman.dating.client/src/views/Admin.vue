@@ -6,6 +6,11 @@
         <hgroup>
             <h3>Dates</h3>
         </hgroup>
+        <div>
+            <button @click="saveDates" class="btn btn-success">save</button>
+            <button @click="deleteDates" class="btn btn-danger">delete all</button>
+            <button @click="deleteSpots" class="btn btn-danger">delete spots</button>
+        </div>
         <table v-if="this.dates" class="table table-striped table-bordered">
             <tr>
                 <th>ID</th>
@@ -81,7 +86,7 @@
                 </td>
                 <td>
                     <button @click="saveDate(date)" class="btn btn-success">save</button>
-                    <button @click="removeDate(date)" class="btn btn-danger">remove</button>
+                    <button @click="deleteDate(date)" class="btn btn-danger">delete</button>
                 </td>
             </tr>
         </table>
@@ -90,6 +95,10 @@
         <hgroup>
             <h3>Users</h3>
         </hgroup>
+        <div>
+            <button @click="saveUsers" class="btn btn-success">save</button>
+            <button @click="deleteUsers" class="btn btn-danger">delete all</button>
+        </div>
         <table v-if="this.users" class="table table-striped table-bordered">
             <tr>
                 <th>ID</th>
@@ -128,7 +137,7 @@
                 <td><input @input="event => user.instagram = event.target.value" type="text" :v-model="user.instagram" class="form-control" :value="user.instagram" /></td>
                 <td>
                     <button @click="saveUser(user)" class="btn btn-success">save</button>
-                    <button @click="removeUser(user)" class="btn btn-danger">remove</button>
+                    <button @click="deleteUser(user)" class="btn btn-danger">delete</button>
                 </td>
             </tr>
         </table>
@@ -187,20 +196,45 @@ export default {
         this.statuses = await fetchWrapper.get('Options/GetDateStatuses');
     },
     methods: {
+        async deleteSpots() {
+            if (confirm('are you sure?')) {
+                await fetchWrapper.delete('Dates/DeleteSpots');
+                this.dates = await fetchWrapper.get('Dates/GetAll');
+                alert('deleted');
+            }
+        },
         async addDate() {
             this.newDate.orders = [];
             this.newDate.attendees = [];
             this.newDate.dateType = 1;
             let result = await fetchWrapper.post('Dates/Add', this.newDate);
             this.dates.push(result);
+            alert('added');
         },
         async saveDate(date) {
             date.orders = [];
             date.attendees = [];
             await fetchWrapper.post('Dates/Save', date);
+            alert('saved');
         },
-        async removeDate(date) {
+        async saveDates() {
+            for (let i = 0; i < this.dates.length; i++) {
+                this.dates[i].orders = [];
+                this.dates[i].attendees = [];
+            }
+            await fetchWrapper.put('Dates/SaveAll', this.dates);
+            alert('saved');
+        },
+        async deleteDate(date) {
             await fetchWrapper.delete('Dates/Delete?id=' + date.id);
+            let index = this.dates.indexOf(date);
+            this.dates.splice(index, 1);
+        },
+        async deleteDates() {
+            if (confirm('are you sure?')) {
+                await fetchWrapper.delete('Dates/DeleteAll');
+                this.dates = [];
+            }
         },
         async addUser() {
             this.newUser.orders = [];
@@ -208,15 +242,34 @@ export default {
             this.newUser.pictures = [];
             var result = await fetchWrapper.post('User/AdminAdd', this.newUser);
             this.users.push(result);
+            alert('added');
         },
         async saveUser(user) {
             user.orders = [];
             user.choices = [];
             user.pictures = [];
             await fetchWrapper.put('User/AdminSave', user);
+            alert('saved');
         },
-        async removeUser(user) {
+        async saveUsers() {
+            for (let i = 0; i < this.users.length; i++) {
+                this.users[i].orders = [];
+                this.users[i].choices = [];
+                this.users[i].pictures = [];
+            }
+            await fetchWrapper.put('User/SaveAll', this.users);
+            alert('saved');
+        },
+        async deleteUser(user) {
             await fetchWrapper.delete('User/Delete?userId=' + user.id);
+            let index = this.users.indexOf(user);
+            this.users.splice(index, 1);
+        },
+        async deleteUsers() {
+            if (confirm('are you sure?')) {
+                await fetchWrapper.delete('User/DeleteAll');
+                this.users = [];
+            }
         }
     },
     components: { VueDatePicker }

@@ -69,7 +69,7 @@ namespace Takerman.Dating.Services
 
             foreach (var date in dates)
             {
-                await Maintenance(date);
+                // await Maintenance(date);
 
                 var card = await GetCardFromDate(userId, date);
                 result.Add(card);
@@ -348,6 +348,30 @@ namespace Takerman.Dating.Services
             await _context.Dates.AddAsync(date);
             await _context.SaveChangesAsync();
             return date;
+        }
+
+        public async Task SaveAll(IEnumerable<Date> dates)
+        {
+            _context.Dates.UpdateRange(dates);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeleteAll()
+        {
+            _context.Dates.RemoveRange(_context.Dates);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeleteSpots()
+        {
+            _context.UserSavedSpots.RemoveRange(_context.UserSavedSpots);
+            foreach (var date in _context.Dates)
+            {
+                date.MenCount = 0;
+                date.WomenCount = 0;
+            }
+            _context.Dates.UpdateRange(_context.Dates);
+            await _context.SaveChangesAsync();
         }
     }
 }
