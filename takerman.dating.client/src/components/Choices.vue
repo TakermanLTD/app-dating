@@ -37,6 +37,12 @@
         </div>
         <br />
     </div>
+    <div v-else>
+        <p>
+            {{ $t('choices.noChoices') }}
+        </p>
+    </div>
+
 </template>
 
 <script lang="js">

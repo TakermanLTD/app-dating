@@ -23,6 +23,32 @@
         <div class="h-100 bg-light p-30">
           <h3>{{ this.date.title }}</h3>
           <p class="mb-4">{{ this.date.shortDescription }}</p>
+          <table class="table">
+            <tr>
+              <td>
+                <strong>{{ $t('dates.card.menCount') }}</strong> {{ this.date.menCount }}/{{ this.date.minMen }}
+              </td>
+              <td>
+                <strong>{{ $t('dates.card.womenCount') }}</strong> {{ this.date.womenCount }}/{{ this.date.minWomen }}
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <strong>{{ $t('dates.card.minAges') }}</strong> {{ this.date.minAges }}
+              </td>
+              <td>
+                <strong>{{ $t('dates.card.maxAges') }}</strong> {{ this.date.maxAges }}
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <strong>{{ $t('dates.card.ethnicity') }}</strong> {{ this.date.ethnicity }}
+              </td>
+              <td>
+                <strong>{{ $t('dates.card.location') }}</strong> {{ this.date.location }}
+              </td>
+            </tr>
+          </table>
           <div class="d-flex mb-7">
             <div v-if="this.date.status === 'Approved' || this.startTime || this.date.status === 'SavedSpot'">
               Остава
@@ -91,29 +117,7 @@
       <div class="col">
         <div class="bg-light p-30">
           <h4 class="mb-3">{{ $t('date.description.title') }}</h4>
-          <table class="table">
-            <tr>
-              <td>
-                <strong>{{ $t('dates.card.menCount') }}</strong> {{ this.date.menCount }}/{{ this.date.minMen }}
-              </td>
-              <td>
-                <strong>{{ $t('dates.card.womenCount') }}</strong> {{ this.date.womenCount }}/{{ this.date.minWomen }}</td>
-            </tr>
-            <tr>
-              <td>
-                <strong>{{ $t('dates.card.minAges') }}</strong> {{ this.date.minAges }}
-              </td>
-              <td>
-                <strong>{{ $t('dates.card.maxAges') }}</strong> {{ this.date.maxAges }}</td>
-            </tr>
-            <tr>
-              <td>
-                <strong>{{ $t('dates.card.ethnicity') }}</strong> {{ this.date.ethnicity }}
-              </td>
-              <td>
-                <strong>{{ $t('dates.card.location') }}</strong> {{ this.date.location }}</td>
-            </tr>
-          </table>
+
           <br />
           <p>{{ $t('date.description') }}</p>
           <Choices
@@ -179,7 +183,10 @@ export default {
       this.userId = authStore.user.id;
     if (urlParams.has('id')) {
       this.id = urlParams.get('id');
-      this.date = await fetchWrapper.get('Dates/GetDate?id=' + this.id + '&userId=' + this.userId);
+      let url = 'Dates/GetDate?id=' + this.id;
+      if (this.userId)
+        url += '&userId=' + this.userId;
+      this.date = await fetchWrapper.get(url);
 
       let startsOn = new Date(this.date?.startsOn);
       let countdownToStart = setInterval(async () => {
