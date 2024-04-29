@@ -12,9 +12,23 @@ namespace Takerman.Dating.Server.Controllers
         [HttpGet("Get")]
         public async Task<DateCardDto> Get(int id, int? userId)
         {
-            var result = await _datingService.GetCard(userId, id);
+            var date = await _datingService.Get(id);
+            var result = await _datingService.GetCardFromDate(userId, date);
 
-            result.Pictures = await _cdnService.GetDatePictures(Enum.Parse<Ethnicity>(result.Ethnicity));
+            var thumbnail = await _cdnService.GetDateThumbnail(date.Ethnicity);
+
+            result.Pictures = [thumbnail];
+
+            return result;
+        }
+
+        [HttpGet("GetDate")]
+        public async Task<DateCardDto> GetDate(int id, int? userId)
+        {
+            var date = await _datingService.Get(id);
+            var result = await _datingService.GetCardFromDate(userId, date);
+
+            result.Pictures = await _cdnService.GetDatePictures(date.Ethnicity);
 
             return result;
         }
@@ -32,7 +46,7 @@ namespace Takerman.Dating.Server.Controllers
         }
 
         [HttpGet("GetSavedSpots")]
-        public async Task<IEnumerable<DateCardDto>>  GetSavedSpots(int userId)
+        public async Task<IEnumerable<DateCardDto>> GetSavedSpots(int userId)
         {
             return await _datingService.GetSavedSpots(userId);
         }

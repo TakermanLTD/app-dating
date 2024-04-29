@@ -7,6 +7,8 @@ namespace Takerman.Dating.Services.Abstraction
     {
         Task<IEnumerable<UserPicture>> GetUserPictures(int userId);
 
+        Task<EthnicPicture> GetDateThumbnail(Ethnicity ethnicity);
+
         Task<IEnumerable<EthnicPicture>> GetDatePictures(Ethnicity ethnicity);
 
         Task<bool> DeletePicture(int id);

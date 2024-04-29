@@ -147,5 +147,18 @@ namespace Takerman.Dating.Services
                 throw;
             }
         }
+
+        public async Task<EthnicPicture> GetDateThumbnail(Ethnicity ethnicity)
+        {
+            try
+            {
+                return await _context.EthnicPictures.FirstOrDefaultAsync(x => x.Ethnicity == ethnicity);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An exception occurred when getting images for user");
+                throw;
+            }
+        }
     }
 }

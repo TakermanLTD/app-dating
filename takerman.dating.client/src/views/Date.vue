@@ -6,7 +6,7 @@
       <div class="col-lg-5 mb-30">
         <div id="product-carousel" class="carousel slide" data-ride="carousel">
           <div class="carousel-inner bg-light">
-            <div v-for="(picture, pictureKey) in this.date.pictures" :key="pictureKey" class="carousel-item">
+            <div v-for="(picture, pictureKey) in this.date.pictures" :key="pictureKey" style="display: block;" class="carousel-item">
               <img class="w-100 h-100" :src="picture.url" alt="Image">
             </div>
           </div>
@@ -22,15 +22,6 @@
       <div class="col-lg-7 h-auto mb-30">
         <div class="h-100 bg-light p-30">
           <h3>{{ this.date.title }}</h3>
-          <!-- <div class="d-flex mb-3">
-            <div class="text-primary mr-2">
-              <small class="fas fa-star"></small>
-              <small class="fas fa-star"></small>
-              <small class="fas fa-star"></small>
-              <small class="fas fa-star-half-alt"></small>
-              <small class="far fa-star"></small>
-            </div>
-          </div> -->
           <p class="mb-4">{{ this.date.shortDescription }}</p>
           <div class="d-flex mb-7">
             <div v-if="this.date.status === 'Approved' || this.startTime || this.date.status === 'SavedSpot'">
@@ -188,7 +179,7 @@ export default {
       this.userId = authStore.user.id;
     if (urlParams.has('id')) {
       this.id = urlParams.get('id');
-      this.date = await fetchWrapper.get('Dates/Get?id=' + this.id + '&userId=' + this.userId);
+      this.date = await fetchWrapper.get('Dates/GetDate?id=' + this.id + '&userId=' + this.userId);
 
       let startsOn = new Date(this.date?.startsOn);
       let countdownToStart = setInterval(async () => {

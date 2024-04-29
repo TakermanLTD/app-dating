@@ -1,7 +1,7 @@
 <template>
     <div :class="'col card' + (this.isPast ? ' bg-light' : '')" style="margin: 15px; width: 18rem; display: inline-block;">
         <router-link :to="'date?id=' + this.date?.id + ''">
-            <img class="card-img-top" src="/src/assets/img/date/date-thumbnail.jpeg" alt="Date">
+            <img v-if="this.date && this.date.pictures && this.date.pictures.length > 0" class="card-img-top" :src="this.date?.pictures[0]?.url" alt="Date">
         </router-link>
         <div class="card-body">
             <h4 class="card-title text-center">
