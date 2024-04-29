@@ -60,11 +60,15 @@ namespace Takerman.Dating.Services
                     query = query.Where(x => (int)x.DateType == filter.DateType);
             }
 
+            //var dates = await query
+            //    .OrderByDescending(x => x.StartsOn == null)
+            //    .ThenByDescending(x => x.StartsOn)
+            //    .ThenBy(x => x.MinAges)
+            //    .ThenBy(x => x.Ethnicity)
+            //    .ToListAsync();
+
             var dates = await query
-                .OrderByDescending(x => x.StartsOn == null)
-                .ThenByDescending(x => x.StartsOn)
-                .ThenBy(x => x.MinAges)
-                .ThenBy(x => x.Ethnicity)
+                .OrderByDescending(x => x.Id)
                 .ToListAsync();
 
             foreach (var date in dates)

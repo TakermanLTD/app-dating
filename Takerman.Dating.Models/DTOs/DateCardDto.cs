@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using Takerman.Dating.Data;
 
 namespace Takerman.Dating.Models.DTOs
 {
@@ -41,5 +42,7 @@ namespace Takerman.Dating.Models.DTOs
         {
             throw new NotImplementedException();
         }
+
+        public IEnumerable<EthnicPicture> Pictures { get; set; } = [];
     }
 }

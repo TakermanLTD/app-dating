@@ -31,23 +31,11 @@
               <small class="far fa-star"></small>
             </div>
           </div> -->
-          <h3 class="font-weight-semi-bold mb-4">{{ $t('common.price') }}: {{ $t('common.currencySign') }} {{ this.date.price }}</h3>
           <p class="mb-4">{{ this.date.shortDescription }}</p>
-          <div class="d-flex pt-2">
-            <strong class="text-dark mr-2">{{ $t('social.shareOn') }}:</strong>
-            <div class="d-inline-flex">
-              <a class="text-dark px-2" :href="$t('social.facebook.url')">
-                <i class="fab fa-facebook-f"></i>
-              </a>
-              <a class="text-dark px-2" :href="$t('social.instagram.url')">
-                <i class="fab fa-twitter"></i>
-              </a>
-            </div>
-          </div>
           <div class="d-flex mb-7">
-            <div v-if="this.date.status === 'Approved' || this.startTime || this.date.status ==='SavedSpot'">
-              Време до започване <br />
-              <strong>{{ this.startTime }}</strong> часа
+            <div v-if="this.date.status === 'Approved' || this.startTime || this.date.status === 'SavedSpot'">
+              Остава
+              <strong style="font-size: x-large;">{{ this.startTime }}</strong> часа
             </div>
             <div v-else-if="this.date.status === 'Started'">
               <button class="btn btn-success btn-lg" @click="enterDate">Влез в Срещата</button>
@@ -59,6 +47,7 @@
               <strong>{{ this.revealTime }}</strong> часа
             </div>
           </div>
+          <h3 class="font-weight-semi-bold">{{ $t('common.currencySign') }}{{ this.date.price }}</h3>
           <div class="d-flex align-items-center mb-4 pt-2">
             <p v-if="this.date?.status === 'NotApproved'" class="text-center">
               <a @click="saveSpot(this.date)" class="btn btn-primary">Запази място</a>
@@ -92,6 +81,18 @@
               <strong>Срещата е завършила</strong>
             </p>
           </div>
+
+          <div class="d-flex pt-2">
+            <strong class="text-dark mr-2">{{ $t('social.shareOn') }}</strong>
+            <div class="d-inline-flex">
+              <a class="text-dark px-2" :href="$t('social.facebook.url')">
+                <i class="fab fa-facebook-f"></i>
+              </a>
+              <a class="text-dark px-2" :href="$t('social.instagram.url')">
+                <i class="fab fa-twitter"></i>
+              </a>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -99,10 +100,34 @@
       <div class="col">
         <div class="bg-light p-30">
           <h4 class="mb-3">{{ $t('date.description.title') }}</h4>
+          <table class="table">
+            <tr>
+              <td>
+                <strong>{{ $t('dates.card.menCount') }}</strong> {{ this.date.menCount }}/{{ this.date.minMen }}
+              </td>
+              <td>
+                <strong>{{ $t('dates.card.womenCount') }}</strong> {{ this.date.womenCount }}/{{ this.date.minWomen }}</td>
+            </tr>
+            <tr>
+              <td>
+                <strong>{{ $t('dates.card.minAges') }}</strong> {{ this.date.minAges }}
+              </td>
+              <td>
+                <strong>{{ $t('dates.card.maxAges') }}</strong> {{ this.date.maxAges }}</td>
+            </tr>
+            <tr>
+              <td>
+                <strong>{{ $t('dates.card.ethnicity') }}</strong> {{ this.date.ethnicity }}
+              </td>
+              <td>
+                <strong>{{ $t('dates.card.location') }}</strong> {{ this.date.location }}</td>
+            </tr>
+          </table>
+          <br />
+          <p>{{ $t('date.description') }}</p>
           <Choices
                    v-if="(date && (date.status == 'Started' || date.status == 'Finished' || date.status == 'ResultsRevealed')) && date?.id != null"
                    :date-id="date?.id" />
-          <p>{{ $t('date.description') }}</p>
         </div>
       </div>
     </div>
@@ -114,6 +139,7 @@ import moment from 'moment';
 import { useAuthStore } from '@/stores';
 import PayButton from '../components/PayButton.vue';
 import { router } from '@/helpers';
+import { useRoute } from 'vue-router';
 import { fetchWrapper } from '@/helpers';
 import breadcrumbs from '../components/Breadcrumbs.vue';
 import loader from '../components/Loader.vue';

@@ -7,12 +7,16 @@ namespace Takerman.Dating.Server.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class DatesController(IDatingService _datingService, ILogger<DatesController> _logger) : ControllerBase
+    public class DatesController(IDatingService _datingService, ICdnService _cdnService, ILogger<DatesController> _logger) : ControllerBase
     {
         [HttpGet("Get")]
         public async Task<DateCardDto> Get(int id, int? userId)
         {
-            return await _datingService.GetCard(userId, id);
+            var result = await _datingService.GetCard(userId, id);
+
+            result.Pictures = await _cdnService.GetDatePictures(Enum.Parse<Ethnicity>(result.Ethnicity));
+
+            return result;
         }
 
         [HttpGet("GetAll")]

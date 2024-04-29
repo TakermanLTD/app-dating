@@ -134,5 +134,18 @@ namespace Takerman.Dating.Services
             await _context.SaveChangesAsync();
             return _cdnConfig.Value.DefaultAvatarUrl;
         }
+
+        public async Task<IEnumerable<EthnicPicture>> GetDatePictures(Ethnicity ethnicity)
+        {
+            try
+            {
+                return await _context.EthnicPictures.Where(x => x.Ethnicity == ethnicity).OrderBy(x => x.UploadedOn).ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An exception occurred when getting images for user");
+                throw;
+            }
+        }
     }
 }

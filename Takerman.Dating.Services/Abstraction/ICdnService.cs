@@ -7,6 +7,8 @@ namespace Takerman.Dating.Services.Abstraction
     {
         Task<IEnumerable<UserPicture>> GetUserPictures(int userId);
 
+        Task<IEnumerable<EthnicPicture>> GetDatePictures(Ethnicity ethnicity);
+
         Task<bool> DeletePicture(int id);
 
         Task SetAvatar(int userId, string url);
@@ -16,5 +18,6 @@ namespace Takerman.Dating.Services.Abstraction
         string GetAvatar(int userId);
         
         Task<string> SetDefaultAvatar(int userId);
+
     }
 }

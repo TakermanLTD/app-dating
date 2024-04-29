@@ -3,16 +3,13 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Takerman.Dating.Data
 {
-    public class DatePicture
+    public class EthnicPicture
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        [ForeignKey(nameof(Date))]
-        public int DateId { get; set; }
-
-        public virtual Date? Date { get; set; } = null;
+        public Ethnicity Ethnicity { get; set; }
 
         public string Url { get; set; }
 
