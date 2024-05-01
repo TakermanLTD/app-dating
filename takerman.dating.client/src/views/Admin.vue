@@ -200,7 +200,6 @@ export default {
             if (confirm('are you sure?')) {
                 await fetchWrapper.delete('Dates/DeleteSpots');
                 this.dates = await fetchWrapper.get('Dates/GetAll');
-                alert('deleted');
             }
         },
         async addDate() {
@@ -209,13 +208,11 @@ export default {
             this.newDate.dateType = 1;
             let result = await fetchWrapper.post('Dates/Add', this.newDate);
             this.dates.push(result);
-            alert('added');
         },
         async saveDate(date) {
             date.orders = [];
             date.attendees = [];
             await fetchWrapper.put('Dates/Save', date);
-            alert('saved');
         },
         async saveDates() {
             for (let i = 0; i < this.dates.length; i++) {
@@ -223,7 +220,6 @@ export default {
                 this.dates[i].attendees = [];
             }
             await fetchWrapper.put('Dates/SaveAll', this.dates);
-            alert('saved');
         },
         async deleteDate(date) {
             await fetchWrapper.delete('Dates/Delete?id=' + date.id);
@@ -242,14 +238,12 @@ export default {
             this.newUser.pictures = [];
             var result = await fetchWrapper.post('User/AdminAdd', this.newUser);
             this.users.push(result);
-            alert('added');
         },
         async saveUser(user) {
             user.orders = [];
             user.choices = [];
             user.pictures = [];
             await fetchWrapper.put('User/AdminSave', user);
-            alert('saved');
         },
         async saveUsers() {
             for (let i = 0; i < this.users.length; i++) {
@@ -258,7 +252,6 @@ export default {
                 this.users[i].pictures = [];
             }
             await fetchWrapper.put('User/SaveAll', this.users);
-            alert('saved');
         },
         async deleteUser(user) {
             await fetchWrapper.delete('User/Delete?userId=' + user.id);

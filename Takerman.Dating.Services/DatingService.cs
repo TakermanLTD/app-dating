@@ -131,7 +131,7 @@ namespace Takerman.Dating.Services
             if (userId.HasValue)
             {
                 var isSpotSaved = _context.UserSavedSpots.Any(x => x.UserId == userId.Value && x.DateId == date.Id);
-                if (isSpotSaved)
+                if (isSpotSaved && date.Status == DateStatus.NotApproved)
                     card.Status = Enum.GetName(DateStatus.SavedSpot);
 
                 var isDateBought = _context.Orders.Any(x => x.UserId == userId.Value && x.DateId == date.Id && date.StartsOn > DateTime.Now);

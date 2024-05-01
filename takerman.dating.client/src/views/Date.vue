@@ -45,12 +45,12 @@
                 <strong>{{ $t('dates.card.ethnicity') }}</strong> {{ this.date.ethnicity }}
               </td>
               <td>
-                <strong>{{ $t('dates.card.location') }}</strong> {{ this.date.location }}
+                <strong>{{ $t('dates.card.location') }}</strong> {{ this.date.dateType }}
               </td>
             </tr>
           </table>
           <div class="d-flex mb-7">
-            <div v-if="this.date.status === 'Approved' || this.startTime || this.date.status === 'SavedSpot'">
+            <div v-if="this.date.status !== 'NotApproved' && this.startTime && this.date.status !== 'SavedSpot'">
               Остава
               <strong style="font-size: x-large;">{{ this.startTime }}</strong> часа
             </div>
@@ -191,6 +191,7 @@ export default {
       let startsOn = new Date(this.date?.startsOn);
       let countdownToStart = setInterval(async () => {
         switch (this.date.status) {
+          case 'Bought':
           case 'Approved':
             this.startTime = moment(startsOn - new Date()).utc().format("HH:mm:ss");
             break;
@@ -216,7 +217,7 @@ export default {
   },
   methods: {
     enterDate() {
-      window.open(this.date.videoLink, '_blank', 'noreferrer');
+      window.open(this.date?.videoLink, '_blank', 'noreferrer');
     },
     async revealResults() {
       this.date = await fetchWrapper.post('Dates/SetStatus', { id: this.id, status: 'ResultsRevealed' });
