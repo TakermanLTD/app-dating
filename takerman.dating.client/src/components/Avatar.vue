@@ -1,5 +1,5 @@
 <template>
-    <router-link v-if="this.avatarUrl" :to="'/user-profile?id=' + this.userId">
+    <router-link v-if="this.avatarUrl" :to="this.userId ? '/user-profile?id=' + this.userId : '#'">
         <img :src="this.avatarUrl" class="img" width="150" height="150" />
     </router-link>
 </template>
