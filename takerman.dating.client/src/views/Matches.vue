@@ -4,12 +4,18 @@
     <loader v-if="this.loading == true" />
     <div v-else class="row">
       <div class="col-2 text-center">
-        <div v-for="(match, matchKey) in this.matches" :key="matchKey">
+      <<hgroup>
+        <heading title="Съвпадения" />
+      </hgroup>
+        <div v-if="this.matches && this.matches.length > 0" v-for="(match, matchKey) in this.matches" :key="matchKey">
           <div>
             <img @click="chat(match.userId)" :src="match.avatarUrl" class="img match-avatar" width="120" height="120" />
             <br />
             <router-link v-if="match.avatarUrl" :to="'/user-profile?id=' + match.userId">{{ match.name }}</router-link>
           </div>
+        </div>
+        <div v-else>
+          <h3 class="text-center">Няма намерени съвпадения</h3>
         </div>
       </div>
       <div class="col-10">
