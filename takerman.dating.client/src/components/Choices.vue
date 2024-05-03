@@ -4,24 +4,32 @@
         <div id="myChoices" class="text-center">
             <div class="col" style="margin: 15px; width: 15rem; display: inline-block;"
                 v-for="(choice, index) in this.choices" :key="index">
-                <Avatar v-if="choice.voteForId" :userId="choice.voteForId" />
+                <img :src="choice.avatarUrl" class="img" width="150" height="150" />
                 <div>
-                    <label style="margin-right: 15px;" v-for="(radio, radioIndex) in choice.radios" :key="radioIndex"
-                        class="form-check-label">
+                <span class="text-center">{{ choice.name }}</span> <br /><br />
+                    <div>
+                    Моя избор е: <br/>
+                        <label style="margin-right: 15px;" v-for="(radio, radioIndex) in choice.radios" :key="radioIndex"
+                        class="form-check-label"> 
                         <input :disabled="this.date?.status == 'ResultsRevealed'" type="radio"
                             @change="checkRadio(radio, choice.radios)" :value="radio.isChecked" class="form-check-input"
                             :name="'choice_' + index" :checked="radio.isChecked == true">
                         {{ radio.label }}
-                    </label>
+                        </label>
+                    </div>
                     <div v-if="this.date?.status == 'ResultsRevealed' && choice?.theirChoice != null">
+                    <br />
                         <span>
-                            Техния избор е: <strong>{{ choice.theirChoice ? choice.theirChoice : 'Нищо' }}</strong>
+                            Техния избор е: <br /><strong>{{ choice.theirChoice ? choice.theirChoice : 'Нищо' }}</strong>
                         </span> <br />
                         <div v-if="choice?.theirChoice === 'Yes' && choice.myChoice === 'Yes'">
                             Съвпадение! Можете да чатите.<br />
-                            <button style="margin-right: 10px;" class="btn btn-info">Чат</button>
-                            <router-link :to="'/user-profile?id=' + choice.voteForId">Профил</router-link>
+                            <router-link :to="'/matches'" tag="button" class="btn btn-info">Чат</router-link>
+                            <router-link :to="'/user-profile?id=' + choice.voteForId" tag="button" class="btn btn-info">Профил</router-link>
                         </div>
+                        <div v-else>
+                            <button disabled class="btn btn-info">Чат</button>
+                            <button disabled class="btn btn-info">Профил</button></div>
                     </div>
                 </div>
             </div>
@@ -74,6 +82,10 @@ export default {
         const authStore = useAuthStore();
         this.date = await fetchWrapper.get('Dates/Get?id=' + this.dateId);
         this.choices = await fetchWrapper.get('Dates/GetChoices?userId=' + authStore.user.id + '&dateId=' + this.dateId);
+        for (let i = 0; i < this.choices.length; i++) {
+            const choice = this.choices[i];
+            choice.avatarUrl = await this.getAvatarUrl(choice.voteForId);
+        }
     },
     methods: {
         async saveChoices() {
@@ -88,6 +100,10 @@ export default {
             }
 
             radio.isChecked = true;
+        },
+        async getAvatarUrl(userId) {
+            let result = await fetch('Cdn/GetAvatar?userId=' + userId);
+            return await result.text();
         }
     }
 }
