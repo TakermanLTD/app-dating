@@ -10,6 +10,7 @@
             <button @click="saveDates" class="btn btn-success">save</button>
             <button @click="deleteDates" class="btn btn-danger">delete all</button>
             <button @click="deleteSpots" class="btn btn-danger">delete spots</button>
+            <button @click="deleteOrders" class="btn btn-danger">delete orders</button>
         </div>
         <table v-if="this.dates" class="table table-striped table-bordered">
             <tr>
@@ -199,6 +200,12 @@ export default {
         async deleteSpots() {
             if (confirm('are you sure?')) {
                 await fetchWrapper.delete('Dates/DeleteSpots');
+                this.dates = await fetchWrapper.get('Dates/GetAll');
+            }
+        },
+        async deleteOrders() {
+            if (confirm('are you sure?')) {
+                await fetchWrapper.delete('Dates/DeleteOrders');
                 this.dates = await fetchWrapper.get('Dates/GetAll');
             }
         },

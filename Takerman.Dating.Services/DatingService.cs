@@ -373,9 +373,18 @@ namespace Takerman.Dating.Services
             {
                 date.MenCount = 0;
                 date.WomenCount = 0;
+                date.Status = DateStatus.NotApproved;
             }
             _context.Dates.UpdateRange(_context.Dates);
             await _context.SaveChangesAsync();
+        }
+
+        public Task DeleteOrders()
+        {
+            _context.ChatMessages.RemoveRange(_context.ChatMessages);
+            _context.DateUserChoices.RemoveRange(_context.DateUserChoices);
+            _context.Orders.RemoveRange(_context.Orders);
+            return _context.SaveChangesAsync();
         }
     }
 }

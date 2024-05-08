@@ -124,5 +124,11 @@ namespace Takerman.Dating.Server.Controllers
         {
             await _datingService.DeleteSpots();
         }
+
+        [HttpDelete("DeleteOrders")]
+        public async Task DeleteOrders()
+        {
+            await _datingService.DeleteOrders();
+        }
     }
 }

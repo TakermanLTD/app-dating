@@ -54,5 +54,7 @@ namespace Takerman.Dating.Services.Abstraction
         Task DeleteAll();
 
         Task DeleteSpots();
+        
+        Task DeleteOrders();
     }
 }
