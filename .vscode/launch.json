@@ -2,10 +2,27 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Debug",
-            "type": "dotnet",
+            "name": "ASP.NET Core Launch",
+            "type": "coreclr",
             "request": "launch",
-            "projectPath": "${workspaceFolder}/Takerman.Dating.Server/Takerman.Dating.Server.csproj"
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/Takerman.Dating.Server/bin/Debug/net8.0/Takerman.Dating.Server.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/Takerman.Dating.Server",
+            "stopAtEntry": false,
+            "internalConsoleOptions": "openOnSessionStart",
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            },
+            "sourceFileMap": {
+                "/Views": "${workspaceFolder}/takerman.dating.client/src/views"
+            }
+        },
+        {
+            "name": "ASP.NET Core Attach",
+            "type": "coreclr",
+            "request": "attach",
+            "processId": "${command:pickProcess}"
         }
     ]
 }
