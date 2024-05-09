@@ -60,7 +60,7 @@
                     <button @click="addDate" class="btn btn-success">add</button>
                 </td>
             </tr>
-            <tr v-for="(date, dateKey) in this.dates" :key="dateKey">
+            <tr v-for="(date, dateKey) in this.dates" :key="dateKey" :class="date.statusClass">
                 <td>{{ date.id }}</td>
                 <td> <input @input="event => date.title = event.target.value" type="text" :v-model="date.title" class="form-control" :value="date.title" /></td>
                 <td>
@@ -195,6 +195,20 @@ export default {
         this.ethnicities = await fetchWrapper.get('Options/GetEthnicities');
         this.dateTypes = await fetchWrapper.get('Options/GetDateTypes');
         this.dates = await fetchWrapper.get('Dates/GetAll');
+        for (let i = 0; i < this.dates.length; i++) {
+            let currDate = this.dates[i];
+            if (currDate.status == 2) {
+                currDate.statusClass = 'status-approved';
+            } else if (currDate.status == 3) {
+                currDate.status = 'status-started';
+            } else if (currDate.status == 4){ 
+                currDate.status = 'status-finished';
+            } else if (currDate.status == 5){ 
+                currDate.status = 'status-revealed';
+            } else {
+                currDate.status = 'status-not-approved';
+            }
+        }
         this.users = await fetchWrapper.get('User/GetAll');
         this.statuses = await fetchWrapper.get('Options/GetDateStatuses');
     },
@@ -290,4 +304,24 @@ export default {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.status-not-approved {
+    background-color: white;
+}
+
+.status-approved {
+    background-color: lightyellow;
+}
+
+.status-started {
+    background-color: organge;
+}
+
+.status-finished {
+    background-color: lightblue;
+}
+
+.status-revealed {
+    background-color: lightgreen;
+}
+</style>

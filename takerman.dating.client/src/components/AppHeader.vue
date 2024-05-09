@@ -86,7 +86,7 @@ export default {
         let { user: authUser } = storeToRefs(authStore);
         this.user = authUser;
         if (this.user) {
-            let spots = await fetchWrapper.get('Dates/GetSavedSpots?userId=' + this.user.id);
+            let spots = await fetchWrapper.get('Dates/GetSavedSpots?userId=' + authStore.user?.id);
             this.savedSpotslength = spots.length;
         }
         this.emitter.on('addToSpotCount', (evt) => {

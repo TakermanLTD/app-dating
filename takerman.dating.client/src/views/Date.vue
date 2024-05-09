@@ -48,6 +48,11 @@
                 <strong>{{ $t('dates.card.location') }}</strong> {{ this.date.dateType }}
               </td>
             </tr>
+            <tr>
+              <td colspan="2">
+                <strong>{{ $t('dates.card.startsOn') }}</strong> {{ this.date.startsOn ? this.date.startsOn : 'След запазване на достатъчно места' }}
+              </td>
+            </tr>
           </table>
           <div class="d-flex mb-7">
             <div v-if="this.date.status !== 'NotApproved' && this.startTime && this.date.status !== 'SavedSpot'">
@@ -89,7 +94,7 @@
               </div>
             </div>
             <p v-else-if="this.date?.status === 'Bought'" class="text-center">
-              <strong>Закупили сте тази среща</strong>
+              <strong>След изтичане на таймера ще се можете да влезете в срещата</strong>
             </p>
             <p v-else-if="this.date?.status === 'Started'" class="text-center">
               <strong>Срещата е започнала</strong>
