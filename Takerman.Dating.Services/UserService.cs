@@ -22,6 +22,43 @@ namespace Takerman.Dating.Services
                 cfg.CreateMap<User, ProfileDto>();
             }).CreateMapper();
 
+        private string GetHashedPassword(string password)
+        {
+            byte[] bytes = SHA256.HashData(Encoding.UTF8.GetBytes(password));
+            var builder = new StringBuilder();
+            for (int i = 0; i < bytes.Length; i++)
+                builder.Append(bytes[i].ToString("x2"));
+            return builder.ToString();
+        }
+
+        private string GenerateJwtToken(User user)
+        {
+            try
+            {
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var key = Encoding.ASCII.GetBytes(_appSettings.Value.Secret);
+                var tokenDescriptor = new SecurityTokenDescriptor
+                {
+                    Subject = new ClaimsIdentity(new[] { new Claim("id", user.Id.ToString()) }),
+                    Expires = DateTime.UtcNow.AddDays(7),
+                    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+                };
+                var token = tokenHandler.CreateToken(tokenDescriptor);
+                return tokenHandler.WriteToken(token);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Failed to generate JWT token", ex);
+            }
+        }
+
+        private string GenerateResetPasswordRequestCode()
+        {
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            var result = new string(Enumerable.Repeat(chars, 8).Select(s => s[new Random().Next(s.Length)]).ToArray());
+            return result;
+        }
+
         public async Task<bool> ActivateAsync(int userId)
         {
             var result = await GetAsync(userId);
@@ -40,7 +77,7 @@ namespace Takerman.Dating.Services
             await _context.SaveChangesAsync();
         }
 
-        public async Task<User> CreateAsync(User user)
+        public async Task<User> AddUser(User user)
         {
             var existing = await GetByEmailAsync(user.Email);
             if (existing != null)
@@ -59,7 +96,7 @@ namespace Takerman.Dating.Services
             }
         }
 
-        public async Task DeleteAsync(int userId)
+        public async Task DeleteUser(int userId)
         {
             var user = await GetAsync(userId);
             _context.ResetPasswordRequests.RemoveRange(_context.ResetPasswordRequests.Where(x => x.UserId == userId));
@@ -90,22 +127,13 @@ namespace Takerman.Dating.Services
             if (!string.IsNullOrEmpty(user.Password))
                 result.Password = GetHashedPassword(user.Password);
 
-            await UpdateAsync(result);
+            await SaveUser(result);
         }
 
-        public async Task UpdateAsync(User user)
+        public async Task SaveUser(User user)
         {
             _context.Users.Update(user);
             await _context.SaveChangesAsync();
-        }
-
-        private string GetHashedPassword(string password)
-        {
-            byte[] bytes = SHA256.HashData(Encoding.UTF8.GetBytes(password));
-            var builder = new StringBuilder();
-            for (int i = 0; i < bytes.Length; i++)
-                builder.Append(bytes[i].ToString("x2"));
-            return builder.ToString();
         }
 
         public async Task<AuthenticateResponse> Authenticate(AuthenticateRequest model)
@@ -123,27 +151,6 @@ namespace Takerman.Dating.Services
             var token = GenerateJwtToken(user);
 
             return new AuthenticateResponse(user, token);
-        }
-
-        private string GenerateJwtToken(User user)
-        {
-            try
-            {
-                var tokenHandler = new JwtSecurityTokenHandler();
-                var key = Encoding.ASCII.GetBytes(_appSettings.Value.Secret);
-                var tokenDescriptor = new SecurityTokenDescriptor
-                {
-                    Subject = new ClaimsIdentity(new[] { new Claim("id", user.Id.ToString()) }),
-                    Expires = DateTime.UtcNow.AddDays(7),
-                    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-                };
-                var token = tokenHandler.CreateToken(tokenDescriptor);
-                return tokenHandler.WriteToken(token);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Failed to generate JWT token", ex);
-            }
         }
 
         public async Task<User> GetByEmailAsync(string email)
@@ -169,13 +176,6 @@ namespace Takerman.Dating.Services
             return result;
         }
 
-        private string GenerateResetPasswordRequestCode()
-        {
-            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-            var result = new string(Enumerable.Repeat(chars, 8).Select(s => s[new Random().Next(s.Length)]).ToArray());
-            return result;
-        }
-
         public async Task<ResetPasswordRequest> GetResetPasswordRequest(string code)
         {
             return await _context.ResetPasswordRequests.FirstOrDefaultAsync(x => x.Code == code);
@@ -186,13 +186,13 @@ namespace Takerman.Dating.Services
             return await _context.Users.ToListAsync();
         }
 
-        public async Task SaveAll(IEnumerable<User> users)
+        public async Task SaveAllUsers(IEnumerable<User> users)
         {
             _context.Users.UpdateRange(users);
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteAll()
+        public async Task DeleteAllUsers()
         {
             _context.Users.RemoveRange(_context.Users);
             await _context.SaveChangesAsync();

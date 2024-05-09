@@ -86,31 +86,13 @@ namespace Takerman.Dating.Server.Controllers
             var user = _mapper.Map<User>(data);
             user.IsActive = true;
 
-            var result = await _userService.CreateAsync(user);
+            var result = await _userService.AddUser(user);
 
             await _notificationService.NotifyForCreatedUser(result, HttpContext.Request.Host.Value);
 
             return result;
         }
-
-        [HttpPost("AdminAdd")]
-        public async Task<User> AdminAdd([FromBody] User user)
-        {
-            user.IsActive = true;
-            return await _userService.CreateAsync(user);
-        }
-
-        //[Authorize]
-        [HttpDelete("Delete")]
-        public async Task Delete(int userId)
-        {
-            var user = await _userService.GetAsync(userId);
-
-            await _userService.DeleteAsync(userId);
-
-            await _notificationService.NotifyForDeletedUser(user);
-        }
-
+        
         //[Authorize]
         [HttpPut("Save")]
         public async Task Save([FromBody] ProfileDto user)
@@ -121,25 +103,6 @@ namespace Takerman.Dating.Server.Controllers
             }
 
             await _userService.UpdateAsync(user);
-        }
-
-        //[Authorize]
-        [HttpPut("AdminSave")]
-        public async Task AdminSave([FromBody] User user)
-        {
-            await _userService.UpdateAsync(user);
-        }
-
-        [HttpPut("SaveAll")]
-        public async Task SaveAll([FromBody] IEnumerable<User> users)
-        {
-            await _userService.SaveAll(users);
-        }
-
-        [HttpPut("DeleteAll")]
-        public async Task DeleteAll()
-        {
-            await _userService.DeleteAll();
         }
     }
 }

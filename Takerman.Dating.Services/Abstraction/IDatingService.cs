@@ -42,19 +42,5 @@ namespace Takerman.Dating.Services.Abstraction
         Task<IEnumerable<int>> GetMatchesIDs(int userId);
 
         Task<IEnumerable<MatchDto>> GetMatches(int userId);
-
-        Task<Date> Add(Date date);
-
-        Task Save(Date date);
-
-        Task Delete(int id);
-
-        Task SaveAll(IEnumerable<Date> dates);
-
-        Task DeleteAll();
-
-        Task DeleteSpots();
-        
-        Task DeleteOrders();
     }
 }

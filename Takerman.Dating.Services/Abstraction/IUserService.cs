@@ -8,30 +8,30 @@ namespace Takerman.Dating.Services.Abstraction
     {
         Task<bool> ActivateAsync(int userId);
 
-        Task<AuthenticateResponse> Authenticate(AuthenticateRequest model);
-
         Task ChangePasswordAsync(int userId, string password);
 
-        Task<User> CreateAsync(User user);
+        Task<User> AddUser(User user);
 
-        Task DeleteAsync(int userId);
+        Task DeleteUser(int userId);
 
         Task<User> GetAsync(int id);
 
-        Task<User> GetByEmailAsync(string email);
+        Task UpdateAsync(ProfileDto user);
 
-        Task<ResetPasswordRequest> GetResetPasswordRequest(string id);
+        Task SaveUser(User user);
+
+        Task<AuthenticateResponse> Authenticate(AuthenticateRequest model);
+
+        Task<User> GetByEmailAsync(string email);
 
         Task<ResetPasswordRequest> GenerateResetPasswordRequest(int userId);
 
-        Task UpdateAsync(ProfileDto user);
+        Task<ResetPasswordRequest> GetResetPasswordRequest(string code);
 
         Task<IEnumerable<User>> GetAllAsync();
 
-        Task UpdateAsync(User user);
+        Task SaveAllUsers(IEnumerable<User> users);
 
-        Task SaveAll(IEnumerable<User> users);
-
-        Task DeleteAll();
+        Task DeleteAllUsers();
     }
 }

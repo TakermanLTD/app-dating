@@ -48,6 +48,7 @@ builder.Services.AddTransient<IOptionsService, OptionsService>();
 builder.Services.AddTransient<IMailService, MailService>();
 builder.Services.AddTransient<IChatService, ChatService>();
 builder.Services.AddTransient<ICdnService, CdnService>();
+builder.Services.AddTransient<IAdminService, AdminService>();
 builder.Services.Configure<RabbitMqConfig>(builder.Configuration.GetSection(nameof(RabbitMqConfig)));
 builder.Services.Configure<PayPalConfig>(builder.Configuration.GetSection(nameof(PayPalConfig)));
 builder.Services.Configure<CdnConfig>(builder.Configuration.GetSection(nameof(CdnConfig)));
