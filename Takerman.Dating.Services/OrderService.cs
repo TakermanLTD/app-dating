@@ -24,6 +24,17 @@ namespace Takerman.Dating.Services
         public async Task<Order> CreateAsync(Order order)
         {
             var result = (await _context.Orders.AddAsync(order)).Entity;
+            var date = await _context.Dates.FirstAsync(x => x.Id == order.DateId);
+            var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == order.UserId);
+            var spot = await _context.UserSavedSpots.FirstOrDefaultAsync(x => x.DateId == order.DateId && x.UserId == order.UserId);
+            if (user != null && spot == null)
+            {
+                if (user.Gender == Gender.Male)
+                    date.MenCount += 1;
+                else if (user.Gender == Gender.Female)
+                    date.WomenCount += 1;
+            }
+
             await _context.SaveChangesAsync();
             return result;
         }

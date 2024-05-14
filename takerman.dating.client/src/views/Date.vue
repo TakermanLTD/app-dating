@@ -240,7 +240,9 @@ export default {
         paymentSource: e.paymentSource
       }
 
-      await fetchWrapper.post('Order/Create', data);
+      let order = await fetchWrapper.post('Order/Create', data);
+
+      this.date = await fetchWrapper.get('Dates/GetDate?id=' + order.dateId);
 
       const payButton = document.getElementsByClassName('pay-button');
       for (let i = 0; i < payButton.length; i++) {
