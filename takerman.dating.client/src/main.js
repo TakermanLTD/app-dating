@@ -11,6 +11,9 @@ import "/src/assets/lib/animate/animate.min.css";
 import "/src/assets/lib/owlcarousel/assets/owl.carousel.min.css";
 import "/src/assets/css/style.css";
 import "/src/assets/js/main.js";
+import moment from 'moment';
+
+Date.prototype.toJSON = function () { return moment(this).format(); }
 
 const tolgee = Tolgee()
     .use(DevTools())

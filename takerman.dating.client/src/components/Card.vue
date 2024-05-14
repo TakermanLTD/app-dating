@@ -29,7 +29,7 @@
             <p v-else-if="this.date?.status === 'SavedSpot'" class="text-center">
                 <a @click="unsaveSpot(this.date)" class="btn btn-danger">Няма да присъствам</a>
             </p>
-            <div v-else-if="this.date?.status === 'Approved'" class="text-center">
+            <div v-else-if="this.date?.status === 'Approved' && this.date?.startsOn > new Date()" class="text-center">
                 <PayButton v-if="this.path === '/date' && this.date?.price > 0" :date-id="this.date.id"
                            :on-approve="onApprove" :on-error="onError" class="pay-button">Купи</PayButton>
                 <router-link v-else class="btn btn-success" :to="'date?id=' + this.date.id + ''">Купи
