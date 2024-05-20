@@ -54,56 +54,43 @@
               </td>
             </tr>
           </table>
-          <div class="d-flex mb-7">
-            <div v-if="this.date.status !== 'NotApproved' && this.startTime && this.date.status !== 'SavedSpot'">
-              Остава
-              <strong style="font-size: x-large;">{{ this.startTime }}</strong> часа
-            </div>
-            <div v-else-if="this.date.status === 'Started' || (this.date.status === 'Bought' && moment(this.date.startsOn) < moment().add(1, 'days'))">
-              <button class="btn btn-success btn-lg" @click="enterDate">Влез в Срещата</button>
-              До разкриване на резултатите <br />
-              <strong>{{ this.revealTime }}</strong> часа
-            </div>
-            <div v-else-if="this.date.status === 'Finished'">
-              До разкриване на резултатите <br />
-              <strong>{{ this.revealTime }}</strong> часа
-            </div>
-          </div>
-          <h3 class="font-weight-semi-bold">{{ $t('common.currencySign') }}{{ this.date.price }}</h3>
-          <div v-if="this.date" class="d-flex align-items-center mb-4 pt-2">
-            <div v-if="this.date.startsOn > new Date()">
+          <div>
+            <div v-if="this.date.status === 'NotApproved' || this.date.status === 'SavedSpot'">
               <p v-if="this.date.status === 'NotApproved'" class="text-center">
                 <a @click="saveSpot(this.date)" class="btn btn-primary">Запази място</a>
               </p>
               <p v-else-if="this.date.status === 'SavedSpot'" class="text-center">
                 <a @click="unsaveSpot(this.date)" class="btn btn-danger">Няма да присъствам</a>
               </p>
-              <div v-else-if="this.date.status === 'Approved'" class="text-center">
-                <PayButton v-if="this.path === '/date' && this.date.price > 0" :date-id="this.date.id"
-                           :on-approve="onApprove" :on-error="onError" class="pay-button">Купи</PayButton>
-                <router-link v-else class="btn btn-success" :to="'date?id=' + this.date.id + ''">Купи
-                  срещата</router-link>
-                <div v-if="this.paymentStatus === 'success'" class="alert alert-success" role="alert">
-                  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                  <span class="sr-only"></span> Закупихте срещата успешно. Можете да я видите от менюто <router-link
-                               to="orders">'Мои срещи'</router-link>
-                </div>
-                <div v-else-if="this.paymentStatus === 'failed'" class="alert alert-danger" role="alert">
-                  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                  <span class="sr-only"></span> Стана грешка при плащането. Моля опитайте пак или се свържете с нас през
-                  контактната форма или чата
-                </div>
-              </div>
-              <div v-else class="text-center">
-                <strong>След изтичане на таймера ще се можете да влезете в срещата</strong>
-              </div>
             </div>
-            <div v-else>
-              <p v-if="this.date.status === 'Started' || moment(this.date.startsOn) < moment().add(1, 'days')" class="text-center">
-                <strong>Срещата е започнала</strong>
+            <div v-else-if="this.date.status === 'Approved' && this.startTime">
+              Остава <strong style="font-size: x-large;">{{ this.startTime }}</strong> часа <br />
+              <PayButton v-if="this.path === '/date' && this.date.price > 0" :date-id="this.date.id"
+                         :on-approve="onApprove" :on-error="onError" class="pay-button">Купи</PayButton>
+              <router-link v-else class="btn btn-success" :to="'date?id=' + this.date.id + ''">Купи
+                срещата</router-link>
+              <br />
+              <div v-if="this.paymentStatus === 'success'" class="alert alert-success" role="alert">
+                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                <span class="sr-only"></span> Закупихте срещата успешно. Можете да я видите от менюто <router-link
+                             to="orders">'Мои срещи'</router-link>
+              </div>
+              <div v-else-if="this.paymentStatus === 'failed'" class="alert alert-danger" role="alert">
+                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                <span class="sr-only"></span> Стана грешка при плащането. Моля опитайте пак или се свържете с нас през
+                контактната форма или чата
+              </div>
+              <h3 class="font-weight-semi-bold">{{ $t('common.currencySign') }}{{ this.date.price }}</h3>
+            </div>
+            <div v-else-if="this.date.status === 'Started' || this.date.status === 'Bought' || this.date.status === 'Finished'">
+              <p v-if="this.date.status === 'Started' || this.date.status === 'Bought'" class="text-center">
+                <strong>Срещата е започнала</strong><br />
+                До разкриване на резултатите <h3>{{ this.revealTime }}</h3> часа <br />
+                <a :href="this.date.videoLink" class="btn btn-success btn-lg" target="_blank">Влез в срещата</a>
+                <!-- <button v-if="this.date.status !== 'Finished'" class="btn btn-success btn-lg" @click="this.enterDate(this.date)">Влез в Срещата</button> -->
               </p>
-              <p v-else class="text-center">
-                <strong>Срещата е завършила</strong>
+              <p v-else>
+                <strong>Срещата е завършила.</strong>
               </p>
             </div>
           </div>
@@ -224,9 +211,6 @@ export default {
     this.loading = false;
   },
   methods: {
-    enterDate() {
-      window.open(this.date?.videoLink, '_blank', 'noreferrer');
-    },
     async revealResults() {
       this.date = await fetchWrapper.post('Dates/SetStatus', { id: this.id, status: 'ResultsRevealed' });
       this.date.status = 'ResultsRevealed';

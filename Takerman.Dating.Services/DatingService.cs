@@ -124,6 +124,12 @@ namespace Takerman.Dating.Services
             return card;
         }
 
+        public async Task<DateCardDto> GetCardFromDate(int? userId, int dateId)
+        {
+            var date = await Get(dateId);
+
+            return await GetCardFromDate(userId, date);
+        }
         public async Task<DateCardDto> GetCardFromDate(int? userId, Date date)
         {
             var card = await GetCardFromDate(date);
@@ -172,11 +178,6 @@ namespace Takerman.Dating.Services
             }
 
             return result;
-        }
-
-        public async Task<IEnumerable<DateUserChoice>> GetDateVotesByUser(int userId, int dateId)
-        {
-            throw new NotImplementedException();
         }
 
         public async Task<IEnumerable<DateCardDto>> GetSavedSpots(int userId)
@@ -282,11 +283,6 @@ namespace Takerman.Dating.Services
             return await GetCardFromDate(userId, date);
         }
 
-        public async Task Vote(int userId, int choiceId, ChoiceType choiceType)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<DateCardDto> SetStatus(DateStatusDto status)
         {
             var date = await Get(status.Id);
@@ -385,6 +381,33 @@ namespace Takerman.Dating.Services
             _context.DateUserChoices.RemoveRange(_context.DateUserChoices);
             _context.Orders.RemoveRange(_context.Orders);
             return _context.SaveChangesAsync();
+        }
+
+        public async Task UpdateStatus(int id)
+        {
+            var date = await Get(id);
+            var hasMinimumAttendants = date.MenCount >= date.MinMen && date.WomenCount >= date.MinWomen;
+
+            if (hasMinimumAttendants)
+            {
+                if (date.Status == DateStatus.NotApproved)
+                    date.Status = DateStatus.Approved;
+
+                if (date.StartsOn.HasValue && date.StartsOn.Value <= DateTime.Now)
+                    date.Status = DateStatus.Started;
+            }
+            else if (date.Status == DateStatus.Approved)
+            {
+                date.Status = DateStatus.NotApproved;
+            }
+
+            if (date.StartsOn.HasValue && date.StartsOn.Value.AddDays(1) < DateTime.Now)
+                date.Status = DateStatus.Finished;
+
+            if (date.StartsOn.HasValue && date.StartsOn.Value.AddDays(2) < DateTime.Now)
+                date.Status = DateStatus.ResultsRevealed;
+
+            await _context.SaveChangesAsync();
         }
     }
 }

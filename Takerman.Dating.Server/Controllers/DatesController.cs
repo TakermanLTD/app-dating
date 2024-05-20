@@ -25,6 +25,7 @@ namespace Takerman.Dating.Server.Controllers
         [HttpGet("GetDate")]
         public async Task<DateCardDto> GetDate(int id, int? userId)
         {
+            await _datingService.UpdateStatus(id);
             var date = await _datingService.Get(id);
             var result = await _datingService.GetCardFromDate(userId, date);
 

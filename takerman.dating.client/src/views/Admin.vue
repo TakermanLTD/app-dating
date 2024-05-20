@@ -200,13 +200,13 @@ export default {
             if (currDate.status == 2) {
                 currDate.statusClass = 'status-approved';
             } else if (currDate.status == 3) {
-                currDate.status = 'status-started';
+                currDate.statusClass = 'status-started';
             } else if (currDate.status == 4){ 
-                currDate.status = 'status-finished';
+                currDate.statusClass = 'status-finished';
             } else if (currDate.status == 5){ 
-                currDate.status = 'status-revealed';
+                currDate.statusClass = 'status-revealed';
             } else {
-                currDate.status = 'status-not-approved';
+                currDate.statusClass = 'status-not-approved';
             }
         }
         this.users = await fetchWrapper.get('User/GetAll');
