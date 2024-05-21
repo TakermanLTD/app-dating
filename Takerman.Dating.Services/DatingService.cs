@@ -75,7 +75,7 @@ namespace Takerman.Dating.Services
             {
                 // await Maintenance(date);
 
-                var card = await GetCardFromDate(userId, date);
+                var card = await GetCardFromDate(date);
                 result.Add(card);
             }
             return result;
@@ -108,7 +108,7 @@ namespace Takerman.Dating.Services
         public async Task<DateCardDto> GetCard(int? userId, int dateId)
         {
             var date = await Get(dateId);
-            return await GetCardFromDate(userId, date);
+            return await GetCardFromDate(date);
         }
 
         public async Task<DateCardDto> GetCardFromDate(Date date)
@@ -128,24 +128,17 @@ namespace Takerman.Dating.Services
         {
             var date = await Get(dateId);
 
-            return await GetCardFromDate(userId, date);
+            return await GetCardFromDate(date);
         }
-        public async Task<DateCardDto> GetCardFromDate(int? userId, Date date)
+
+        public async Task<bool> IsBought(int dateId, int userId)
         {
-            var card = await GetCardFromDate(date);
+            return await _context.Orders.AnyAsync(x => x.UserId == userId && x.DateId == dateId);
+        }
 
-            if (userId.HasValue)
-            {
-                var isSpotSaved = _context.UserSavedSpots.Any(x => x.UserId == userId.Value && x.DateId == date.Id);
-                if (isSpotSaved && date.Status == DateStatus.NotApproved)
-                    card.Status = Enum.GetName(DateStatus.SavedSpot);
-
-                var isDateBought = _context.Orders.Any(x => x.UserId == userId.Value && x.DateId == date.Id && date.StartsOn > DateTime.Now);
-                if (isDateBought && date.Status != DateStatus.Started)
-                    card.Status = Enum.GetName(DateStatus.Bought);
-            }
-
-            return card;
+        public async Task<bool> IsSpotSaved(int dateId, int userId)
+        {
+            return await _context.UserSavedSpots.AnyAsync(x => x.UserId == userId && x.DateId == dateId);
         }
 
         public async Task<IEnumerable<DateChoiceDto>> GetChoices(int userId, int dateId)
@@ -255,7 +248,7 @@ namespace Takerman.Dating.Services
                 await _context.SaveChangesAsync();
             }
 
-            return await GetCardFromDate(userId, date);
+            return await GetCardFromDate(date);
         }
 
         public async Task<DateCardDto> UnsaveSpot(int userId, int dateId)
@@ -280,7 +273,7 @@ namespace Takerman.Dating.Services
                 await _context.SaveChangesAsync();
             }
 
-            return await GetCardFromDate(userId, date);
+            return await GetCardFromDate(date);
         }
 
         public async Task<DateCardDto> SetStatus(DateStatusDto status)
@@ -388,20 +381,19 @@ namespace Takerman.Dating.Services
             var date = await Get(id);
             var hasMinimumAttendants = date.MenCount >= date.MinMen && date.WomenCount >= date.MinWomen;
 
-            if (hasMinimumAttendants)
-            {
-                if (date.Status == DateStatus.NotApproved)
-                    date.Status = DateStatus.Approved;
+            if (hasMinimumAttendants && date.Status == DateStatus.NotApproved)
+                date.Status = DateStatus.Approved;
 
-                if (date.StartsOn.HasValue && date.StartsOn.Value <= DateTime.Now)
-                    date.Status = DateStatus.Started;
-            }
-            else if (date.Status == DateStatus.Approved)
-            {
+            if (hasMinimumAttendants && date.StartsOn.HasValue && date.StartsOn.Value <= DateTime.Now)
+                date.Status = DateStatus.Started;
+
+            if (hasMinimumAttendants && date.StartsOn.HasValue && date.StartsOn.Value > DateTime.Now)
+                date.Status = DateStatus.Approved;
+
+            if (!hasMinimumAttendants && date.Status == DateStatus.Approved)
                 date.Status = DateStatus.NotApproved;
-            }
 
-            if (date.StartsOn.HasValue && date.StartsOn.Value.AddDays(1) < DateTime.Now)
+            if (date.StartsOn.HasValue && date.StartsOn.Value.AddHours(1) < DateTime.Now)
                 date.Status = DateStatus.Finished;
 
             if (date.StartsOn.HasValue && date.StartsOn.Value.AddDays(2) < DateTime.Now)

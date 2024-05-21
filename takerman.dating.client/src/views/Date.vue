@@ -1,7 +1,7 @@
 <template>
   <breadcrumbs :paths="this.breadcrumbs" />
   <loader v-if="this.loading" />
-  <div v-else-if="this.date" class="container-fluid pb-5">
+  <div v-else-if="this.date" class="container-fluid pb-5 text-center">
     <div class="row px-xl-5">
       <div class="col-lg-5 mb-30">
         <div id="product-carousel" class="carousel slide" data-ride="carousel">
@@ -18,11 +18,14 @@
           </a>
         </div>
       </div>
-
       <div class="col-lg-7 h-auto mb-30">
         <div class="h-100 bg-light p-30">
-          <h3>{{ this.date.title }}</h3>
-          <p class="mb-4">{{ this.date.shortDescription }}</p>
+          <hgroup>
+            <h3>{{ this.date.title }}</h3>
+          </hgroup>
+          <br />
+          <p class="mb-4">{{ $t('date.description') }}</p>
+          <p v-if="this.date && this.date.ethnicity" class="mb-4">{{ $t('date.description.' + this.date.ethnicity.toLowerCase()) }}</p>
           <table class="table">
             <tr>
               <td>
@@ -55,20 +58,16 @@
             </tr>
           </table>
           <div>
-            <div v-if="this.date.status === 'NotApproved' || this.date.status === 'SavedSpot'">
-              <p v-if="this.date.status === 'NotApproved'" class="text-center">
-                <a @click="saveSpot(this.date)" class="btn btn-primary">Запази място</a>
-              </p>
-              <p v-else-if="this.date.status === 'SavedSpot'" class="text-center">
-                <a @click="unsaveSpot(this.date)" class="btn btn-danger">Няма да присъствам</a>
-              </p>
-            </div>
-            <div v-else-if="this.date.status === 'Approved' && this.startTime">
-              Остава <strong style="font-size: x-large;">{{ this.startTime }}</strong> часа <br />
-              <PayButton v-if="this.path === '/date' && this.date.price > 0" :date-id="this.date.id"
-                         :on-approve="onApprove" :on-error="onError" class="pay-button">Купи</PayButton>
-              <router-link v-else class="btn btn-success" :to="'date?id=' + this.date.id + ''">Купи
-                срещата</router-link>
+            <p v-if="this.date.status === 'NotApproved'">
+              <a v-if="this.isSpotSaved" @click="unsaveSpot(this.date)" class="btn btn-danger">Няма да присъствам</a>
+              <a v-else @click="saveSpot(this.date)" class="btn btn-primary">Запази място</a>
+            </p>
+            <p v-if="(this.date.status === 'Approved' || this.date.status === 'Finished') && !this.startTime">
+              Остава <strong style="font-size: x-large;">{{ this.startTime }}</strong> часа
+            </p>
+            <div v-if="this.date.status === 'Approved' && this.startTime">
+              <PayButton v-if="this.path === '/date' && this.date.price > 0" :date-id="this.date.id" :on-approve="onApprove" :on-error="onError" class="pay-button">Купи</PayButton>
+              <router-link v-else class="btn btn-success" :to="'date?id=' + this.date.id + ''">Купи срещата</router-link>
               <br />
               <div v-if="this.paymentStatus === 'success'" class="alert alert-success" role="alert">
                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
@@ -82,18 +81,19 @@
               </div>
               <h3 class="font-weight-semi-bold">{{ $t('common.currencySign') }}{{ this.date.price }}</h3>
             </div>
-            <div v-else-if="this.date.status === 'Started' || this.date.status === 'Bought' || this.date.status === 'Finished'">
-              <p v-if="this.date.status === 'Started' || this.date.status === 'Bought'" class="text-center">
-                <strong>Срещата е започнала</strong><br />
-                До разкриване на резултатите <h3>{{ this.revealTime }}</h3> часа <br />
-                <a :href="this.date.videoLink" class="btn btn-success btn-lg" target="_blank">Влез в срещата</a>
-                <!-- <button v-if="this.date.status !== 'Finished'" class="btn btn-success btn-lg" @click="this.enterDate(this.date)">Влез в Срещата</button> -->
-              </p>
-              <p v-else>
-                <strong>Срещата е завършила.</strong>
-              </p>
+            <div>
+              <strong v-if="this.date.status === 'Started'">Срещата е започнала</strong>
+            </div>
+            <div v-if="this.date.status === 'Finished'">
+                Срещата е завършила <br />
+                До разкриване на резултатите<br />
+              <h3>{{ this.revealTime }}</h3> часа
+            </div>
+            <div v-if="this.isBought">
+              <a :href="this.date.videoLink" class="btn btn-success btn-lg" target="_blank">Влез в срещата</a>
             </div>
           </div>
+          <br />
           <div class="d-flex pt-2">
             <strong class="text-dark mr-2">{{ $t('social.shareOn') }}</strong>
             <div class="d-inline-flex">
@@ -108,16 +108,10 @@
         </div>
       </div>
     </div>
-    <div class="row px-xl-5">
+    <div v-if="this.date && this.date.id != null && (this.date.status == 'Started' || this.date.status == 'Finished' || this.date.status == 'ResultsRevealed')" class="row px-xl-5">
       <div class="col">
         <div class="bg-light p-30">
-          <h4 class="mb-3">{{ $t('date.description.title') }}</h4>
-
-          <br />
-          <p>{{ $t('date.description') }}</p>
-          <Choices
-                   v-if="(date && (date.status == 'Started' || date.status == 'Finished' || date.status == 'ResultsRevealed')) && date.id != null"
-                   :date-id="date.id" />
+          <Choices :date-id="this.date.id" />
         </div>
       </div>
     </div>
@@ -147,6 +141,8 @@ export default {
       loading: false,
       moment: moment,
       paymentStatus: '',
+      isBought: false,
+      isSpotSaved: false,
       breadcrumbs: [
         {
           name: '/',
@@ -178,15 +174,13 @@ export default {
       this.userId = authStore.user.id;
     if (urlParams.has('id')) {
       this.id = urlParams.get('id');
-      let url = 'Dates/GetDate?id=' + this.id;
-      if (this.userId)
-        url += '&userId=' + this.userId;
-      this.date = await fetchWrapper.get(url);
+      this.date = await fetchWrapper.get('Dates/GetDate?id=' + this.id);
+      this.isBought = await (await fetch('Dates/IsBought?dateId=' + this.id + '&userId=' + this.userId)).json();
+      this.isSpotSaved = await (await fetch('Dates/IsSpotSaved?dateId=' + this.id + '&userId=' + this.userId)).json();
 
       let startsOn = new Date(this.date?.startsOn);
       let countdownToStart = setInterval(async () => {
         switch (this.date.status) {
-          case 'Bought':
           case 'Approved':
             this.startTime = moment(startsOn - new Date()).utc().format("HH:mm:ss");
             break;

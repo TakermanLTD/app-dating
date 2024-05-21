@@ -46,8 +46,8 @@
         <br />
     </div>
     <div v-else>
-        <p>
-            {{ $t('choices.noChoices') }}
+        <p class="text-center">
+            <strong>{{ $t('choices.noChoices') }}</strong>
         </p>
     </div>
 

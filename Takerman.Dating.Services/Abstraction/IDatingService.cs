@@ -21,7 +21,9 @@ namespace Takerman.Dating.Services.Abstraction
 
         Task<DateCardDto> GetCardFromDate(int? userId, int dateId);
 
-        Task<DateCardDto> GetCardFromDate(int? userId, Date date);
+        Task<bool> IsBought(int dateId, int userId);
+
+        Task<bool> IsSpotSaved(int dateId, int userId);
 
         Task<DateCardDto> SaveSpot(int userId, int dateId);
 

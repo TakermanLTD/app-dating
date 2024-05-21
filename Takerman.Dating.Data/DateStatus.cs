@@ -6,8 +6,6 @@
         Approved = 2,
         Started = 3,
         Finished = 4,
-        ResultsRevealed = 5,
-        SavedSpot = 6,
-        Bought = 7
+        ResultsRevealed = 5
     }
 }

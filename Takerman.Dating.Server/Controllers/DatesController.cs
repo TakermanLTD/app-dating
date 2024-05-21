@@ -13,7 +13,7 @@ namespace Takerman.Dating.Server.Controllers
         public async Task<DateCardDto> Get(int id, int? userId)
         {
             var date = await _datingService.Get(id);
-            var result = await _datingService.GetCardFromDate(userId, date);
+            var result = await _datingService.GetCardFromDate(date);
 
             var thumbnail = await _cdnService.GetDateThumbnail(date.Ethnicity);
 
@@ -27,11 +27,23 @@ namespace Takerman.Dating.Server.Controllers
         {
             await _datingService.UpdateStatus(id);
             var date = await _datingService.Get(id);
-            var result = await _datingService.GetCardFromDate(userId, date);
+            var result = await _datingService.GetCardFromDate(date);
 
             result.Pictures = await _cdnService.GetDatePictures(date.Ethnicity);
 
             return result;
+        }
+
+        [HttpGet("IsBought")]
+        public async Task<bool> IsBought(int userId, int dateId)
+        {
+            return await _datingService.IsBought(userId, dateId);
+        }
+
+        [HttpGet("IsSpotSaved")]
+        public async Task<bool> IsSpotSaved(int userId, int dateId)
+        {
+            return await _datingService.IsSpotSaved(userId, dateId);
         }
 
         [HttpGet("GetAll")]
