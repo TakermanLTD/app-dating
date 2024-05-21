@@ -52,45 +52,60 @@
               </td>
             </tr>
             <tr>
-              <td colspan="2">
-                <strong>{{ $t('dates.card.startsOn') }}</strong> {{ this.date.startsOn ? this.date.startsOn : 'След запазване на достатъчно места' }}
+              <td colspan="2" style="font-size: x-large;">
+                <strong>{{ $t('dates.card.startsOn') }}</strong>{{ this.date.startsOn ? moment(this.date.startsOn).format("DD MMM, HH:mm") : 'След запазване на достатъчно места' }}
               </td>
             </tr>
           </table>
           <div>
+            <h3 class="font-weight-semi-bold">{{ $t('common.currencySign') }}{{ this.date.price }}</h3>
             <p v-if="this.date.status === 'NotApproved'">
               <a v-if="this.isSpotSaved" @click="unsaveSpot(this.date)" class="btn btn-danger">Няма да присъствам</a>
               <a v-else @click="saveSpot(this.date)" class="btn btn-primary">Запази място</a>
             </p>
-            <p v-if="(this.date.status === 'Approved' || this.date.status === 'Finished') && !this.startTime">
-              Остава <strong style="font-size: x-large;">{{ this.startTime }}</strong> часа
-            </p>
             <div v-if="this.date.status === 'Approved' && this.startTime">
-              <PayButton v-if="this.path === '/date' && this.date.price > 0" :date-id="this.date.id" :on-approve="onApprove" :on-error="onError" class="pay-button">Купи</PayButton>
-              <router-link v-else class="btn btn-success" :to="'date?id=' + this.date.id + ''">Купи срещата</router-link>
-              <br />
-              <div v-if="this.paymentStatus === 'success'" class="alert alert-success" role="alert">
-                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                <span class="sr-only"></span> Закупихте срещата успешно. Можете да я видите от менюто <router-link
-                             to="orders">'Мои срещи'</router-link>
+              <p>
+                Остава <strong style="font-size: x-large;">{{ this.startTime }}</strong> часа
+              </p>
+              <div v-if="this.isBought">
+                <a v-if="moment(this.date.startsOn).add(-15, 'minutes') < moment()" :href="this.date.videoLink" class="btn btn-success btn-lg" target="_blank">Влез в срещата</a>
+                <p v-else>
+                  Вече сте купили срещата. Ще можете да влезете когато таймера свърши.
+                </p>
               </div>
-              <div v-else-if="this.paymentStatus === 'failed'" class="alert alert-danger" role="alert">
-                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                <span class="sr-only"></span> Стана грешка при плащането. Моля опитайте пак или се свържете с нас през
-                контактната форма или чата
+              <div v-else>
+                <PayButton v-if="this.path === '/date' && this.date.price > 0" :date-id="this.date.id" :on-approve="onApprove" :on-error="onError" class="pay-button text-center">Купи</PayButton>
+                <router-link v-else class="btn btn-success" :to="'date?id=' + this.date.id + ''">Купи срещата</router-link>
+                <br />
+                <div v-if="this.paymentStatus === 'success'" class="alert alert-success" role="alert">
+                  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                  <span class="sr-only"></span> Закупихте срещата успешно. Можете да я видите от менюто <router-link
+                               to="orders">'Мои срещи'</router-link>
+                </div>
+                <div v-else-if="this.paymentStatus === 'failed'" class="alert alert-danger" role="alert">
+                  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                  <span class="sr-only"></span> Стана грешка при плащането. Моля опитайте пак или се свържете с нас през
+                  контактната форма или чата
+                </div>
               </div>
-              <h3 class="font-weight-semi-bold">{{ $t('common.currencySign') }}{{ this.date.price }}</h3>
             </div>
-            <div>
-              <strong v-if="this.date.status === 'Started'">Срещата е започнала</strong>
+            <div v-if="this.date.status === 'Started'">
+              <strong>Срещата е започнала</strong><br />
+              <div v-if="this.isBought">
+                <a :href="this.date.videoLink" class="btn btn-success btn-lg" target="_blank">Влез в срещата</a>
+              </div>
+              <div v-else>
+                Не сте купили срещата. Можете да запзите място от началната страница и купите среща след обявяването на дата.
+              </div>
             </div>
             <div v-if="this.date.status === 'Finished'">
-                Срещата е завършила <br />
-                До разкриване на резултатите<br />
+              Срещата е завършила <br />
+              До разкриване на резултатите<br />
               <h3>{{ this.revealTime }}</h3> часа
             </div>
-            <div v-if="this.isBought">
-              <a :href="this.date.videoLink" class="btn btn-success btn-lg" target="_blank">Влез в срещата</a>
+            <div v-if="this.date.status === 'ResultsRevealed'">
+              Можете да видите резултатите от гласуването долу,<br />
+              да чатите със съвпаденията и да видите данните им.
             </div>
           </div>
           <br />
@@ -182,16 +197,32 @@ export default {
       let countdownToStart = setInterval(async () => {
         switch (this.date.status) {
           case 'Approved':
-            this.startTime = moment(startsOn - new Date()).utc().format("HH:mm:ss");
+            let startTimeLeft = startsOn - new Date();
+            this.startTime = moment(startTimeLeft).utc().format("HH:mm:ss");
+            if (startTimeLeft <= 0) {
+              this.date.status = 'Started';
+              clearInterval(countdownToStart);
+              window.location.reload();
+            }
             break;
 
           case 'Started':
-          case 'Finished':
-            let reveal = new Date(new Date(startsOn).setDate(startsOn.getDate() + 1));
-            this.revealTime = moment(reveal - new Date()).utc().format("HH:mm:ss");
-            if (reveal <= new Date()) {
+            let end = moment(startsOn).add(1, 'hours');
+            let endTimeLeft = end - new Date();
+            if (endTimeLeft <= 0) {
+              this.date.status = 'Finished';
               clearInterval(countdownToStart);
-              await this.revealResults();
+              window.location.reload();
+            }
+            break;
+
+          case 'Finished':
+            let reveal = moment(startsOn).add(1, 'days');
+            let revealTimeLeft = reveal - new Date();
+            this.revealTime = moment(revealTimeLeft).utc().format("HH:mm:ss");
+            if (revealTimeLeft <= 0) {
+              this.date.status = 'ResultsRevealed';
+              clearInterval(countdownToStart);
             }
             break;
 
@@ -205,10 +236,6 @@ export default {
     this.loading = false;
   },
   methods: {
-    async revealResults() {
-      this.date = await fetchWrapper.post('Dates/SetStatus', { id: this.id, status: 'ResultsRevealed' });
-      this.date.status = 'ResultsRevealed';
-    },
     async onApprove(e, o) {
       this.paymentStatus = 'success';
 

@@ -131,14 +131,18 @@ namespace Takerman.Dating.Services
             return await GetCardFromDate(date);
         }
 
-        public async Task<bool> IsBought(int dateId, int userId)
+        public async Task<bool> IsBought(int userId, int dateId)
         {
-            return await _context.Orders.AnyAsync(x => x.UserId == userId && x.DateId == dateId);
+            var result = await _context.Orders.AnyAsync(x => x.UserId == userId && x.DateId == dateId);
+
+            return result;
         }
 
-        public async Task<bool> IsSpotSaved(int dateId, int userId)
+        public async Task<bool> IsSpotSaved(int userId, int dateId)
         {
-            return await _context.UserSavedSpots.AnyAsync(x => x.UserId == userId && x.DateId == dateId);
+            var result = await _context.UserSavedSpots.AnyAsync(x => x.UserId == userId && x.DateId == dateId);
+            
+            return result;
         }
 
         public async Task<IEnumerable<DateChoiceDto>> GetChoices(int userId, int dateId)
@@ -396,7 +400,7 @@ namespace Takerman.Dating.Services
             if (date.StartsOn.HasValue && date.StartsOn.Value.AddHours(1) < DateTime.Now)
                 date.Status = DateStatus.Finished;
 
-            if (date.StartsOn.HasValue && date.StartsOn.Value.AddDays(2) < DateTime.Now)
+            if (date.StartsOn.HasValue && date.StartsOn.Value.AddDays(1) < DateTime.Now)
                 date.Status = DateStatus.ResultsRevealed;
 
             await _context.SaveChangesAsync();
