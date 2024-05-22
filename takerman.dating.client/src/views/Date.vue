@@ -70,7 +70,8 @@
               <div v-if="this.isBought">
                 <a v-if="moment(this.date.startsOn).add(-15, 'minutes') < moment()" :href="this.date.videoLink" class="btn btn-success btn-lg" target="_blank">Влез в срещата</a>
                 <p v-else>
-                  Вече сте купили срещата. Ще можете да влезете когато таймера свърши.
+                  Вече сте купили срещата. <br />
+                  Ще можете да влезете малко преди таймера свърши.
                 </p>
               </div>
               <div v-else>
@@ -99,13 +100,17 @@
               </div>
             </div>
             <div v-if="this.date.status === 'Finished'">
-              Срещата е завършила <br />
-              До разкриване на резултатите<br />
-              <h3>{{ this.revealTime }}</h3> часа
+              <p>Срещата е завършила</p>
+              <p>
+                Можете да гласувата отдолу
+              </p>
+              <p>
+                Разкриване на резултатите след <span style="font-size: x-large; font-weight: bold;">{{ this.revealTime }}</span> часа
+              </p>
             </div>
             <div v-if="this.date.status === 'ResultsRevealed'">
-              Можете да видите резултатите от гласуването долу,<br />
-              да чатите със съвпаденията и да видите данните им.
+              Резултатите от гласуването са долу.<br />
+              Можете да чатите и да видите профилите на съвпаденията си.
             </div>
           </div>
           <br />
