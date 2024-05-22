@@ -91,8 +91,8 @@ export default {
         if (authStore.user)
             this.userId = authStore.user.id;
         this.date = await fetchWrapper.get('Dates/GetDate?id=' + this.id);
-        this.isBought = await (await fetch('Dates/IsBought?dateId=' + this.id + '&userId=' + this.userId)).json();
-        this.isSpotSaved = await (await fetch('Dates/IsSpotSaved?dateId=' + this.id + '&userId=' + this.userId)).json();
+        this.isBought = await (await fetch('Dates/IsBought?dateId=' + this.id + (this.userId ? '&userId=' + this.userId : ''))).json();
+        this.isSpotSaved = await (await fetch('Dates/IsSpotSaved?dateId=' + this.id + (this.userId ? '&userId=' + this.userId : ''))).json();
     },
     methods: {
         async onApprove(e, o) {

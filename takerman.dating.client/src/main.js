@@ -18,7 +18,7 @@ Date.prototype.toJSON = function () { return moment(this).format(); }
 const tolgee = Tolgee()
     .use(DevTools())
     .use(FormatSimple())
-    .use(BackendFetch({ prefix: 'https://cdn.tolg.ee/1c54d56393a899fd6effe5dea892e867' }))
+    // .use(BackendFetch({ prefix: 'https://cdn.tolg.ee/1c54d56393a899fd6effe5dea892e867' }))
     .init({
         language: 'en',
         apiUrl: import.meta.env.VUE_APP_TOLGEE_API_URL,

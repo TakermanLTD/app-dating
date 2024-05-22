@@ -3,22 +3,22 @@
         <Heading :heading="$t('choices.title')" />
         <div id="myChoices" class="text-center">
             <div class="col" style="margin: 15px; width: 15rem; display: inline-block;"
-                v-for="(choice, index) in this.choices" :key="index">
+                 v-for="(choice, index) in this.choices" :key="index">
                 <img :src="choice.avatarUrl" class="img" width="150" height="150" />
                 <div>
-                <span class="text-center">{{ choice.name }}</span> <br /><br />
+                    <span class="text-center">{{ choice.name }}</span> <br /><br />
                     <div>
-                    Моя избор е: <br/>
+                        Моя избор е: <br />
                         <label style="margin-right: 15px;" v-for="(radio, radioIndex) in choice.radios" :key="radioIndex"
-                        class="form-check-label"> 
-                        <input :disabled="this.date?.status == 'ResultsRevealed'" type="radio"
-                            @change="checkRadio(radio, choice.radios)" :value="radio.isChecked" class="form-check-input"
-                            :name="'choice_' + index" :checked="radio.isChecked == true">
-                        {{ radio.label }}
+                               class="form-check-label">
+                            <input :disabled="this.date?.status == 'ResultsRevealed'" type="radio"
+                                   @change="checkRadio(radio, choice.radios)" :value="radio.isChecked" class="form-check-input"
+                                   :name="'choice_' + index" :checked="radio.isChecked == true">
+                            {{ radio.label }}
                         </label>
                     </div>
                     <div v-if="this.date?.status == 'ResultsRevealed' && choice?.theirChoice != null">
-                    <br />
+                        <br />
                         <span>
                             Техния избор е: <br /><strong>{{ choice.theirChoice ? choice.theirChoice : 'Нищо' }}</strong>
                         </span> <br />
@@ -29,14 +29,15 @@
                         </div>
                         <div v-else>
                             <button disabled class="btn btn-info">Чат</button>
-                            <button disabled class="btn btn-info">Профил</button></div>
+                            <button disabled class="btn btn-info">Профил</button>
+                        </div>
                     </div>
                 </div>
             </div>
             <br />
             <div>
                 <button v-if="this.date?.status != 'ResultsRevealed'" class="btn btn-success"
-                    @click="saveChoices">Запази</button>
+                        @click="saveChoices">Запази</button>
                 <div v-if="this.showStatus === true" class="alert alert-success" role="alert">
                     <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                     <span class="sr-only"></span> Запазихте избора си успешно
@@ -81,10 +82,12 @@ export default {
     async mounted() {
         const authStore = useAuthStore();
         this.date = await fetchWrapper.get('Dates/Get?id=' + this.dateId);
-        this.choices = await fetchWrapper.get('Dates/GetChoices?userId=' + authStore.user.id + '&dateId=' + this.dateId);
-        for (let i = 0; i < this.choices.length; i++) {
-            const choice = this.choices[i];
-            choice.avatarUrl = await this.getAvatarUrl(choice.voteForId);
+        if (authStore.user) {
+            this.choices = await fetchWrapper.get('Dates/GetChoices?userId=' + authStore.user.id + '&dateId=' + this.dateId);
+            for (let i = 0; i < this.choices.length; i++) {
+                const choice = this.choices[i];
+                choice.avatarUrl = await this.getAvatarUrl(choice.voteForId);
+            }
         }
     },
     methods: {
