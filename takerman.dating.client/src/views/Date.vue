@@ -75,8 +75,7 @@
                 </p>
               </div>
               <div v-else>
-                <PayButton v-if="this.path === '/date' && this.date.price > 0" :date-id="this.date.id" :on-approve="onApprove" :on-error="onError" class="pay-button text-center">Купи</PayButton>
-                <router-link v-else class="btn btn-success" :to="'date?id=' + this.date.id + ''">Купи срещата</router-link>
+                <PayButton v-if="this.date.price > 0" :date-id="this.date.id" :on-approve="onApprove" :on-error="onError" class="pay-button text-center">Купи</PayButton>
                 <br />
                 <div v-if="this.paymentStatus === 'success'" class="alert alert-success" role="alert">
                   <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
@@ -277,6 +276,7 @@ export default {
             this.date.menCount = result.menCount;
             this.date.womenCount = result.womenCount;
             this.emitter.emit('addToSpotCount', { 'eventContent': 1 });
+            this.isSpotSaved = true;
           });
       }
     },
@@ -291,6 +291,7 @@ export default {
             this.date.menCount = result.menCount;
             this.date.womenCount = result.womenCount;
             this.emitter.emit('addToSpotCount', { 'eventContent': -1 });
+            this.isSpotSaved = false;
           });
       }
     }
