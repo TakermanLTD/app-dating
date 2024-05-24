@@ -6,7 +6,7 @@
                     <h5 class="text-secondary text-uppercase mb-4">{{ $t('footer.contact.title') }}</h5>
                     <p class="mb-4">{{ $t('footer.contact.intro') }}</p>
                     <p class="mb-2"><i class="fa fa-map-marker-alt text-primary mr-3"></i>{{ $t('footer.contact.street') }}</p>
-                    <p class="mb-2"><i class="fa fa-envelope text-primary mr-3"></i>{{ $t('footer.contact.email') }}</p>
+                    <p class="mb-2"><i class="fa fa-envelope text-primary mr-3"></i>contact@sreshti.net</p>
                     <p class="mb-0"><i class="fa fa-phone-alt text-primary mr-3"></i>{{ $t('footer.contact.phone') }}</p>
                 </div>
                 <div class="col-lg-8 col-md-12">
@@ -15,7 +15,6 @@
                             <h5 class="text-secondary text-uppercase mb-4">{{ $t('footer.menu.title') }}</h5>
                             <div class="d-flex flex-column justify-content-start">
                                 <router-link class="text-secondary mb-2" to="/"><i class="fa fa-angle-right mr-2"></i>{{ $t('footer.menu.home') }}</router-link>
-                                <router-link class="text-secondary mb-2" to="/about"><i class="fa fa-angle-right mr-2"></i>{{ $t('footer.menu.about') }}</router-link>
                                 <router-link class="text-secondary" to="/contacts"><i class="fa fa-angle-right mr-2"></i>{{ $t('footer.menu.contacts') }}</router-link>
                             </div>
                         </div>
@@ -26,7 +25,6 @@
                                 <router-link class="text-secondary mb-2" to="/register"><i class="fa fa-angle-right mr-2"></i>{{ $t('footer.menu.register') }}</router-link>
                                 <router-link class="text-secondary mb-2" to="/login"><i class="fa fa-angle-right mr-2"></i>{{ $t('footer.menu.login') }}</router-link>
                                 <router-link class="text-secondary mb-2" to="/matches"><i class="fa fa-angle-right mr-2"></i>{{ $t('footer.menu.matches') }}</router-link>
-                                <router-link class="text-secondary mb-2" to="/wishlist"><i class="fa fa-angle-right mr-2"></i>{{ $t('footer.menu.wishlist') }}</router-link>
                                 <router-link class="text-secondary" to="/orders"><i class="fa fa-angle-right mr-2"></i>{{ $t('footer.menu.orders') }}</router-link>
                             </div>
                         </div>

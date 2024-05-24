@@ -11,7 +11,7 @@
                         <p class="help-block text-danger"></p>
                     </div>
                     <div class="control-group">
-                        <input v-model="fields.from" type="email" class="form-control" id="email" :placeholder="$t('contacts.email')"
+                        <input v-model="fields.from" type="email" class="form-control" id="email" placeholder="contact@sreshti.net"
                                required="required" :data-validation-required-message="$t('contacts.email.placeholder')" />
                         <p class="help-block text-danger"></p>
                     </div>
@@ -39,7 +39,7 @@
                 </div>
                 <div class="bg-light p-30 mb-3">
                     <p class="mb-2"><i class="fa fa-map-marker-alt text-primary mr-3"></i>{{ $t('contacts.street') }}</p>
-                    <p class="mb-2"><i class="fa fa-envelope text-primary mr-3"></i>{{ $t('contacts.email') }}</p>
+                    <p class="mb-2"><i class="fa fa-envelope text-primary mr-3"></i>contact@sreshti.net</p>
                     <p class="mb-2"><i class="fa fa-phone-alt text-primary mr-3"></i>{{ $t('contacts.phone') }}</p>
                 </div>
             </div>

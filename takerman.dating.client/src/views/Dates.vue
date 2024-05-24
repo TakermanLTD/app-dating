@@ -81,7 +81,6 @@ import { useAuthStore } from '@/stores';
 import card from '../components/Card.vue';
 import loader from '../components/Loader.vue';
 import cookies from '../helpers/cookies';
-import { useTranslate } from "@tolgee/vue";
 
 export default {
     data() {

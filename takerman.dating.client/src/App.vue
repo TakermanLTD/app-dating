@@ -1,26 +1,20 @@
 <template>
-    <TolgeeProvider>
-        <template v-slot:fallback>
-            <div>{{ $t('common.loading') }}...</div>
-        </template>
-        <AppHeader />
-        <main style="margin-top: 100px">
-            <router-view></router-view>
-        </main>
-        <AppFooter />
-    </TolgeeProvider>
+    <AppHeader />
+    <main style="margin-top: 100px">
+        <router-view></router-view>
+    </main>
+    <AppFooter />
 </template>
 
 <script lang="js">
 import AppHeader from './components/AppHeader.vue';
 import AppFooter from './components/AppFooter.vue';
-import { TolgeeProvider } from '@tolgee/vue';
+import { useI18n } from 'vue-i18n';
 
 export default {
     components: {
         AppHeader,
-        AppFooter,
-        TolgeeProvider
+        AppFooter
     },
     metaInfo: {
         title: 'common.title',

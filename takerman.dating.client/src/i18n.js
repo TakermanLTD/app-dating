@@ -3,7 +3,7 @@ import { createI18n } from 'vue-i18n';
 
 let i18n;
 
-export const SUPPORT_LOCALES = ['bg', 'en'];
+export const SUPPORT_LOCALES = ['bg', 'en', 'ro', 'ru', 'gr', 'de'];
 
 export function setI18nLanguage(locale) {
   loadLocaleMessages(locale);
@@ -35,8 +35,11 @@ export default function setupI18n() {
     i18n = createI18n({
       globalInjection: true,
       legacy: false,
+      locales: SUPPORT_LOCALES,
+      localeDetection: true,
+      defaultLocale: 'en',
       locale: locale,
-      fallbackLocale: 'bg'
+      fallbackLocale: 'en'
     });
 
     setI18nLanguage(locale);

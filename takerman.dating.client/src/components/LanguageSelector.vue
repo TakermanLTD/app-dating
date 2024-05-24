@@ -1,40 +1,41 @@
 <template>
-    <div class="btn-group mx-2">
-        <button type="button" class="btn btn-sm btn-light dropdown-toggle" data-toggle="dropdown">{{ $t('common.lang_' + this.selectedLanguage) }}</button>
-        <div class="dropdown-menu dropdown-menu-right">
-            <button @click="changeLanguage(language)" v-for="(language, languageKey) in this.languages" :key="languageKey" class="dropdown-item" type="button">
-                {{ $t('common.lang_' + language) }}
-            </button>
-        </div>
-    </div>
+	<div class="btn-group mx-2">
+		<button
+			type="button"
+			class="btn btn-sm btn-light dropdown-toggle"
+			data-toggle="dropdown">
+			{{ $t("common.lang_" + selectedLanguage) }}
+		</button>
+		<div class="dropdown-menu dropdown-menu-right">
+			<button
+				@click="changeLanguage(language)"
+				v-for="(language, languageKey) in languages"
+				:key="languageKey"
+				class="dropdown-item"
+				type="button" >
+				{{ $t("common.lang_" + language) }}
+			</button>
+		</div>
+	</div>
 </template>
 
-<script lang="js">
-import cookies from '../helpers/cookies';
-import { useTolgee } from '@tolgee/vue';
+<script setup>
+import cookies from '../helpers/cookies.js';
+import { useI18n } from 'vue-i18n';
+const { locale } = useI18n();
 
-export default {
-    data() {
-        return {
-            selectedLanguage: "en",
-            languages: ["en", "ru", "ro", "bg"],
-            tolgee: useTolgee(['language'])
-        }
-    },
-    mounted() {
-        var languageCookie = cookies.get('language');
-        if (languageCookie) {
-            this.selectedLanguage = languageCookie;
-        } else {
-            cookies.set('language', this.selectedLanguage);
-        }
-    },
-    methods: {
-        changeLanguage(language) {
-            this.tolgee.changeLanguage(language);
-            this.selectedLanguage = language;
-            cookies.set('language', language);
-        }
-    }
+let selectedLanguage = "en";
+let languages = ["en", "bg", "ru", "ro"];
+var languageCookie = cookies.get('language');
+if (languageCookie) {
+    selectedLanguage = languageCookie;
+} else {
+    cookies.set('language', selectedLanguage);
+}
+
+function changeLanguage(language) {
+    selectedLanguage = language;
+    locale.value = selectedLanguage;
+    cookies.set('language', language);
 }
 </script>
