@@ -53,7 +53,7 @@
             </tr>
             <tr>
               <td colspan="2" style="font-size: x-large;">
-                <strong>{{ $t('dates.card.startsOn') }}</strong>{{ this.date.startsOn ? moment(this.date.startsOn).format("DD MMM, HH:mm") : 'След запазване на достатъчно места' }}
+                <strong>{{ $t('dates.card.startsOn') }}</strong><br/>{{ this.date.startsOn ? moment(this.date.startsOn).format("DD MMM, HH:mm") : 'След запазване на достатъчно места' }}
               </td>
             </tr>
           </table>
@@ -65,7 +65,8 @@
             </p>
             <div v-if="this.date.status === 'Approved' && this.startTime">
               <p>
-                Остава <strong style="font-size: x-large;">{{ this.startTime }}</strong> часа
+                Започва след <br />
+                <strong style="font-size: x-large;">{{ this.startTime }}</strong>
               </p>
               <div v-if="this.isBought">
                 <a v-if="moment(this.date.startsOn).add(-15, 'minutes') < moment()" :href="this.date.videoLink" class="btn btn-success btn-lg" target="_blank">Влез в срещата</a>
@@ -202,7 +203,7 @@ export default {
         switch (this.date.status) {
           case 'Approved':
             let startTimeLeft = startsOn - new Date();
-            this.startTime = moment(startTimeLeft).utc().format("HH:mm:ss");
+            this.startTime = moment(startTimeLeft).utc().format("DD:HH:mm:ss");
             if (startTimeLeft <= 0) {
               this.date.status = 'Started';
               clearInterval(countdownToStart);
@@ -227,6 +228,7 @@ export default {
             if (revealTimeLeft <= 0) {
               this.date.status = 'ResultsRevealed';
               clearInterval(countdownToStart);
+              window.location.reload();
             }
             break;
 

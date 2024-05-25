@@ -394,8 +394,8 @@ namespace Takerman.Dating.Services
             if (hasMinimumAttendants && date.StartsOn.HasValue && date.StartsOn.Value > DateTime.Now)
                 date.Status = DateStatus.Approved;
 
-            if (!hasMinimumAttendants && date.Status == DateStatus.Approved)
-                date.Status = DateStatus.NotApproved;
+            // if (!hasMinimumAttendants && date.Status == DateStatus.Approved)
+            //     date.Status = DateStatus.NotApproved;
 
             if (date.StartsOn.HasValue && date.StartsOn.Value.AddHours(1) < DateTime.Now)
                 date.Status = DateStatus.Finished;

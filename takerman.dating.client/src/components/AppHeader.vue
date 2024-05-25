@@ -30,7 +30,7 @@
                             <div class="navbar-nav mr-auto py-0">
                                 <router-link class="nav-item nav-link" to="/">{{ $t('nav.home') }}</router-link>
                                 <router-link v-if="this.user != null" class="nav-item nav-link" to="/orders">{{ $t('nav.myDates') }}</router-link>
-                                <router-link v-if="this.user != null" class="nav-item nav-link" to="/matches">{{ $t('nav.chat') }}</router-link>
+                                <router-link v-if="this.user != null" class="nav-item nav-link" to="/matches">{{ $t('nav.matches') }}</router-link>
                                 <router-link v-if="this.user != null && this.user.isAdmin" class="nav-item nav-link" to="/admin">{{ $t('nav.admin') }}</router-link>
                                 <div class="nav-item dropdown">
                                     <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">{{ $t('nav.account') }} <i class="fa fa-angle-down mt-1"></i></a>
@@ -48,7 +48,6 @@
                                     <span class="badge text-secondary border border-secondary rounded-circle" style="padding-bottom: 2px;">{{ this.savedSpotslength }}</span>
                                 </router-link>
                                 <LanguageSelector />
-                                <CurrencySelector />
                                 <!-- <div class="header-social-links d-flex align-items-center">
                                     <a href="https://facebook.com/sreshti/" target="_blank" class="facebook"><i class="fa fa-facebook"></i></a>
                                     <a href="https://instagram.com/sreshti/" target="_blank" class="instagram"><i class="fa fa-instagram"></i></a>
@@ -68,7 +67,6 @@ import { storeToRefs } from 'pinia';
 import { useAuthStore } from '@/stores';
 import { fetchWrapper } from '@/helpers';
 import LanguageSelector from './LanguageSelector.vue';
-import CurrencySelector from './CurrencySelector.vue';
 
 export default {
     data() {
@@ -78,8 +76,7 @@ export default {
         }
     },
     components: {
-        LanguageSelector,
-        CurrencySelector
+        LanguageSelector
     },
     async mounted() {
         const authStore = useAuthStore();

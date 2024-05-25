@@ -36,7 +36,7 @@
                         <a v-if="moment(this.date.startsOn).add(-15, 'minutes') < moment()" :href="this.date.videoLink" class="btn btn-success btn-lg" target="_blank">Влез в срещата</a>
                     </div>
                     <div v-else>
-                        <router-link class="btn btn-success" :to="'date?id=' + this.date.id + ''">Купи срещата</router-link>
+                        <router-link class="btn btn-success" :to="this.user ? '/date?id=' + this.date.id : '/login'">Купи срещата</router-link>
                     </div>
                 </div>
                 <div v-if="this.date.status === 'Started'">
@@ -69,7 +69,7 @@ export default {
             date: null,
             moment: moment,
             paymentStatus: '',
-            userId: 0,
+            user: null,
             isBought: false,
             isSpotSaved: false,
         }
@@ -89,10 +89,10 @@ export default {
     async mounted() {
         const authStore = useAuthStore();
         if (authStore.user)
-            this.userId = authStore.user.id;
+            this.user = authStore.user;
         this.date = await fetchWrapper.get('Dates/GetDate?id=' + this.id);
-        this.isBought = await (await fetch('Dates/IsBought?dateId=' + this.id + (this.userId ? '&userId=' + this.userId : ''))).json();
-        this.isSpotSaved = await (await fetch('Dates/IsSpotSaved?dateId=' + this.id + (this.userId ? '&userId=' + this.userId : ''))).json();
+        this.isBought = this.user && await (await fetch('Dates/IsBought?dateId=' + this.id + (this.user.id ? '&userId=' + this.user.id : ''))).json();
+        this.isSpotSaved = this.user && await (await fetch('Dates/IsSpotSaved?dateId=' + this.id + (this.user.id ? '&userId=' + this.user.id : ''))).json();
     },
     methods: {
         async onApprove(e, o) {
@@ -100,7 +100,7 @@ export default {
 
             const data = {
                 dateId: this.date.id,
-                userId: this.userId,
+                userId: this.user.id,
                 paymentId: e.paymentID,
                 payerId: e.payerID,
                 orderId: e.orderID,
@@ -119,11 +119,10 @@ export default {
             this.paymentStatus = 'fail';
         },
         async saveSpot(date) {
-            const authStore = useAuthStore();
-            if (!authStore.user) {
+            if (!this.user) {
                 router.push('/login?returnUrl=/date?id=' + this.date.id);
             } else {
-                await fetchWrapper.get('Dates/SaveSpot' + (authStore.user == null ? '' : '?userId=' + authStore.user.id + '&dateId=' + this.date.id))
+                await fetchWrapper.get('Dates/SaveSpot' + (this.user == null ? '' : '?userId=' + this.user.id + '&dateId=' + this.date.id))
                     .then((result) => {
                         this.date.status = result.status;
                         this.date.menCount = result.menCount;
@@ -134,11 +133,10 @@ export default {
             }
         },
         async unsaveSpot(date) {
-            const authStore = useAuthStore();
-            if (!authStore.user) {
+            if (!this.user) {
                 router.push('/login?returnUrl=/date?id=' + this.date.id);
             } else {
-                await fetchWrapper.get('Dates/UnsaveSpot' + (authStore.user == null ? '' : '?userId=' + authStore.user.id + '&dateId=' + this.date.id))
+                await fetchWrapper.get('Dates/UnsaveSpot' + (this.user == null ? '' : '?userId=' + this.user.id + '&dateId=' + this.date.id))
                     .then((result) => {
                         this.date.status = result.status;
                         this.date.menCount = result.menCount;
