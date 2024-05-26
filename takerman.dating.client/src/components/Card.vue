@@ -23,7 +23,7 @@
                 </tbody>
             </table>
             <div class="text-center">
-                <h3 class="font-weight-semi-bold">{{ $t('common.currencySign') }}{{ this.date.price }}</h3>
+                <h3 class="font-weight-semi-bold">{{ this.date.price }}{{ $t('common.currencySign') }}</h3>
                 <p v-if="this.date.status === 'NotApproved'">
                     <a v-if="this.isSpotSaved" @click="this.unsaveSpot(this.date)" class="btn btn-danger">Няма да присъствам</a>
                     <a v-else @click="this.saveSpot(this.date)" class="btn btn-primary">Запази място</a>
