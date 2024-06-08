@@ -29,10 +29,10 @@
           <table class="table">
             <tr>
               <td>
-                <strong>{{ $t('dates.card.menCount') }}</strong> {{ this.date.menCount }}/{{ this.date.minMen }}
+                <strong><i class="bi bi-person-standing"></i>{{ $t('dates.card.menCount') }}</strong> {{ this.date.menCount }}/{{ this.date.minMen }}
               </td>
               <td>
-                <strong>{{ $t('dates.card.womenCount') }}</strong> {{ this.date.womenCount }}/{{ this.date.minWomen }}
+                <strong><i class="bi bi-person-standing-dress"></i>{{ $t('dates.card.womenCount') }}</strong> {{ this.date.womenCount }}/{{ this.date.minWomen }}
               </td>
             </tr>
             <tr>
@@ -53,12 +53,12 @@
             </tr>
             <tr>
               <td colspan="2" style="font-size: x-large;">
-                <strong>{{ $t('dates.card.startsOn') }}</strong><br/>{{ this.date.startsOn ? moment(this.date.startsOn).format("DD MMM, HH:mm") : 'След запазване на достатъчно места' }}
+                <strong><i class="bi bi-calendar-event"></i> {{ $t('dates.card.startsOn') }}</strong><br/>{{ this.date.startsOn ? moment(this.date.startsOn).format("DD MMM, HH:mm") : 'След запазване на достатъчно места' }}
               </td>
             </tr>
           </table>
           <div>
-            <h3 class="font-weight-semi-bold">{{ $t('common.currencySign') }}{{ this.date.price }}</h3>
+            <h3 class="font-weight-semi-bold"><i class="bi bi-tag"></i>{{ $t('common.currencySign') }}{{ this.date.price }}</h3>
             <p v-if="this.date.status === 'NotApproved'">
               <a v-if="this.isSpotSaved" @click="unsaveSpot(this.date)" class="btn btn-danger">Няма да присъствам</a>
               <a v-else @click="saveSpot(this.date)" class="btn btn-primary">Запази място</a>

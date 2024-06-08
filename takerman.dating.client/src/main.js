@@ -5,6 +5,7 @@ import router from "./helpers/router.js";
 import App from './App.vue';
 import mitt from 'mitt';
 import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap-icons/font/bootstrap-icons.min.css";
 import "bootstrap";
 import "easing";
 import "/src/assets/lib/animate/animate.min.css";

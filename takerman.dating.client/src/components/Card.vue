@@ -12,18 +12,18 @@
             <table class="table">
                 <tbody>
                     <tr>
-                        <td>Мъже {{ this.date.menCount }}/{{ this.date.minMen }}</td>
-                        <td>Жени {{ this.date.womenCount }}/{{ this.date.minWomen }}</td>
+                        <td><h5><i class="bi bi-person-standing"></i> {{ this.date.menCount }}/{{ this.date.minMen }}</h5></td>
+                        <td><h5><i class="bi bi-person-standing-dress"></i> {{ this.date.womenCount }}/{{ this.date.minWomen }}</h5></td>
                     </tr>
                     <tr>
-                        <td class="text-center" colspan="2">{{ this.date.startsOn ? moment(new Date(this.date.startsOn)).format("DD MMM, HH:mm") :
+                        <td class="text-center" colspan="2"><i class="bi bi-calendar-event"></i> {{ this.date.startsOn ? moment(new Date(this.date.startsOn)).format("DD MMM, HH:mm") :
                             'Предстои' }}
                         </td>
                     </tr>
                 </tbody>
             </table>
             <div class="text-center">
-                <h3 class="font-weight-semi-bold">{{ this.date.price }}{{ $t('common.currencySign') }}</h3>
+                <h3 class="font-weight-semi-bold"><i class="bi bi-tag"></i>{{ this.date.price }}{{ $t('common.currencySign') }}</h3>
                 <p v-if="this.date.status === 'NotApproved'">
                     <a v-if="this.isSpotSaved" @click="this.unsaveSpot(this.date)" class="btn btn-danger">Няма да присъствам</a>
                     <a v-else @click="this.saveSpot(this.date)" class="btn btn-primary">Запази място</a>
