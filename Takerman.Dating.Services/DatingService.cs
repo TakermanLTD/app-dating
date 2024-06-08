@@ -44,20 +44,20 @@ namespace Takerman.Dating.Services
 
             if (filter != null)
             {
-                if (filter.MinAges != 0)
-                    query = query.Where(x => x.MinAges >= filter.MinAges);
+                if (filter.MinAges.HasValue && filter.MinAges.Value != 0)
+                    query = query.Where(x => x.MinAges >= filter.MinAges.Value);
 
-                if (filter.MaxAges != 0)
-                    query = query.Where(x => x.MaxAges <= filter.MaxAges);
+                if (filter.MaxAges.HasValue && filter.MaxAges.Value != 0)
+                    query = query.Where(x => x.MaxAges <= filter.MaxAges.Value);
 
-                if (filter.MaxPrice != 0)
-                    query = query.Where(x => x.Price <= filter.MaxPrice);
+                if (filter.MaxPrice.HasValue && filter.MaxPrice.Value != 0)
+                    query = query.Where(x => x.Price <= filter.MaxPrice.Value);
 
                 if (filter.Ethnicity.HasValue && filter.Ethnicity != 0)
-                    query = query.Where(x => (int)x.Ethnicity == filter.Ethnicity);
+                    query = query.Where(x => (int)x.Ethnicity == filter.Ethnicity.Value);
 
                 if (filter.DateType.HasValue && filter.DateType != 0)
-                    query = query.Where(x => (int)x.DateType == filter.DateType);
+                    query = query.Where(x => (int)x.DateType == filter.DateType.Value);
             }
 
             //var dates = await query

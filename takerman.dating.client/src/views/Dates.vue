@@ -90,11 +90,11 @@ export default {
             ethnicities: [],
             dateTypes: [],
             filter: {
-                minAges: 0,
-                maxAges: 0,
-                maxPrice: 0,
-                ethnicity: null,
-                dateType: null
+                minAges: null,
+                maxAges: null,
+                maxPrice: null,
+                ethnicity: 0,
+                dateType: 0
             },
             dates: [],
             currency: ''
@@ -117,6 +117,7 @@ export default {
             try {
                 this.loading = true;
                 const authStore = useAuthStore();
+                // todo: load the dates on mount and on apply filter just filter the js object
                 this.dates = await fetchWrapper.post('Dates/GetAllAsCards' + (authStore.user == null ? '' : '?userId=' + authStore.user.id), this.filter);
                 this.loading = false;
             } catch (error) {
