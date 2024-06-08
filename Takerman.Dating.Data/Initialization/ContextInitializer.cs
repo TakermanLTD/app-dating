@@ -5,6 +5,8 @@ using Google.Apis.Util.Store;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Microsoft.SqlServer.Management.Common;
+using Microsoft.SqlServer.Management.Smo;
 
 namespace Takerman.Dating.Data.Initialization
 {
@@ -34,17 +36,26 @@ namespace Takerman.Dating.Data.Initialization
             using var connection = new SqlConnection(context.Database.GetConnectionString());
             var builder = new SqlConnectionStringBuilder(context.Database.GetConnectionString());
             var backupName = $"{builder.InitialCatalog}_{DateTime.Now.Year}_{DateTime.Now.Month}_{DateTime.Now.Day}.bak";
-            var backupPath = $"/home/takerman/volumes/mssql/backups/{backupName}";
-            var query = $"BACKUP DATABASE {builder.InitialCatalog} TO DISK = '/var/opt/mssql/backups/{backupName}'";
+            var serverConnection = new ServerConnection(connection);
+            var server = new Server(serverConnection);
+            var backup = new Backup
+            {
+                Action = BackupActionType.Database,
+                BackupSetDescription = builder.InitialCatalog + " - full backup",
+                BackupSetName = builder.InitialCatalog,
+                Database = builder.InitialCatalog                 
+            };
 
-            using var command = new SqlCommand(query, connection);
-            await connection.OpenAsync();
-            await command.ExecuteNonQueryAsync();
-            await connection.CloseAsync();
+            var deviceItem = new BackupDeviceItem(backupName, DeviceType.File);
+            backup.Devices.Add(deviceItem);
+            backup.Incremental = false;
+            backup.LogTruncation = BackupTruncateLogType.Truncate;
+            backup.SqlBackupAsync(server);
+            // backup.Script(server);
 
-            UploadFile(backupPath);
+            // UploadFile(backupPath);
 
-            File.Delete(backupPath);
+            // File.Delete(backupPath);
         }
 
         public async void UploadFile(string filePath)
