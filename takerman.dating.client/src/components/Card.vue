@@ -1,29 +1,34 @@
 <template>
-    <div v-if="this.date" :class="'col card' + (this.isPast ? ' bg-light' : '')" style="margin: 15px; width: 18rem; display: inline-block;">
-        <router-link :to="'date?id=' + this.date.id + ''">
-            <img v-if="this.date && this.date.pictures && this.date.pictures.length > 0" class="card-img-top" :src="this.date.pictures[0]?.url" alt="Date">
-        </router-link>
-        <div class="card-body">
+    <div v-if="this.date" :class="'col date-card card' + (this.isPast ? ' bg-light' : '')">
+        <div class="date-card-image">
+            <router-link :to="'date?id=' + this.date.id + ''">
+                <img v-if="this.date && this.date.pictures && this.date.pictures.length > 0" class="card-img-top" :src="this.date.pictures[0]?.url" alt="Date">
+            </router-link>
+            <h5 class="date-card-icon">{{ this.date.dateType }}</h5>
+        </div>
+        <div class="card-body date-card-body">
             <h4 class="card-title text-center">
-                <router-link :to="'date?id=' + this.date.id + ''">{{ this.date.title }}</router-link>
+                <router-link class="date-card-title" :to="'date?id=' + this.date.id + ''">{{ this.date.title }} за {{ this.date.ethnicity }}</router-link>
             </h4>
-            <h6 class="card-title text-center">
-                за <strong>{{ this.date.ethnicity }}</strong> - {{ this.date.minAges }}-{{ this.date.maxAges }} год.</h6>
             <table class="table">
                 <tbody>
                     <tr>
-                        <td><h5><i class="bi bi-person-standing"></i> {{ this.date.menCount }}/{{ this.date.minMen }}</h5></td>
-                        <td><h5><i class="bi bi-person-standing-dress"></i> {{ this.date.womenCount }}/{{ this.date.minWomen }}</h5></td>
+                        <td class="date-card-cell">
+                            <h5><i class="bi bi-person-standing"></i> {{ this.date.menCount }}/{{ this.date.minMen }}</h5>
+                        </td>
+                        <td class="date-card-cell">
+                            <h5><i class="bi bi-person-standing-dress"></i> {{ this.date.womenCount }}/{{ this.date.minWomen }}</h5>
+                        </td>
                     </tr>
                     <tr>
-                        <td class="text-center" colspan="2"><i class="bi bi-calendar-event"></i> {{ this.date.startsOn ? moment(new Date(this.date.startsOn)).format("DD MMM, HH:mm") :
-                            'Предстои' }}
-                        </td>
+                        <td class="date-card-cell">{{ this.date.minAges }}-{{ this.date.maxAges }} год.</td>
+                        <td class="date-card-cell">{{ this.date.startsOn ? moment(new Date(this.date.startsOn)).format("DD MMM, HH:mm") :
+                            'Предстои' }}</td>
                     </tr>
                 </tbody>
             </table>
             <div class="text-center">
-                <h3 class="font-weight-semi-bold"><i class="bi bi-tag"></i>{{ this.date.price }}{{ $t('common.currencySign') }}</h3>
+                <h3 class="font-weight-semi-bold">{{ this.date.price }}{{ $t('common.currencySign') }}</h3>
                 <p v-if="this.date.status === 'NotApproved'">
                     <a v-if="this.isSpotSaved" @click="this.unsaveSpot(this.date)" class="btn btn-danger">Няма да присъствам</a>
                     <a v-else @click="this.saveSpot(this.date)" class="btn btn-primary">Запази място</a>
@@ -149,4 +154,38 @@ export default {
     }
 }
 </script>
-<style scoped></style>
+<style scoped>
+.date-card {
+    margin: 15px;
+    width: 18rem;
+    display: inline-block;
+    padding: 0px;
+    text-align: center;
+}
+
+.date-card-title {
+    color: black;
+}
+
+.date-card-body {
+    padding: 20px;
+    text-align: center;
+}
+
+.date-card-cell {
+    width: 50%;
+    text-align: center;
+}
+
+.date-card-image {
+    position: relative;
+}
+
+.date-card-icon {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: white;
+    color: black;
+}
+</style>

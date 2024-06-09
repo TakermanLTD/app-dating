@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using Takerman.Dating.Data;
 
 namespace Takerman.Dating.Models.DTOs
 {
@@ -14,25 +15,15 @@ namespace Takerman.Dating.Models.DTOs
 
         [DataType(DataType.Text)]
         [Description("Currency")]
-        public string Currency { get; set; }
-
-        [Description("Quantity")]
-        public int Quantity { get; set; }
-
-        [Description("Color")]
-        public string Color { get; set; }
+        public string Currency { get; set; } = string.Empty;
 
         [Description("Status")]
-        public string Status { get; set; }
-
-        [Description("Upload")]
-        public string Upload { get; set; }
+        public string Status { get; set; } = string.Empty;
 
         [Description("Refundable")]
         public bool Refundable { get; set; }
 
-        [DataType(DataType.Text)]
-        [Description("Tracking Code")]
-        public string TrackingCode { get; set; }
+        [Description("Date")]
+        public DateCardDto Date { get; set; } = new DateCardDto();
     }
 }

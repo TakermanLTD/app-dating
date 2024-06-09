@@ -7,7 +7,7 @@ namespace Takerman.Dating.Server.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class OrderController(IOrderService _orderService, INotificationService _notificationService) : ControllerBase
+    public class OrderController(IOrderService _orderService, INotificationService _notificationService, IDatingService _datingService) : ControllerBase
     {
         [HttpGet("Get")]
         public async Task<Order> Get(int id)
@@ -26,7 +26,8 @@ namespace Takerman.Dating.Server.Controllers
                 Currency = x.Currency,
                 Total = x.Total,
                 Status = Enum.GetName(x.Status) ?? string.Empty,
-                Refundable = x.CreatedOn.AddDays(14) > DateTime.Now
+                Refundable = x.CreatedOn.AddDays(14) > DateTime.Now,
+                Date = _datingService.GetCardFromDate(userId, x.DateId).Result
             }).ToList();
 
             return result;

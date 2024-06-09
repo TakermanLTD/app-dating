@@ -21,7 +21,7 @@
       <div class="col-lg-7 h-auto mb-30">
         <div class="h-100 bg-light p-30">
           <hgroup>
-            <h3>{{ this.date.title }}</h3>
+            <h3>{{ this.date.dateType }} {{ this.date.title }} за {{ this.date.ethnicity }}</h3>
           </hgroup>
           <br />
           <p class="mb-4">{{ $t('date.description') }}</p>
@@ -41,14 +41,6 @@
               </td>
               <td>
                 <strong>{{ $t('dates.card.maxAges') }}</strong> {{ this.date.maxAges }}
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <strong>{{ $t('dates.card.ethnicity') }}</strong> {{ this.date.ethnicity }}
-              </td>
-              <td>
-                <strong>{{ $t('dates.card.location') }}</strong> {{ this.date.dateType }}
               </td>
             </tr>
             <tr>

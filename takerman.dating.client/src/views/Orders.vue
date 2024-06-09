@@ -11,7 +11,30 @@
           </p>
         </div>
         <div v-else class="card-deck">
-          <card v-for="(spot, index) in this.savedSpots" :id="spot.id" :key="index" />
+          <table class="table table-fluid">
+            <thead>
+              <tr>
+                <th>Number</th>
+                <th>Name</th>
+                <th>Starts on</th>
+                <th>Men</th>
+                <th>Women</th>
+                <th>Ages</th>
+                <th>Price</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tr v-for="(spot, index) in this.savedSpots" :id="spot.id" :key="index">
+              <td>{{ spot.id }}</td>
+              <td>{{ spot.dateType + ' ' + spot.title + ' за ' + spot.ethnicity }}</td>
+              <td>{{ new Date(spot.startsOn).toLocaleDateString() + ' ' + new Date(spot.startsOn).toLocaleTimeString() }}</td>
+              <td>{{ spot.menCount }}/{{ spot.minMen }}</td>
+              <td>{{ spot.womenCount }}/{{ spot.minWomen }}</td>
+              <td>{{ spot.minAges }}-{{ spot.maxAges }} год.</td>
+              <td>{{ spot.price }}{{ $t('common.currencySign') }}</td>
+              <td><router-link class="btn btn-success" :to="'date?id=' + spot.id">Visit</router-link></td>
+            </tr>
+          </table>
         </div>
         <br />
         <heading heading="Купени срещи" />
@@ -21,7 +44,33 @@
           </p>
         </div>
         <div v-else class="card-deck">
-          <card class="gray-100" v-for="(order, index) in this.orders" :id="order.id" :key="index" />
+          <table class="table table-fluid">
+            <thead>
+              <tr>
+                <th>Number</th>
+                <th>Name</th>
+                <th>Starts on</th>
+                <th>Men</th>
+                <th>Women</th>
+                <th>Ages</th>
+                <th>Total</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tr v-for="(order, index) in this.orders" :id="order.id" :key="index">
+              <td>{{ order.id }}</td>
+              <td>{{ order.date.dateType + ' ' + order.date.title + ' за ' + order.date.ethnicity }}</td>
+              <td>{{ new Date(order.date.startsOn).toLocaleDateString() + ' ' + new Date(order.date.startsOn).toLocaleTimeString() }}</td>
+              <td>{{ order.date.menCount }}/{{ order.date.minMen }}</td>
+              <td>{{ order.date.womenCount }}/{{ order.date.minWomen }}</td>
+              <td>{{ order.date.minAges }}-{{ order.date.maxAges }} год.</td>
+              <td>{{ order.total + order.currency }}</td>
+              <td>
+                <router-link class="btn btn-success" :to="'date?id=' + order.date.id">Visit</router-link>
+                <!--<router-link v-if="order.refundable" class="btn btn-danger" :to="'order/refund?id=' + order.id">Refund</router-link>-->
+              </td>
+            </tr>
+          </table>
         </div>
       </div>
     </div>
@@ -31,6 +80,7 @@
 <script lang="js">
 import { fetchWrapper } from '@/helpers';
 import { useAuthStore } from '@/stores';
+import moment from 'moment';
 import breadcrumbs from '../components/Breadcrumbs.vue';
 import loader from '../components/Loader.vue';
 import card from '../components/Card.vue';
