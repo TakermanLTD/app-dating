@@ -24,7 +24,7 @@
                 <th></th>
               </tr>
             </thead>
-            <tr v-for="(spot, index) in this.savedSpots" :id="spot.id" :key="index">
+            <tr v-for="(spot, index) in this.savedSpots" :id="'spot_' + spot.id" :key="index">
               <td>{{ spot.id }}</td>
               <td>{{ spot.dateType + ' ' + spot.title + ' за ' + spot.ethnicity }}</td>
               <td>{{ new Date(spot.startsOn).toLocaleDateString() + ' ' + new Date(spot.startsOn).toLocaleTimeString() }}</td>
@@ -33,6 +33,7 @@
               <td>{{ spot.minAges }}-{{ spot.maxAges }} год.</td>
               <td>{{ spot.price }}{{ $t('common.currencySign') }}</td>
               <td><router-link class="btn btn-success" :to="'date?id=' + spot.id">Visit</router-link></td>
+              <td><button class="btn btn-warning" @click="this.unsaveSpot(spot.id)">Unsave</button></td>
             </tr>
           </table>
         </div>
@@ -80,7 +81,6 @@
 <script lang="js">
 import { fetchWrapper } from '@/helpers';
 import { useAuthStore } from '@/stores';
-import moment from 'moment';
 import breadcrumbs from '../components/Breadcrumbs.vue';
 import loader from '../components/Loader.vue';
 import card from '../components/Card.vue';
@@ -109,6 +109,14 @@ export default {
       await fetchWrapper.put('Order/Cancel?id=' + order.id)
         .then((e) => {
           order.status = 'Отказана';
+        });
+    },
+    async unsaveSpot(dateId) {
+      const authStore = useAuthStore();
+      await fetchWrapper.get('Dates/UnsaveSpot?userId=' + authStore.user.id + '&dateId=' + dateId)
+        .then((result) => {
+          this.emitter.emit('addToSpotCount', { 'eventContent': -1 });
+          document.getElementById('spot_' + dateId).remove();
         });
     }
   },
