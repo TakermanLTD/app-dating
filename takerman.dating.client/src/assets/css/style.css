@@ -9555,6 +9555,7 @@ a.text-dark:hover, a.text-dark:focus {
   z-index: 1;
 }
 
+/*
 .section-title::after {
   position: absolute;
   content: "";
@@ -9565,6 +9566,7 @@ a.text-dark:hover, a.text-dark:focus {
   border-top: 1px dashed #bec5cb;
   z-index: -1;
 }
+*/
 
 .product-offer {
   position: relative;

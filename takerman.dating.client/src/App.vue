@@ -1,8 +1,6 @@
 <template>
-    <AppHeader />
-    <main style="margin-top: 100px">
-        <router-view></router-view>
-    </main>
+    <AppHeader style="margin-bottom: 100px" />
+    <router-view></router-view>
     <AppFooter />
 </template>
 

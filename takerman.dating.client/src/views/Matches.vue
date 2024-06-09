@@ -15,68 +15,57 @@
       </h2>
     </div>
     <div v-else>
-      <div class="row">
-        <div class="col-2 text-center">
-          <div
-            v-if="this.matches && this.matches.length > 0"
-            v-for="(match, matchKey) in this.matches"
-            :key="matchKey"
-          >
-            <div>
-              <img
-                @click="loadMessages(match.userId)"
-                :src="match.avatarUrl"
-                class="img match-avatar"
-                width="120"
-                height="120"
-              />
-              <br />
-              <router-link
-                v-if="match.avatarUrl"
-                :to="'/user-profile?id=' + match.userId"
-                >{{ match.name }}</router-link
-              >
+      <div class="row rounded-lg overflow-hidden">
+        <div class="col-3 px-0">
+          <div class="bg-white">
+            <div class="bg-gray px-4 py-2 bg-light">
+              <p class="h5 mb-0 py-1">Recent</p>
+            </div>
+            <div class="messages-box">
+              <div class="list-group rounded-0">
+                <a @click="loadMessages(match.userId)" v-for="(match, matchKey) in this.matches" :key="matchKey" class="list-group-item list-group-item-action text-white rounded-0" :class="this.toUserId == match.userId ? 'active' : ''">
+                  <div class="media">
+                    <img :src="match.avatarUrl" class="img match-avatar rounded-circle" width="50" height="50" alt="user" />
+                    <div class="media-body ml-4">
+                      <div class="d-flex align-items-center justify-content-between mb-1">
+                        <router-link v-if="match.avatarUrl" :to="'/user-profile?id=' + match.userId">
+                          <h6 class="mb-0">{{ match.name }}</h6>
+                        </router-link>
+                      </div>
+                      <!--<p style="color: black;" class="font-italic mb-0 text-small">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore.</p>-->
+                    </div>
+                  </div>
+                </a>
+              </div>
             </div>
           </div>
-          <div v-else>
-            <h3 class="text-center">Няма намерени съвпадения</h3>
-          </div>
         </div>
-        <div class="col-10">
-          <h4 class="text-center">
-            {{
-              this.toUser
-                ? "В момента чатите със " +
-                  this.toUser.firstName +
-                  " " +
-                  this.toUser.lastName
-                : "Изберете някой с когото да чатите"
-            }}
-          </h4>
-          <div :if="this.toUser">
-            <input
-              class="form-control"
-              v-model="message"
-              @keyup.enter="sendMessage"
-              placeholder="Message"
-            />
-            <button class="btn btn-success" @click="sendMessage">Send</button>
-            <br />
+        <div class="col-9 px-0">
+          <div class="px-4 py-5 chat-box bg-white">
+            <div v-for="(msg, index) in messages" :key="index" class="chat-message">
+              <div v-if="msg.toUserId == this.userId" class="media w-50 mb-3"><img :src="this.toUser.avatarUrl" alt="user" width="50" class="rounded-circle">
+                <div class="media-body ml-3">
+                  <div class="bg-light rounded py-2 px-3 mb-2">
+                    <p class="text-small mb-0 text-muted">{{ msg.message }}</p>
+                  </div>
+                  <p class="small text-muted">{{ moment(new Date(msg.sentOn)).format('DD MMM, HH:mm') }}</p>
+                </div>
+              </div>
+              <div v-else class="media w-50 ml-auto mb-3">
+                <div class="media-body">
+                  <div class="bg-primary rounded py-2 px-3 mb-2">
+                    <p class="text-small mb-0 text-white">{{ msg.message }}</p>
+                  </div>
+                  <p class="small text-muted">{{ moment(new Date(msg.sentOn)).format('DD MMM, HH:mm') }}</p>
+                </div>
+              </div>
+            </div>
           </div>
-          <div style="overflow-y: auto; height: 600px">
-            <span
-              class="chat-message"
-              :title="moment(new Date(msg.sentOn)).format('DD MMM, HH:mm')"
-              v-for="(msg, index) in messages"
-              :key="index"
-              :style="
-                msg.toUserId == this.userId
-                  ? 'text-align: right'
-                  : 'text-align: left'
-              "
-            >
-              {{ msg.message }} <br />
-            </span>
+          <div class="input-group">
+            <input type="text" placeholder="Type a message" aria-describedby="button-addon2" v-model="message" @keyup.enter="sendMessage" style="background-color: #f2f1df !important;" class="form-control rounded-0 border-0 py-4 bg-light">
+            <div class="input-group-append">
+              <button id="button-addon2" class="btn btn-link" @click="sendMessage"> <i class="fa fa-paper-plane"></i></button>
+            </div>
           </div>
         </div>
       </div>
@@ -94,6 +83,8 @@ import Avatar from '../components/Avatar.vue';
 import Heading from '../components/Heading.vue';
 import moment from "moment";
 import * as signalR from "@microsoft/signalr";
+
+// chat design: https://bootstrapious.com/p/bootstrap-chat
 
 export default {
   data() {
@@ -118,16 +109,19 @@ export default {
     const authStore = useAuthStore();
     this.userId = authStore.user.id;
     this.matches = await fetchWrapper.get('Dates/GetMatches?userId=' + this.userId);
+
+    this.connection = new signalR.HubConnectionBuilder()
+      .withUrl("/chatHub")
+      .build();
+
     if (this.matches?.length > 0) {
       for (let i = 0; i < this.matches.length; i++) {
         let result = await fetch('Cdn/GetAvatar?userId=' + this.matches[i].userId);
         this.matches[i].avatarUrl = await result.text();
       }
-    }
 
-    this.connection = new signalR.HubConnectionBuilder()
-      .withUrl("/chatHub")
-      .build();
+      await this.loadMessages(this.matches[0].userId);
+    }
 
     await this.connection.start().catch((err) => console.Error(err));
 
@@ -135,34 +129,36 @@ export default {
   },
   methods: {
     async sendMessage() {
-            this.connection.invoke("SendMessage", this.userId, this.toUser.id, this.message)
-                .then(async (res) => {
-                    await fetchWrapper.post('Notification/SendChatMessageAsync', {
-                        userId: this.userId,
-                        toUserId: this.toUser.id,
-                        message: this.message
-                    });
-                    this.message = "";
-          this.messages = await fetchWrapper.get('Notification/GetChatMessagesAsync?userId=' + this.userId + '&toUserId=' + this.toUser.id);
-                }).catch(err =>
-                    console.log(err)
-                );
-        },
-        async loadMessages(toUserId) {
-          this.messages = [];
-          this.toUserId = toUserId;
-          this.toUser = await fetchWrapper.get('User/Get?id=' + toUserId);
-          this.messages = await fetchWrapper.get('Notification/GetChatMessagesAsync?userId=' + this.userId + '&toUserId=' + toUserId);
-
-          this.connection.on("ReceiveMessage", (userId, toUserId, message) => {
-              this.messages.unshift({
-                  userId: userId,
-                  toUserId: toUserId,
-                  message: message,
-                  sentOn: new Date()
-              });
+      this.connection.invoke("SendMessage", this.userId, this.toUser.id, this.message)
+        .then(async (res) => {
+          await fetchWrapper.post('Notification/SendChatMessageAsync', {
+            userId: this.userId,
+            toUserId: this.toUser.id,
+            message: this.message
           });
-        }
+          this.message = "";
+          this.messages = await fetchWrapper.get('Notification/GetChatMessagesAsync?userId=' + this.userId + '&toUserId=' + this.toUser.id);
+        }).catch(err =>
+          console.log(err)
+        );
+    },
+    async loadMessages(toUserId) {
+      this.messages = [];
+      this.toUserId = toUserId;
+      this.toUser = await fetchWrapper.get('User/Get?id=' + toUserId);
+      let toUserAvatar = await fetch('Cdn/GetAvatar?userId=' + toUserId);
+      this.toUser.avatarUrl = await toUserAvatar.text();
+      this.messages = await fetchWrapper.get('Notification/GetChatMessagesAsync?userId=' + this.userId + '&toUserId=' + toUserId);
+
+      this.connection.on("ReceiveMessage", (userId, toUserId, message) => {
+        this.messages.unshift({
+          userId: userId,
+          toUserId: toUserId,
+          message: message,
+          sentOn: new Date()
+        });
+      });
+    }
   },
   components: { breadcrumbs, loader, heading, Avatar, Heading }
 }
@@ -172,7 +168,57 @@ export default {
 .match-avatar {
   cursor: pointer;
 }
+
 .chat-message {
   display: block;
+}
+
+/*
+*
+* ==========================================
+* FOR DEMO PURPOSES
+* ==========================================
+*
+*/
+body {
+  background-color: #74EBD5;
+  background-image: linear-gradient(90deg, #74EBD5 0%, #9FACE6 100%);
+
+  min-height: 100vh;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-track {
+  width: 5px;
+  background: #f5f5f5;
+}
+
+::-webkit-scrollbar-thumb {
+  width: 1em;
+  background-color: #ddd;
+  outline: 1px solid slategrey;
+  border-radius: 1rem;
+}
+
+.text-small {
+  font-size: 0.9rem;
+}
+
+.messages-box,
+.chat-box {
+  height: 600px;
+  overflow-y: scroll;
+}
+
+.rounded-lg {
+  border-radius: 0.5rem;
+}
+
+input::placeholder {
+  font-size: 0.9rem;
+  color: #999;
 }
 </style>

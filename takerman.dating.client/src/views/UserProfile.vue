@@ -5,15 +5,18 @@
         <div v-if="this.loading">Loading...</div>
         <div style="margin-bottom: 50px;" class="text-center" v-if="this.user != null">
             <Avatar :userId="this.user.id" />
-            <span v-if="this.user.firstName && this.user.lastName"><strong>Име:</strong> {{ this.user.firstName }} {{ this.user.lastName }} <br /></span>
-            <span v-if="this.user.email"><strong>Имейл:</strong> {{ this.user.email }} <br /></span>
-            <span v-if="this.user.country"><strong>Държава:</strong> {{ this.user.country }} <br /></span>
-            <span v-if="this.user.city"><strong>Град:</strong> {{ this.user.city }} <br /></span>
-            <span v-if="this.user.phone"><strong>Телефон:</strong> {{ this.user.phone }} <br /></span>
-            <span v-if="this.user.facebook"><strong>Facebook:</strong> {{ this.user.facebook }} <br /></span>
-            <span v-if="this.user.instagram"><strong>Instagram:</strong> {{ this.user.instagram }} <br /></span>
-            <span v-if="this.user.gender"><strong>Пол:</strong> {{ this.user.gender == 1 ? 'Мъж' : 'Жена' }} <br /></span>
-            <span v-if="this.user.ethnicity"><strong>Етнос:</strong> {{ this.user.ethnicity }} <br /></span>
+            <p>
+                <span v-if="this.user?.firstName && this.user.lastName">{{ this.user?.firstName }} {{ this.user?.lastName }} <br /></span>
+                <a v-if="this.user?.email" :href="'mailto:' + this.user.email">{{ this.user?.email }}<br /></a>
+                <span v-if="this.user?.country && this.user.city">{{ this.user?.country }}{{ this.user?.country ? ', ' + this.user?.city :  this.user?.city }}<br /></span>
+                <a v-if="this.user?.phone" :href="'tel:' + this.user?.phone">{{ this.user?.phone }} <br /></a>
+                <span v-if="this.user?.facebook || this.user?.instagram">
+                    <span style="margin: 5px;" v-if="this.user?.facebook"><a :href="this.user?.facebook" target="_blank"><i class="bi bi-facebook"></i></a></span>
+                    <span style="margin: 5px;" v-if="this.user?.instagram"><a :href="this.user?.instagram" target="_blank"><i class="bi bi-instagram"></i></a></span>
+                    <br />
+                </span>
+                <span v-if="this.user?.gender">{{ this.user.gender == 1 ? 'Мъж' : 'Жена' }} <br /></span>
+            </p>
         </div>
     </div>
 </template>
