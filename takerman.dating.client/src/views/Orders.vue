@@ -68,7 +68,7 @@
               <td>{{ order.total + order.currency }}</td>
               <td>
                 <router-link class="btn btn-success" :to="'date?id=' + order.date.id">Visit</router-link>
-                <!--<router-link v-if="order.refundable" class="btn btn-danger" :to="'order/refund?id=' + order.id">Refund</router-link>-->
+                <button v-if="order.refundable && order.status != 'Canceled'" @click="this.cancel(order.id)" class="btn btn-danger">Cancel</button>
               </td>
             </tr>
           </table>
@@ -105,8 +105,8 @@ export default {
     this.loading = false;
   },
   methods: {
-    async cancel(order) {
-      await fetchWrapper.put('Order/Cancel?id=' + order.id)
+    async cancel(orderId) {
+      await fetchWrapper.put('Order/Cancel?id=' + orderId)
         .then((e) => {
           order.status = 'Отказана';
         });
