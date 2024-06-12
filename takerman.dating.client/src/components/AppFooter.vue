@@ -6,8 +6,8 @@
                     <h5 class="text-secondary text-uppercase mb-4">{{ $t('footer.contact.title') }}</h5>
                     <p class="mb-4">{{ $t('footer.contact.intro') }}</p>
                     <p class="mb-2"><i class="fa fa-map-marker-alt text-primary mr-3"></i>{{ $t('footer.contact.street') }}</p>
-                    <p class="mb-2"><i class="fa fa-envelope text-primary mr-3"></i>contact@sreshti.net</p>
-                    <p class="mb-0"><i class="fa fa-phone-alt text-primary mr-3"></i>{{ $t('footer.contact.phone') }}</p>
+                    <p class="mb-2"><i class="fa fa-envelope text-primary mr-3"></i><a href="mailto:contact@sreshti.net">contact@sreshti.net</a></p>
+                    <p class="mb-0"><i class="fa fa-phone-alt text-primary mr-3"></i><a :href="'tel:' + $t('footer.contact.phone')">{{ $t('footer.contact.phone') }}</a></p>
                 </div>
                 <div class="col-lg-8 col-md-12">
                     <div class="row">

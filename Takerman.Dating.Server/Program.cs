@@ -27,7 +27,7 @@ Log.Logger = new LoggerConfiguration()
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 if (!builder.Environment.IsDevelopment())
-    connectionString = connectionString.Replace("takerman_dating_bg", hostname);
+    connectionString = connectionString.Replace("takerman-dating-bg", hostname);
 
 builder.Services.AddSignalR();
 builder.Host.UseSerilog(Log.Logger);
