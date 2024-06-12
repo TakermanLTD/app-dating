@@ -1,10 +1,10 @@
 provider "aws" {
-  region = "eu-central-1"
+  region = "eu-west-3"
 }
 
 resource "aws_lightsail_instance" "app" {
   name              = "takerman-dating"
-  availability_zone = "eu-central-1a"
+  availability_zone = "eu-west-3a"
   blueprint_id      = "amazon_linux_2"
   bundle_id         = "nano_2_0"
 
