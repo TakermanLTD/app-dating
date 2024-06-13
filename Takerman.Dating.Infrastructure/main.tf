@@ -29,7 +29,7 @@ resource "aws_lightsail_static_ip_attachment" "app_ip_attachment" {
 }
 
 resource "aws_db_instance" "sql" {
-  identifier              = "takerman-dating-bg"
+  identifier              = "takerman_dating_bg"
   allocated_storage       = 20
   engine                  = "sqlserver-ex"
   instance_class          = "db.t3.micro"
@@ -40,6 +40,6 @@ resource "aws_db_instance" "sql" {
   backup_retention_period = 0
 
   tags = {
-    Name = "takerman-dating-bg"
+    Name = "takerman_dating_bg"
   }
 }
