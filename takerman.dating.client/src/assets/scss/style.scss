@@ -134,7 +134,6 @@ $input-placeholder-color: #999999;
     z-index: 1;
 }
 
-/*
 .section-title::after {
     position: absolute;
     content: "";
@@ -142,10 +141,8 @@ $input-placeholder-color: #999999;
     height: 0;
     top: 50%;
     left: 0;
-    border-top: 1px dashed lighten($dark, 50%);
     z-index: -1;
 }
-*/
 
 .product-offer {
     position: relative;
