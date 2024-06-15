@@ -24,7 +24,7 @@ Date.prototype.toJSON = function () { return moment(this).format(); }
 const emitter = mitt();
 let pinia = createPinia();
 const i18n = createI18n({
-	locale: 'en',
+	locale: cookies.get('language') || 'en',
 	legacy: false,
 	locale: cookies.get('language') || 'en',
 	fallbackLocale: 'en',
