@@ -24,14 +24,8 @@ import cookies from '../helpers/cookies.js';
 import { useI18n } from 'vue-i18n';
 const { locale } = useI18n();
 
-let selectedLanguage = "en";
+let selectedLanguage = cookies.get('language') || "en";
 let languages = ["en", "bg", "ru", "ro"];
-var languageCookie = cookies.get('language');
-if (languageCookie) {
-    selectedLanguage = languageCookie;
-} else {
-    cookies.set('language', selectedLanguage);
-}
 
 function changeLanguage(language) {
     selectedLanguage = language;
