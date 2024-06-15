@@ -43,6 +43,7 @@ RUN echo "user.email=tivanov@takerman.net" > .npmrc
 RUN echo "user.name=takerman" > .npmrc
 RUN echo "user.username=takerman" > .npmrc
 RUN npm install --production
+RUN npm ci
 
 WORKDIR "/src/Takerman.Dating.Server"
 RUN dotnet clean "./Takerman.Dating.Server.csproj"
