@@ -18,6 +18,7 @@ import bg from './assets/languages/bg.json';
 import ro from './assets/languages/ro.json';
 import ru from './assets/languages/ru.json';
 import cookies from './helpers/cookies';
+import VueGtag from "vue-gtag";
 
 Date.prototype.toJSON = function () { return moment(this).format(); }
 
@@ -36,10 +37,20 @@ const i18n = createI18n({
 		ru: ru
 	}
 });
+let measurementId = 'G-B686JH31RT';
+switch (window.location.host) {
+	case 'uk.sreshti.net':
+		measurementId = 'G-EWR2YD00DZ';
+		break;
+}
 
 const app = createApp(App);
 app.config.globalProperties.emitter = emitter;
+app.config.productionTip = false;
 app.use(pinia)
 	.use(i18n)
 	.use(router)
+	.use(VueGtag, {
+		config: { id: measurementId }
+	})
 	.mount('#app');
