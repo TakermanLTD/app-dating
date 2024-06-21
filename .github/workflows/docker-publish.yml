@@ -44,11 +44,21 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
-      - name: ZAP Scan
-        uses: zaproxy/action-full-scan@v0.10.0
+      - name: Checkout code
+        uses: actions/checkout@v2
+    
+      - name: Install OWASP ZAP
+        uses: zaproxy/action-full-scan@v0.3.0
         with:
-          target: 'https://www.zaproxy.org/'
-
+          target: 'https://sreshti.net'
+          token: ${{ secrets.GITHUB_TOKEN }}
+  
+      - name: Start OWASP ZAP
+        uses: zaproxy/action-baseline@v0.5.0
+        with:
+          target: 'https://sreshti.net'
+          token: ${{ secrets.GITHUB_TOKEN }}
+  
       - name: Build and push Docker image
         id: build-and-push
         uses: docker/build-push-action@ac9327eae2b366085ac7f6a2d02df8aa8ead720a
@@ -58,3 +68,19 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: "NUGET_PASSWORD=${{ secrets.REGISTRY_TOKEN }}"
+
+      - name: Stop OWASP ZAP
+        uses: zaproxy/action-baseline@v0.5.0
+        with:
+          target: 'https://sreshti.net'
+          token: ${{ secrets.GITHUB_TOKEN }}
+    
+      - name: Stop OWASP ZAP and generate report
+        run: zap-full-scan-stop
+        shell: bash
+
+      - name: Download OWASP ZAP report
+        uses: actions/download-artifact@v2
+        with:
+          name: zap-report
+  
