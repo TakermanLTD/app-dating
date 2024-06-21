@@ -49,6 +49,8 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           target: https://sreshti.net
+          zap_options: '-cmd -config api.disablekey=true'
+          zap_image: 'owasp/zap2docker-stable'
 
       - name: Start OWASP ZAP
         uses: zaproxy/action-baseline@v0.5.0
