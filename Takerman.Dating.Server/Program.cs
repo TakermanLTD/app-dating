@@ -38,7 +38,7 @@ builder.Services.AddExceptionHandler<BadRequestExceptionHandler>();
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
 builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
-builder.Services.AddDbContext<DefaultContext>(options => options.UseSqlServer(connectionString));
+builder.Services.AddDbContext<DefaultContext>(options => options.UseSqlServer(connectionString, b => b.MigrationsAssembly("Takerman.Dating.Data")));
 builder.Services.AddTransient<IContextInitializer, ContextInitializer>();
 builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<INotificationService, NotificationService>();

@@ -100,7 +100,7 @@ Created On: {order.CreatedOn} <br />",
                 Body = $"From: {message.Name}. <br />Email {message.From}. <br />Message: {message.Body}",
                 From = "tivanov@takerman.net",
                 Subject = $"Sreshti - New email from {message.Name}",
-                To = "contact@takerman.net"
+                To = "contact@sreshti.net"
             });
         }
 
