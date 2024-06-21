@@ -16,7 +16,6 @@ env:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -29,7 +28,7 @@ jobs:
 
       - name: Setup Docker buildx
         uses: docker/setup-buildx-action@79abd3f86f79a9d68a23c75a09a9a85889262adf
-      
+
       - name: Log into registry ${{ env.REGISTRY }}
         if: github.event_name != 'pull_request'
         uses: docker/login-action@28218f9b04b4f3f62068d7b6ce6ca5b26e35336c
@@ -38,27 +37,24 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Install OWASP ZAP
+        uses: zaproxy/action-full-scan@v0.5.0
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          target: https://sreshti.net
+
+      - name: Start OWASP ZAP
+        uses: zaproxy/action-baseline@v0.5.0
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          target: https://sreshti.net
+
       - name: Extract Docker metadata
         id: meta
         uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
-      - name: Checkout code
-        uses: actions/checkout@v2
-    
-      - name: Install OWASP ZAP
-        uses: zaproxy/action-full-scan@v0.5.0
-        with:
-          target: 'https://sreshti.net'
-          token: ${{ secrets.GITHUB_TOKEN }}
-  
-      - name: Start OWASP ZAP
-        uses: zaproxy/action-baseline@v0.5.0
-        with:
-          target: 'https://sreshti.net'
-          token: ${{ secrets.GITHUB_TOKEN }}
-  
       - name: Build and push Docker image
         id: build-and-push
         uses: docker/build-push-action@ac9327eae2b366085ac7f6a2d02df8aa8ead720a
@@ -69,12 +65,6 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           build-args: "NUGET_PASSWORD=${{ secrets.REGISTRY_TOKEN }}"
 
-      - name: Stop OWASP ZAP
-        uses: zaproxy/action-baseline@v0.5.0
-        with:
-          target: 'https://sreshti.net'
-          token: ${{ secrets.GITHUB_TOKEN }}
-    
       - name: Stop OWASP ZAP and generate report
         run: zap-full-scan-stop
         shell: bash
@@ -83,4 +73,3 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: zap-report
-  
