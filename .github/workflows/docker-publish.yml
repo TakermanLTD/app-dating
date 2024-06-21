@@ -48,7 +48,7 @@ jobs:
         uses: actions/checkout@v2
     
       - name: Install OWASP ZAP
-        uses: zaproxy/action-full-scan@v0.3.0
+        uses: zaproxy/action-full-scan@v0.5.0
         with:
           target: 'https://sreshti.net'
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -80,7 +80,7 @@ jobs:
         shell: bash
 
       - name: Download OWASP ZAP report
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: zap-report
   
