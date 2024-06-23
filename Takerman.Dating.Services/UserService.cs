@@ -302,7 +302,7 @@ namespace Takerman.Dating.Services
             return userClaims;
         }
 
-        public static async Task<User> AddUserFromSocial(UserManager<User> userManager, DefaultContext context, CreateUserFromSocialLogin model, LoginProvider loginProvider)
+        public async Task<User> AddUserFromSocial(UserManager<User> userManager, DefaultContext context, CreateUserFromSocialLogin model, LoginProvider loginProvider)
         {
             //CHECKS IF THE USER HAS NOT ALREADY BEEN LINKED TO AN IDENTITY PROVIDER
             var user = await userManager.FindByLoginAsync(loginProvider.GetDisplayName(), model.LoginProviderSubject);

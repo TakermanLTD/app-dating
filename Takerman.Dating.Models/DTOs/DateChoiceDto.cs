@@ -8,9 +8,9 @@ namespace Takerman.Dating.Models.DTOs
 
         public List<ChoiceRadioDto> Radios { get; set; } =
         [
-            new() { Label = Enum.GetName(typeof(ChoiceType), ChoiceType.Yes), IsChecked = false},
-            new() { Label = Enum.GetName(typeof(ChoiceType), ChoiceType.No), IsChecked = false},
-            new() { Label = Enum.GetName(typeof(ChoiceType), ChoiceType.Friend), IsChecked = false}
+            new() { Label = System.Enum.GetName(typeof(ChoiceType), ChoiceType.Yes), IsChecked = false},
+            new() { Label = System.Enum.GetName(typeof(ChoiceType), ChoiceType.No), IsChecked = false},
+            new() { Label = System.Enum.GetName(typeof(ChoiceType), ChoiceType.Friend), IsChecked = false}
         ];
 
         public string TheirChoice { get; set; } = string.Empty;

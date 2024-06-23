@@ -13,22 +13,12 @@ using static Google.Apis.Auth.GoogleJsonWebSignature;
 
 namespace Takerman.Dating.Services.GoogleAuthentication
 {
-    /// <summary>
-    /// Class Facebook Auth Service.
-    /// Implements the <see cref="SocialAuthentication.GoogleAuthentication.IGoogleAuthService" />
-    /// </summary>
-    /// <seealso cref="SocialAuthentication.GoogleAuthentication.IGoogleAuthService" />
     public class GoogleAuthService(UserManager<User> userManager, DefaultContext context, IOptions<GoogleAuthConfig> googleAuthConfig, ILogger<GoogleAuthService> _logger, IUserService _userService) : IGoogleAuthService
     {
         private readonly UserManager<User> _userManager = userManager;
         private readonly DefaultContext _context = context;
         private readonly GoogleAuthConfig _googleAuthConfig = googleAuthConfig.Value;
 
-        /// <summary>
-        /// Google SignIn
-        /// </summary>
-        /// <param name="model">the model</param>
-        /// <returns>Task&lt;BaseResponse&lt;User&gt;&gt;</returns>
         public async Task<BaseResponse<User>> GoogleSignIn(GoogleSignInVM model)
         {
 

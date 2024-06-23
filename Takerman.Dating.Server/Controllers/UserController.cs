@@ -1,6 +1,5 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using SocialAuthentication.Interfaces;
 using Takerman.Dating.Data;
 using Takerman.Dating.Data.DTOs;
 using Takerman.Dating.Models.DTOs;
@@ -11,7 +10,7 @@ namespace Takerman.Dating.Server.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class UserController(IUserService _userService, INotificationService _notificationService, ILogger _logger, IAuthService _authService) : BaseController(_logger)
+    public class UserController(IUserService _userService, INotificationService _notificationService, ILogger _logger) : BaseController(_logger)
     {
         private readonly IMapper _mapper = new MapperConfiguration(cfg =>
             {
@@ -112,7 +111,7 @@ namespace Takerman.Dating.Server.Controllers
         {
             try
             {
-                return ReturnResponse(await _authService.SignInWithGoogle(model));
+                return ReturnResponse(await _userService.SignInWithGoogle(model));
             }
             catch (Exception ex)
             {
@@ -126,7 +125,7 @@ namespace Takerman.Dating.Server.Controllers
         {
             try
             {
-                return ReturnResponse(await _authService.SignInWithFacebook(model));
+                return ReturnResponse(await _userService.SignInWithFacebook(model));
             }
             catch (Exception ex)
             {
