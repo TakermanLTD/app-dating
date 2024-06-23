@@ -1,8 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Reflection;
+using Microsoft.EntityFrameworkCore;
 
 namespace Takerman.Dating.Data
 {
-    public class DefaultContext(DbContextOptions<DefaultContext> options) : DbContext(options)
+    public class DefaultContext(DbContextOptions options) : DbContext(options)
     {
         public DbSet<ChatMessage> ChatMessages { get; set; }
         public DbSet<Date> Dates { get; set; }
@@ -15,5 +16,12 @@ namespace Takerman.Dating.Data
         public DbSet<UserPicture> UserPictures { get; set; }
         public DbSet<EthnicPicture> EthnicPictures { get; set; }
         public DbSet<UserSavedSpot> UserSavedSpots { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+
+            builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+        }
     }
 }

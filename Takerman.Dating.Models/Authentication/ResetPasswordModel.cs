@@ -5,5 +5,5 @@ using System.ComponentModel.DataAnnotations;
 public class ResetPasswordModel
 {
     [Required]
-    public string Email { get; set; }
+    public string Email { get; set; } = string.Empty;
 }

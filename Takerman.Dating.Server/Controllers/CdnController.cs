@@ -1,14 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Takerman.Dating.Data;
-using Takerman.Dating.Models.DTOs;
-using Takerman.Dating.Services;
 using Takerman.Dating.Services.Abstraction;
 
 namespace Takerman.Dating.Server.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class CdnController(ICdnService _cdnService) : ControllerBase
+    public class CdnController(ICdnService _cdnService, ILogger<CdnController> _logger) : BaseController(_logger)
     {
         [HttpGet("GetUserPictures")]
         public Task<IEnumerable<UserPicture>> GetUserPictures(int userId)

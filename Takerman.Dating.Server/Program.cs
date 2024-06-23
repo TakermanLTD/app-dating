@@ -11,6 +11,13 @@ using Takerman.Dating.Services.Abstraction;
 using Takerman.Dating.Services.Hubs;
 using Takerman.Mail;
 using Microsoft.AspNetCore.Http.Features;
+using Takerman.Dating.Services.GoogleAuthentication;
+using Takerman.Dating.Services.FacebookAuthentication;
+using static Takerman.Dating.Data.User;
+using Microsoft.AspNetCore.Identity;
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Configuration
@@ -40,6 +47,7 @@ builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
 builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
 builder.Services.AddDbContext<DefaultContext>(options => options.UseSqlServer(connectionString, b => b.MigrationsAssembly("Takerman.Dating.Data")));
+builder.Services.AddTransient<DbContext, DefaultContext>();
 builder.Services.AddTransient<IContextInitializer, ContextInitializer>();
 builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<INotificationService, NotificationService>();
@@ -50,9 +58,13 @@ builder.Services.AddTransient<IMailService, MailService>();
 builder.Services.AddTransient<IChatService, ChatService>();
 builder.Services.AddTransient<ICdnService, CdnService>();
 builder.Services.AddTransient<IAdminService, AdminService>();
+builder.Services.AddScoped<IGoogleAuthService, GoogleAuthService>();
+builder.Services.AddScoped<IFacebookAuthService, FacebookAuthService>();
 builder.Services.Configure<RabbitMqConfig>(builder.Configuration.GetSection(nameof(RabbitMqConfig)));
 builder.Services.Configure<PayPalConfig>(builder.Configuration.GetSection(nameof(PayPalConfig)));
 builder.Services.Configure<CdnConfig>(builder.Configuration.GetSection(nameof(CdnConfig)));
+builder.Services.Configure<GoogleAuthConfig>(builder.Configuration.GetSection("Google"));
+builder.Services.Configure<FacebookAuthConfig>(builder.Configuration.GetSection("Facebook"));
 builder.Services.AddHsts(options =>
 {
     options.Preload = true;
@@ -61,7 +73,55 @@ builder.Services.AddHsts(options =>
     options.ExcludedHosts.Add(hostname);
     options.ExcludedHosts.Add($"www.{hostname}");
 });
+builder.Services.AddHttpClient("Facebook", c =>
+{
+    c.BaseAddress = new Uri(builder.Configuration.GetValue<string>("Facebook:BaseUrl"));
+});
 
+builder.Services.AddIdentity<User, Role>(options =>
+{
+    options.Password.RequiredLength = 8;
+
+    options.Lockout.AllowedForNewUsers = true;
+    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(10);
+    options.Lockout.MaxFailedAccessAttempts = 3;
+    options.User.RequireUniqueEmail = true;
+}).AddEntityFrameworkStores<DefaultContext>().AddDefaultTokenProviders();
+
+builder.Services.Configure<DataProtectionTokenProviderOptions>(options =>
+{
+    options.TokenLifespan = TimeSpan.FromHours(24);
+});
+
+var jwtSection = builder.Configuration.GetSection("JWT");
+builder.Services.Configure<Jwt>(jwtSection);
+
+var appSettings = jwtSection.Get<Jwt>();
+var secret = Encoding.ASCII.GetBytes(appSettings.Secret);
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+
+}).AddJwtBearer(o =>
+{
+    o.RequireHttpsMetadata = true;
+    o.SaveToken = true;
+    o.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidIssuer = appSettings.ValidIssuer,
+        ValidAudience = appSettings.ValidAudience,
+        ValidateIssuerSigningKey = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ClockSkew = TimeSpan.Zero,
+        RequireExpirationTime = true,
+        IssuerSigningKey = new SymmetricSecurityKey(secret)
+    };
+
+});
 var app = builder.Build();
 
 using var scope = app.Services.CreateAsyncScope();
@@ -85,6 +145,8 @@ else
 app.UseSerilogRequestLogging();
 
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 

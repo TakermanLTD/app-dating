@@ -1,5 +1,7 @@
-﻿using Takerman.Dating.Data;
+﻿using Microsoft.AspNetCore.Identity;
+using Takerman.Dating.Data;
 using Takerman.Dating.Models.DTOs;
+using Takerman.Dating.Models.Enum;
 using Takerman.Dating.Services.Authentication;
 
 namespace Takerman.Dating.Services.Abstraction
@@ -33,5 +35,11 @@ namespace Takerman.Dating.Services.Abstraction
         Task SaveAllUsers(IEnumerable<User> users);
 
         Task DeleteAllUsers();
+
+        Task<BaseResponse<JwtResponseVM>> SignInWithGoogle(GoogleSignInVM model);
+        
+        Task<BaseResponse<JwtResponseVM>> SignInWithFacebook(FacebookSignInVM model);
+
+        Task<User> AddUserFromSocial(UserManager<User> userManager, DefaultContext context, CreateUserFromSocialLogin model, LoginProvider loginProvider);
     }
 }
