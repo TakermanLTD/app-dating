@@ -39,7 +39,5 @@ namespace Takerman.Dating.Services.Abstraction
         Task<BaseResponse<JwtResponseVM>> SignInWithGoogle(GoogleSignInVM model);
         
         Task<BaseResponse<JwtResponseVM>> SignInWithFacebook(FacebookSignInVM model);
-
-        Task<User> AddUserFromSocial(UserManager<User> userManager, DefaultContext context, CreateUserFromSocialLogin model, LoginProvider loginProvider);
     }
 }

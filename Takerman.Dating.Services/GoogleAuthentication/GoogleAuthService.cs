@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Extensions;
@@ -13,7 +14,7 @@ using static Google.Apis.Auth.GoogleJsonWebSignature;
 
 namespace Takerman.Dating.Services.GoogleAuthentication
 {
-    public class GoogleAuthService(UserManager<User> userManager, DefaultContext context, IOptions<GoogleAuthConfig> googleAuthConfig, ILogger<GoogleAuthService> _logger, IUserService _userService) : IGoogleAuthService
+    public class GoogleAuthService(UserManager<User> userManager, DefaultContext context, IOptions<GoogleAuthConfig> googleAuthConfig, ILogger<GoogleAuthService> _logger, IAuthService _authService) : IGoogleAuthService
     {
         private readonly UserManager<User> _userManager = userManager;
         private readonly DefaultContext _context = context;
@@ -47,7 +48,7 @@ namespace Takerman.Dating.Services.GoogleAuthentication
                 LoginProviderSubject = payload.Subject,
             };
             
-           var user = await _userService.AddUserFromSocial(_userManager, _context, userToBeCreated, LoginProvider.Google);
+           var user = await _authService.AddUserFromSocial(_userManager, _context, userToBeCreated, LoginProvider.Google);
 
             if (user is not null)
                 return new BaseResponse<User>(user);

@@ -4,19 +4,23 @@
             <Heading heading="Профил" />
             <br />
             <fieldset>
+                <div>
+                    <td>{{ account.id }}</td>
+                    <td>{{ account.facebookId }}</td>
+                    <td>{{ account.name }}</td>
+                    <td>{{ account.extraInfo }}</td>
+                </div>
                 <div class="form-group row">
                     <label for="firstName" class="col-sm-2 col-form-label">Първо име</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" id="firstName" placeholder="Първо име"
-                            v-model="fields.firstName" />
+                        <input type="text" class="form-control" id="firstName" placeholder="Първо име" v-model="fields.firstName" />
                     </div>
                 </div>
                 <br />
                 <div class="form-group row">
                     <label for="lastName" class="col-sm-2 col-form-label">Фамилиия</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" id="lastName" placeholder="Фамилия"
-                            v-model="fields.lastName" />
+                        <input type="text" class="form-control" id="lastName" placeholder="Фамилия" v-model="fields.lastName" />
                     </div>
                 </div>
                 <br />
@@ -54,7 +58,7 @@
                     <label for="country" class="col-sm-2 col-form-label">Държава</label>
                     <div class="col-sm-10">
                         <input type="text" class="form-control" id="country" placeholder="Държава"
-                            v-model="fields.country" />
+                               v-model="fields.country" />
                     </div>
                 </div>
                 <br />
@@ -69,7 +73,7 @@
                     <label for="facebook" class="col-sm-2 col-form-label">Фейсбук</label>
                     <div class="col-sm-10">
                         <input type="text" class="form-control" id="facebook" placeholder="Фейсбук"
-                            v-model="fields.facebook" />
+                               v-model="fields.facebook" />
                     </div>
                 </div>
                 <br />
@@ -77,7 +81,7 @@
                     <label for="instagram" class="col-sm-2 col-form-label">Инстаграм</label>
                     <div class="col-sm-10">
                         <input type="text" class="form-control" id="instagram" placeholder="Инстаграм"
-                            v-model="fields.instagram" />
+                               v-model="fields.instagram" />
                     </div>
                 </div>
                 <br />
@@ -103,7 +107,7 @@
                         <label for="password" class="col-sm-2 col-form-label">Парола</label>
                         <div class="col-sm-10">
                             <input type="password" class="form-control" id="password" placeholder="Парола"
-                                v-model="fields.password" :pattern="this.passwordPattern" />
+                                   v-model="fields.password" :pattern="this.passwordPattern" />
                         </div>
                     </div>
                     <br />
@@ -111,7 +115,7 @@
                         <label for="confirmPassword" class="col-sm-2 col-form-label">Паролата отново</label>
                         <div class="col-sm-10">
                             <input type="password" class="form-control" id="confirmPassword" placeholder="Паролата отново"
-                                v-model="fields.confirmPassword" :pattern="this.passwordPattern" />
+                                   v-model="fields.confirmPassword" :pattern="this.passwordPattern" />
                         </div>
                     </div>
                     <br />
@@ -122,15 +126,15 @@
                         <div class="col-sm-8">
                             <div v-if="this.loading">Зареждане...</div>
                             <div v-else v-show="status"
-                                :class="{ 'alert-success': this.statusClass == 'success', 'alert-danger': this.statusClass == 'danger' }"
-                                class="alert" role="alert">
+                                 :class="{ 'alert-success': this.statusClass == 'success', 'alert-danger': this.statusClass == 'danger' }"
+                                 class="alert" role="alert">
                                 <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                                 <span class="sr-only"></span> {{ status }}
                             </div>
                         </div>
                         <div class="col-sm-2">
                             <button @click="deleteAccount" type="button" id="btnDelete"
-                                class="btn btn-danger text-center">Изтрии акаунт</button>
+                                    class="btn btn-danger text-center">Изтрии акаунт</button>
                         </div>
                     </div>
                     <br />
@@ -144,6 +148,8 @@
 import { fetchWrapper } from '@/helpers';
 import { useAuthStore } from '@/stores';
 import Heading from '../components/Heading.vue';
+import { ref } from 'vue';
+import { accountService } from '@/services';
 
 export default {
     data() {
@@ -185,6 +191,11 @@ export default {
         this.fields.facebook = data.facebook;
         this.fields.instagram = data.instagram;
         this.fields.ethnicity = data.ethnicity;
+
+
+        const accounts = ref();
+        accountService.getAll()
+            .then(x => accounts.value = x);
     },
     methods: {
         async save(event) {
@@ -233,6 +244,14 @@ export default {
                 authStore.logout();
             }
         }
+        /*
+        deleteAccount = (id) => {
+            const account = accounts.value.find(x => x.id === id);
+            account.isDeleting = true;
+            accountService.delete(id)
+                .then(() => accounts.value = accounts.value.filter(x => x.id !== id));
+        }
+        */
     },
     components: { Heading }
 }

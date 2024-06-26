@@ -14,7 +14,8 @@ import Orders from '../views/Orders.vue';
 import Matches from '../views/Matches.vue';
 import Gallery from "../views/Gallery.vue";
 import Admin from "../views/Admin.vue";
-import { useAuthStore } from '@/stores';
+import '@/helpers/auth-guard.js';
+import { authGuard } from './auth-guard.js';
 
 export const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -23,23 +24,24 @@ export const router = createRouter({
         { path: '/', component: Home },
         { path: '/home', component: Home },
         { path: '/contacts', component: Contacts },
-        { path: '/profile', component: Profile },
-        { path: '/user-profile', component: UserProfile },
-        { path: '/user-gallery', component: Gallery },
+        { path: '/profile', component: Profile, beforeEnter: authGuard },
+        { path: '/user-profile', component: UserProfile, beforeEnter: authGuard },
+        { path: '/user-gallery', component: Gallery, beforeEnter: authGuard },
         { path: '/date', component: Date },
         { path: '/dates', component: Dates },
-        { path: '/orders', component: Orders },
-        { path: '/matches', component: Matches },
+        { path: '/orders', component: Orders, beforeEnter: authGuard },
+        { path: '/matches', component: Matches, beforeEnter: authGuard },
         { path: '/register', component: Registration },
         { path: '/login', component: Login },
         { path: '/reset-password-request', component: ResetPasswordRequest },
         { path: '/reset-password', component: ResetPassword },
         { path: '/activate', component: Activate },
-        { path: '/admin', component: Admin },
-        { path: '/logout', component: Home }
+        { path: '/admin', component: Admin, beforeEnter: authGuard },
+        { path: '/logout', component: Home },
+        { path: '/:pathMatch(.*)*', redirect: '/' }
     ]
 });
-
+/*
 router.beforeEach((to) => {
     const publicPages = [
         '/',
@@ -60,5 +62,5 @@ router.beforeEach((to) => {
         return '/login';
     }
 });
-
+*/
 export default router;

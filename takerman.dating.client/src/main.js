@@ -1,7 +1,6 @@
 import { createApp } from 'vue';
 import { createI18n } from 'vue-i18n';
 import { createPinia } from 'pinia';
-import router from "./helpers/router.js";
 import App from './App.vue';
 import mitt from 'mitt';
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -19,38 +18,45 @@ import ro from './assets/languages/ro.json';
 import ru from './assets/languages/ru.json';
 import cookies from './helpers/cookies';
 import VueGtag from "vue-gtag";
+import { initFacebookSdk } from './helpers/init-facebook-sdk.js';
+import { jwtInterceptor } from './helpers/jwt-interceptor.js';
+import router from './helpers/router.js';
 
-Date.prototype.toJSON = function () { return moment(this).format(); }
+jwtInterceptor();
+initFacebookSdk().then(startApp);
 
-const emitter = mitt();
-let pinia = createPinia();
-const i18n = createI18n({
-	locale: cookies.get('language') || 'en',
-	legacy: false,
-	locale: cookies.get('language') || 'en',
-	fallbackLocale: 'en',
-	formatFallbackMessages: true,
-	messages: {
-		en: en,
-		bg: bg,
-		ro: ro,
-		ru: ru
+function startApp() {
+	Date.prototype.toJSON = function () { return moment(this).format(); }
+	const emitter = mitt();
+	let pinia = createPinia();
+	const i18n = createI18n({
+		locale: cookies.get('language') || 'en',
+		legacy: false,
+		locale: cookies.get('language') || 'en',
+		fallbackLocale: 'en',
+		formatFallbackMessages: true,
+		messages: {
+			en: en,
+			bg: bg,
+			ro: ro,
+			ru: ru
+		}
+	});
+	let measurementId = 'G-B686JH31RT';
+	switch (window.location.host) {
+		case 'uk.sreshti.net':
+			measurementId = 'G-EWR2YD00DZ';
+			break;
 	}
-});
-let measurementId = 'G-B686JH31RT';
-switch (window.location.host) {
-	case 'uk.sreshti.net':
-		measurementId = 'G-EWR2YD00DZ';
-		break;
-}
 
-const app = createApp(App);
-app.config.globalProperties.emitter = emitter;
-app.config.productionTip = false;
-app.use(pinia)
-	.use(i18n)
-	.use(router)
-	.use(VueGtag, {
-		config: { id: measurementId }
-	})
-	.mount('#app');
+	const app = createApp(App);
+	app.config.globalProperties.emitter = emitter;
+	app.config.productionTip = false;
+	app.use(pinia)
+		.use(i18n)
+		.use(router)
+		.use(VueGtag, {
+			config: { id: measurementId }
+		})
+		.mount('#app');
+}

@@ -7,12 +7,22 @@
 <script lang="js">
 import AppHeader from './components/AppHeader.vue';
 import AppFooter from './components/AppFooter.vue';
-import { useI18n } from 'vue-i18n';
+import { ref } from 'vue';
+import { accountService } from '@/services';
 
 export default {
     components: {
         AppHeader,
         AppFooter
+    },
+    mounted() {
+        const account = ref(null);
+        accountService.account.subscribe(x => account.value = x);
+
+        return {
+            account,
+            logout: accountService.logout
+        }
     },
     metaInfo: {
         title: 'common.title',

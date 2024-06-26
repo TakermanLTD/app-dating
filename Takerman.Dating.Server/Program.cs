@@ -50,6 +50,7 @@ builder.Services.AddDbContext<DefaultContext>(options => options.UseSqlServer(co
 builder.Services.AddTransient<DbContext, DefaultContext>();
 builder.Services.AddTransient<IContextInitializer, ContextInitializer>();
 builder.Services.AddTransient<IUserService, UserService>();
+builder.Services.AddTransient<IAuthService, AuthService>();
 builder.Services.AddTransient<INotificationService, NotificationService>();
 builder.Services.AddTransient<IOrderService, OrderService>();
 builder.Services.AddTransient<IDatingService, DatingService>();

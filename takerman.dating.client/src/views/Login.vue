@@ -9,15 +9,14 @@
                         <label for="email" class="col-sm-2 col-form-label">Имейл</label>
                         <div class="col-sm-10">
                             <input type="email" class="form-control" id="email" required placeholder="Имейл"
-                                v-model="fields.email" />
+                                   v-model="fields.email" />
                         </div>
                     </div>
                     <br />
                     <div class="form-group row">
                         <label for="password" class="col-sm-2 col-form-label">Парола</label>
                         <div class="col-sm-10">
-                            <input type="password" class="form-control" id="password" required placeholder="Парола"
-                                v-model="fields.password" />
+                            <input type="password" class="form-control" id="password" required placeholder="Парола" v-model="fields.password" />
                         </div>
                     </div>
                     <br />
@@ -26,13 +25,15 @@
                     <div class="col-sm-2">
                         <button id="btnSubmit" type="submit" class="btn btn-success text-center">Вход</button> &nbsp; or
                         <router-link to="/register">Регистрация</router-link> &nbsp;
+                        <button class="btn btn-facebook" @click="loginWithFacebook">
+                            <i class="fa fa-facebook mr-1"></i>
+                            Login with Facebook
+                        </button>
                     </div>
                     <div class="col-sm-10">
                         <router-link to="/reset-password-request">Въстанови парола</router-link>
                         <div v-if="this.loading">Зареждане...</div>
-                        <div v-else v-show="status"
-                            :class="{ 'alert-success': this.statusClass == 'success', 'alert-danger': this.statusClass == 'danger' }"
-                            class="alert" role="alert">
+                        <div v-else v-show="status" :class="{ 'alert-success': this.statusClass == 'success', 'alert-danger': this.statusClass == 'danger' }" class="alert" role="alert">
                             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                             <span class="sr-only"></span> {{ status }}
                         </div>
@@ -47,6 +48,8 @@
 <script lang="js">
 import { useAuthStore } from '@/stores';
 import heading from '../components/Heading.vue';
+import { router } from '@/helpers';
+import { accountService } from '@/services';
 
 export default {
     data() {
@@ -62,6 +65,14 @@ export default {
     },
     components: {
         heading
+    },
+    mounted() {
+        if (accountService.accountValue) {
+            router.push('/');
+        }
+        return {
+            login: accountService.login
+        };
     },
     methods: {
         async submit(event) {
