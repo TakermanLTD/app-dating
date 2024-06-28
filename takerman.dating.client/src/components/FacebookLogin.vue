@@ -1,10 +1,10 @@
 <template>
     <div>
-        <button class="btn btn-info" @click="loginWithFacebook">Login with Facebook</button>
+        <button class="btn btn-info" type="button" @click="loginWithFacebook">Login with Facebook</button>
     </div>
 </template>
 
-<script>
+<script lang="js">
 export default {
     methods: {
         loginWithFacebook() {
