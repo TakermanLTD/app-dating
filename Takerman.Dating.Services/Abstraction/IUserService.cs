@@ -35,9 +35,5 @@ namespace Takerman.Dating.Services.Abstraction
         Task SaveAllUsers(IEnumerable<User> users);
 
         Task DeleteAllUsers();
-
-        Task<BaseResponse<JwtResponseVM>> SignInWithGoogle(GoogleSignInVM model);
-        
-        Task<BaseResponse<JwtResponseVM>> SignInWithFacebook(FacebookSignInVM model);
     }
 }

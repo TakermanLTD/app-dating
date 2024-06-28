@@ -3,6 +3,7 @@
         <div class="container">
             <Heading heading="Регистрация" />
             <br />
+            <FacebookLogin></FacebookLogin>
             <fieldset>
                 <div>
                     <div class="form-group row">
@@ -94,6 +95,7 @@
 <script lang="js">
 import { fetchWrapper } from '@/helpers';
 import Heading from '../components/Heading.vue';
+import FacebookLogin from '../components/FacebookLogin.vue';
 
 export default {
     data() {

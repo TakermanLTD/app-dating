@@ -1,5 +1,12 @@
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 using AutoMapper;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Facebook;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using Takerman.Dating.Data;
 using Takerman.Dating.Data.DTOs;
 using Takerman.Dating.Models.DTOs;
@@ -8,6 +15,18 @@ using Takerman.Dating.Services.Authentication;
 
 namespace Takerman.Dating.Server.Controllers
 {
+    public class FacebookTokenValidationRequest
+    {
+        public string AccessToken { get; set; } = string.Empty;
+    }
+
+    public class FacebookTokenValidationResponse
+    {
+        public string Id { get; set; } = string.Empty;
+        public string Name { get; set; } = string.Empty;
+        public string Email { get; set; } = string.Empty;
+    }
+
     [ApiController]
     [Route("[controller]")]
     public class UserController(IUserService _userService, INotificationService _notificationService, ILogger<UserController> _logger) : BaseController(_logger)
@@ -92,7 +111,7 @@ namespace Takerman.Dating.Server.Controllers
 
             return result;
         }
-        
+
         //[Authorize]
         [HttpPut("Save")]
         public async Task Save([FromBody] ProfileDto user)
@@ -119,18 +138,41 @@ namespace Takerman.Dating.Server.Controllers
             }
         }
 
-        [HttpPost("FacebookSignIn")]
-        [ProducesResponseType(typeof(BaseResponse<bool>), 200)]
-        public async Task<IActionResult> FacebookSignIn(FacebookSignInVM model) 
+        [HttpPost("validate-facebook-token")]
+        public async Task<IActionResult> ValidateFacebookToken([FromBody] FacebookTokenValidationRequest request)
         {
-            try
+            var client = new HttpClient();
+            var response = await client.GetFromJsonAsync<FacebookTokenValidationResponse>($"https://graph.facebook.com/me?access_token={request.AccessToken}&fields=id,name,email");
+
+            if (response == null || response.Id == null)
             {
-                return ReturnResponse(await _userService.SignInWithFacebook(model));
+                return Unauthorized();
             }
-            catch (Exception ex)
-            {
-                return HandleError(ex);
-            }
+
+            // var result = await HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            // if (!result.Succeeded)
+            //     return BadRequest("Facebook authentication failed.");
+            // var claims = result.Principal.Identities.FirstOrDefault().Claims;
+            // var jwtToken = GenerateJwtToken(claims);
+            // return Ok(new { Token = jwtToken });
+
+            return Ok(response); // For demonstration purposes
         }
+
+        private string GenerateJwtToken(IEnumerable<Claim> claims)
+        {
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("YOUR_SECRET_KEY"));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+            var token = new JwtSecurityToken(
+                issuer: "sreshti.net",
+                audience: "sreshti.net",
+                claims: claims,
+                expires: DateTime.Now.AddMinutes(30),
+                signingCredentials: creds);
+
+            return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+
     }
 }

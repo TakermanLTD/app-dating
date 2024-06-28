@@ -18,7 +18,6 @@ import ro from './assets/languages/ro.json';
 import ru from './assets/languages/ru.json';
 import cookies from './helpers/cookies';
 import VueGtag from "vue-gtag";
-import { initFacebookSdk } from './helpers/init-facebook-sdk.js';
 import router from './helpers/router.js';
 
 Date.prototype.toJSON = function () { return moment(this).format(); }
@@ -43,8 +42,6 @@ switch (window.location.host) {
 		measurementId = 'G-EWR2YD00DZ';
 		break;
 }
-
-initFacebookSdk().then();
 
 const app = createApp(App);
 app.config.globalProperties.emitter = emitter;

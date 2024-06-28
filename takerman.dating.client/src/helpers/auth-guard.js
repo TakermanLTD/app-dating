@@ -1,9 +1,9 @@
-import { accountService } from '@/services';
 import { router } from '@/helpers';
+import { useAuthStore } from '@/stores';
 
 export const authGuard = function (to) {
-    const account = accountService.accountValue;
-    if (account) {
+    const authStore = useAuthStore();
+    if (authStore.user) {
         return true;
     }
 

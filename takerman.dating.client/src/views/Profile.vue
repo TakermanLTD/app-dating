@@ -148,8 +148,6 @@
 import { fetchWrapper } from '@/helpers';
 import { useAuthStore } from '@/stores';
 import Heading from '../components/Heading.vue';
-import { ref } from 'vue';
-import { accountService } from '@/services';
 
 export default {
     data() {
@@ -191,11 +189,6 @@ export default {
         this.fields.facebook = data.facebook;
         this.fields.instagram = data.instagram;
         this.fields.ethnicity = data.ethnicity;
-
-
-        const accounts = ref();
-        accountService.getAll()
-            .then(x => accounts.value = x);
     },
     methods: {
         async save(event) {
@@ -244,14 +237,6 @@ export default {
                 authStore.logout();
             }
         }
-        /*
-        deleteAccount = (id) => {
-            const account = accounts.value.find(x => x.id === id);
-            account.isDeleting = true;
-            accountService.delete(id)
-                .then(() => accounts.value = accounts.value.filter(x => x.id !== id));
-        }
-        */
     },
     components: { Heading }
 }

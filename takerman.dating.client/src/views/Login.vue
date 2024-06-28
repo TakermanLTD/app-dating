@@ -25,10 +25,7 @@
                     <div class="col-sm-2">
                         <button id="btnSubmit" type="submit" class="btn btn-success text-center">Вход</button> &nbsp; or
                         <router-link to="/register">Регистрация</router-link> &nbsp;
-                        <button type="button" class="btn btn-facebook" @click="loginWithFacebook">
-                            <i class="fa fa-facebook mr-1"></i>
-                            Login with Facebook
-                        </button>
+                        <FacebookLogin></FacebookLogin>
                     </div>
                     <div class="col-sm-10">
                         <router-link to="/reset-password-request">Въстанови парола</router-link>
@@ -48,8 +45,7 @@
 <script lang="js">
 import { useAuthStore } from '@/stores';
 import heading from '../components/Heading.vue';
-import { router } from '@/helpers';
-import { accountService } from '@/services';
+import FacebookLogin from '../components/FacebookLogin.vue';
 
 export default {
     data() {
@@ -65,14 +61,6 @@ export default {
     },
     components: {
         heading
-    },
-    mounted() {
-        if (accountService.accountValue) {
-            router.push('/');
-        }
-        return {
-            login: accountService.login
-        };
     },
     methods: {
         async submit(event) {
@@ -99,9 +87,6 @@ export default {
                 this.status = 'Потребителя не съществува. Моля регистрирайте се или ни уведомете.';
                 this.statusClass = 'danger';
             }
-        },
-        loginWithFacebook() {
-            accountService.login();
         }
     }
 }

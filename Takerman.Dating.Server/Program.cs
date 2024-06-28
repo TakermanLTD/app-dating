@@ -10,14 +10,12 @@ using Takerman.Dating.Services;
 using Takerman.Dating.Services.Abstraction;
 using Takerman.Dating.Services.Hubs;
 using Takerman.Mail;
-using Microsoft.AspNetCore.Http.Features;
 using Takerman.Dating.Services.GoogleAuthentication;
 using Takerman.Dating.Services.FacebookAuthentication;
-using static Takerman.Dating.Data.User;
 using Microsoft.AspNetCore.Identity;
-using System.Text;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Facebook;
+using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Configuration
@@ -33,10 +31,12 @@ Log.Logger = new LoggerConfiguration()
     .ReadFrom.Configuration(builder.Configuration)
     .CreateLogger();
 
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? string.Empty;
 if (!builder.Environment.IsDevelopment())
     connectionString = connectionString.Replace("takerman_dating_bg", hostname);
 
+var googleSection = builder.Configuration.GetSection(nameof(GoogleAuthConfig));
+var facebookSection = builder.Configuration.GetSection(nameof(FacebookAuthConfig));
 builder.Services.AddSignalR();
 builder.Host.UseSerilog(Log.Logger);
 builder.Services.AddControllers();
@@ -64,8 +64,8 @@ builder.Services.AddScoped<IFacebookAuthService, FacebookAuthService>();
 builder.Services.Configure<RabbitMqConfig>(builder.Configuration.GetSection(nameof(RabbitMqConfig)));
 builder.Services.Configure<PayPalConfig>(builder.Configuration.GetSection(nameof(PayPalConfig)));
 builder.Services.Configure<CdnConfig>(builder.Configuration.GetSection(nameof(CdnConfig)));
-builder.Services.Configure<GoogleAuthConfig>(builder.Configuration.GetSection("Google"));
-builder.Services.Configure<FacebookAuthConfig>(builder.Configuration.GetSection("Facebook"));
+builder.Services.Configure<GoogleAuthConfig>(googleSection);
+builder.Services.Configure<FacebookAuthConfig>(facebookSection);
 builder.Services.AddHsts(options =>
 {
     options.Preload = true;
@@ -74,55 +74,40 @@ builder.Services.AddHsts(options =>
     options.ExcludedHosts.Add(hostname);
     options.ExcludedHosts.Add($"www.{hostname}");
 });
-builder.Services.AddHttpClient("Facebook", c =>
-{
-    c.BaseAddress = new Uri(builder.Configuration.GetValue<string>("Facebook:BaseUrl"));
-});
-
-builder.Services.AddIdentity<User, Role>(options =>
-{
-    options.Password.RequiredLength = 8;
-
-    options.Lockout.AllowedForNewUsers = true;
-    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(10);
-    options.Lockout.MaxFailedAccessAttempts = 3;
-    options.User.RequireUniqueEmail = true;
-}).AddEntityFrameworkStores<DefaultContext>().AddDefaultTokenProviders();
-
-builder.Services.Configure<DataProtectionTokenProviderOptions>(options =>
-{
-    options.TokenLifespan = TimeSpan.FromHours(24);
-});
-
-var jwtSection = builder.Configuration.GetSection("JWT");
-builder.Services.Configure<Jwt>(jwtSection);
-
-var appSettings = jwtSection.Get<Jwt>();
-var secret = Encoding.ASCII.GetBytes(appSettings.Secret);
-
 builder.Services.AddAuthentication(options =>
 {
-    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-
-}).AddJwtBearer(o =>
+    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = FacebookDefaults.AuthenticationScheme;
+}).AddCookie()
+.AddGoogle(options =>
 {
-    o.RequireHttpsMetadata = true;
-    o.SaveToken = true;
-    o.TokenValidationParameters = new TokenValidationParameters
+    options.ClientId = googleSection["ClientId"] ?? string.Empty;
+    options.ClientSecret = googleSection["ClientSecret"] ?? string.Empty;
+    options.Events.OnCreatingTicket = context =>
     {
-        ValidateIssuer = true,
-        ValidIssuer = appSettings.ValidIssuer,
-        ValidAudience = appSettings.ValidAudience,
-        ValidateIssuerSigningKey = true,
-        ValidateAudience = true,
-        ValidateLifetime = true,
-        ClockSkew = TimeSpan.Zero,
-        RequireExpirationTime = true,
-        IssuerSigningKey = new SymmetricSecurityKey(secret)
+        context.Identity.AddClaim(new Claim("access_token", context.AccessToken));
+        if (context.RefreshToken != null)
+        {
+            context.Identity.AddClaim(new Claim("refresh_token", context.RefreshToken));
+        }
+        return Task.CompletedTask;
     };
-
+})
+.AddFacebook(options =>
+{
+    options.AppId = facebookSection["ClientId"] ?? string.Empty;
+    options.AppSecret = facebookSection["ClientSecret"] ?? string.Empty;
+    options.Events.OnCreatingTicket = context =>
+    {
+        context.Identity.AddClaim(new Claim("access_token", context.AccessToken));
+        if (context.RefreshToken != null)
+        {
+            context.Identity.AddClaim(new Claim("refresh_token", context.RefreshToken));
+        }
+        return Task.CompletedTask;
+    };
 });
+
 var app = builder.Build();
 
 using var scope = app.Services.CreateAsyncScope();
@@ -156,16 +141,16 @@ app.UseExceptionHandler();
 app.Use(async (context, next) =>
 {
     // context.Response.Headers.Add("Content-Security-Policy", "default-src 'self';");
-    context.Response.Headers.Add("Cache-Control", "no-cache, no-store, must-revalidate");
-    context.Response.Headers.Add("Permissions-Policy", "accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()");
-    context.Response.Headers.Add("Referrer-Policy", "no-referrer");
-    context.Response.Headers.Add("Strict-Transport-Security", "max-age=31536000; includeSubDomains; preload");
-    context.Response.Headers.Add("X-Developed-By", "Takerman Ltd");
-    context.Response.Headers.Add("X-Content-Type-Options", "nosniff");
-    context.Response.Headers.Add("X-Frame-Options", "DENY");
-    context.Response.Headers.Add("X-XSS-Protection", "1; mode=block");
-    context.Response.Headers.Add("X-Permitted-Cross-Domain-Policies", "none");
-    context.Response.Headers.Add("X-Powered-By", "Takerman");
+    context.Response.Headers.TryAdd("Cache-Control", "no-cache, no-store, must-revalidate");
+    context.Response.Headers.TryAdd("Permissions-Policy", "accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()");
+    context.Response.Headers.TryAdd("Referrer-Policy", "no-referrer");
+    context.Response.Headers.TryAdd("Strict-Transport-Security", "max-age=31536000; includeSubDomains; preload");
+    context.Response.Headers.TryAdd("X-Developed-By", "Takerman Ltd");
+    context.Response.Headers.TryAdd("X-Content-Type-Options", "nosniff");
+    context.Response.Headers.TryAdd("X-Frame-Options", "DENY");
+    context.Response.Headers.TryAdd("X-XSS-Protection", "1; mode=block");
+    context.Response.Headers.TryAdd("X-Permitted-Cross-Domain-Policies", "none");
+    context.Response.Headers.TryAdd("X-Powered-By", "Takerman");
     await next();
 });
 

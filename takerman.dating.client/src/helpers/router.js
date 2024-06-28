@@ -45,26 +45,5 @@ export const router = createRouter({
         { path: '/:pathMatch(.*)*', redirect: '/' }
     ]
 });
-/*
-router.beforeEach((to) => {
-    const publicPages = [
-        '/',
-        '/home',
-        '/date',
-        '/contacts',
-        '/register',
-        '/login',
-        '/reset-password',
-        '/reset-password-request',
-        '/activate'];
 
-    const authRequired = !publicPages.includes(to.path);
-    const auth = useAuthStore();
-
-    if (authRequired && !auth.user) {
-        auth.returnUrl = to.fullPath;
-        return '/login';
-    }
-});
-*/
 export default router;
