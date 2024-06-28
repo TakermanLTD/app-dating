@@ -203,18 +203,5 @@ namespace Takerman.Dating.Services
             _context.Users.RemoveRange(_context.Users);
             await _context.SaveChangesAsync();
         }
-
-        {
-            var userClaims = new List<Claim>()
-            {
-                new Claim(JwtClaimTypes.Id, user.Id.ToString()),
-                new Claim(JwtClaimTypes.Email, user.Email),
-                new Claim(JwtClaimTypes.GivenName, user.FirstName),
-                new Claim(JwtClaimTypes.FamilyName, user.LastName),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-            };
-
-            return userClaims;
-        }
     }
 }
