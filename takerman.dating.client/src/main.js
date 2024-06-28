@@ -44,7 +44,7 @@ switch (window.location.host) {
 		break;
 }
 
-await initFacebookSdk();
+initFacebookSdk().then();
 
 const app = createApp(App);
 app.config.globalProperties.emitter = emitter;
