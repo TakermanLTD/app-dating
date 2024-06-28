@@ -124,20 +124,6 @@ namespace Takerman.Dating.Server.Controllers
             await _userService.UpdateAsync(user);
         }
 
-        [HttpPost("GoogleSignIn")]
-        [ProducesResponseType(typeof(BaseResponse<bool>), 200)]
-        public async Task<IActionResult> GoogleSignIn(GoogleSignInVM model)
-        {
-            try
-            {
-                return ReturnResponse(await _userService.SignInWithGoogle(model));
-            }
-            catch (Exception ex)
-            {
-                return HandleError(ex);
-            }
-        }
-
         [HttpPost("validate-facebook-token")]
         public async Task<IActionResult> ValidateFacebookToken([FromBody] FacebookTokenValidationRequest request)
         {

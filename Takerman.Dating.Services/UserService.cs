@@ -15,12 +15,10 @@ using Takerman.Dating.Models.DTOs;
 using Takerman.Dating.Models.Enum;
 using Takerman.Dating.Services.Abstraction;
 using Takerman.Dating.Services.Authentication;
-using Takerman.Dating.Services.FacebookAuthentication;
-using Takerman.Dating.Services.GoogleAuthentication;
 
 namespace Takerman.Dating.Services
 {
-    public class UserService(IOptions<AppSettings> _appSettings, DefaultContext _context, IGoogleAuthService _googleAuthService, IFacebookAuthService _facebookAuthService, UserManager<User> _userManager, IOptions<Jwt> _jwt, IAuthService _authService) : IUserService
+    public class UserService(IOptions<AppSettings> _appSettings, DefaultContext _context) : IUserService
     {
         private readonly IMapper _mapper = new MapperConfiguration(cfg =>
             {
