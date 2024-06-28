@@ -1,6 +1,6 @@
 <template>
     <div>
-        <button class="btn btn-info" type="button" @click="loginWithFacebook">Login with Facebook</button>
+        <button class="btn btn-info" type="button" @click="loginWithFacebook">Facebook</button>
     </div>
 </template>
 

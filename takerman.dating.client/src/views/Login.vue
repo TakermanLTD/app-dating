@@ -25,7 +25,7 @@
                     <div class="col-sm-2">
                         <button id="btnSubmit" type="submit" class="btn btn-success text-center">Вход</button> &nbsp; or
                         <router-link to="/register">Регистрация</router-link> &nbsp;
-                        <FacebookLogin></FacebookLogin>
+                        <FacebookLogin />
                     </div>
                     <div class="col-sm-10">
                         <router-link to="/reset-password-request">Въстанови парола</router-link>
@@ -60,7 +60,7 @@ export default {
         };
     },
     components: {
-        heading
+        heading, FacebookLogin
     },
     methods: {
         async submit(event) {
