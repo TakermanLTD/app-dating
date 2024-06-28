@@ -53,6 +53,8 @@
   "footer.menu.register" : "Регистрация",
   "footer.menu.title" : "Меню",
   "footer.menu.wishlist" : "Списък с желания",
+  "footer.menu.privacyPolicy": "Политика на поверителност",
+  "footer.menu.termsAndConditions": "Условия за ползване",
   "footer.newsletter.buttonText" : "Абонирай се",
   "footer.newsletter.inputPlaceholder" : "Въведете имейл",
   "footer.newsletter.intro" : "Абонирайте се за нашия бюлетин",

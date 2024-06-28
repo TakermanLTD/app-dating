@@ -19,44 +19,40 @@ import ru from './assets/languages/ru.json';
 import cookies from './helpers/cookies';
 import VueGtag from "vue-gtag";
 import { initFacebookSdk } from './helpers/init-facebook-sdk.js';
-import { jwtInterceptor } from './helpers/jwt-interceptor.js';
 import router from './helpers/router.js';
 
-jwtInterceptor();
-initFacebookSdk().then(startApp);
-
-function startApp() {
-	Date.prototype.toJSON = function () { return moment(this).format(); }
-	const emitter = mitt();
-	let pinia = createPinia();
-	const i18n = createI18n({
-		locale: cookies.get('language') || 'en',
-		legacy: false,
-		locale: cookies.get('language') || 'en',
-		fallbackLocale: 'en',
-		formatFallbackMessages: true,
-		messages: {
-			en: en,
-			bg: bg,
-			ro: ro,
-			ru: ru
-		}
-	});
-	let measurementId = 'G-B686JH31RT';
-	switch (window.location.host) {
-		case 'uk.sreshti.net':
-			measurementId = 'G-EWR2YD00DZ';
-			break;
+Date.prototype.toJSON = function () { return moment(this).format(); }
+const emitter = mitt();
+let pinia = createPinia();
+const i18n = createI18n({
+	locale: cookies.get('language') || 'en',
+	legacy: false,
+	locale: cookies.get('language') || 'en',
+	fallbackLocale: 'en',
+	formatFallbackMessages: true,
+	messages: {
+		en: en,
+		bg: bg,
+		ro: ro,
+		ru: ru
 	}
-
-	const app = createApp(App);
-	app.config.globalProperties.emitter = emitter;
-	app.config.productionTip = false;
-	app.use(pinia)
-		.use(i18n)
-		.use(router)
-		.use(VueGtag, {
-			config: { id: measurementId }
-		})
-		.mount('#app');
+});
+let measurementId = 'G-B686JH31RT';
+switch (window.location.host) {
+	case 'uk.sreshti.net':
+		measurementId = 'G-EWR2YD00DZ';
+		break;
 }
+
+await initFacebookSdk();
+
+const app = createApp(App);
+app.config.globalProperties.emitter = emitter;
+app.config.productionTip = false;
+app.use(pinia)
+	.use(i18n)
+	.use(router)
+	.use(VueGtag, {
+		config: { id: measurementId }
+	})
+	.mount('#app');

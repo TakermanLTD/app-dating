@@ -10,7 +10,7 @@ namespace Takerman.Dating.Server.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class UserController(IUserService _userService, INotificationService _notificationService, ILogger _logger) : BaseController(_logger)
+    public class UserController(IUserService _userService, INotificationService _notificationService, ILogger<UserController> _logger) : BaseController(_logger)
     {
         private readonly IMapper _mapper = new MapperConfiguration(cfg =>
             {
@@ -105,7 +105,7 @@ namespace Takerman.Dating.Server.Controllers
             await _userService.UpdateAsync(user);
         }
 
-        [HttpPost]
+        [HttpPost("GoogleSignIn")]
         [ProducesResponseType(typeof(BaseResponse<bool>), 200)]
         public async Task<IActionResult> GoogleSignIn(GoogleSignInVM model)
         {
@@ -119,7 +119,7 @@ namespace Takerman.Dating.Server.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpPost("FacebookSignIn")]
         [ProducesResponseType(typeof(BaseResponse<bool>), 200)]
         public async Task<IActionResult> FacebookSignIn(FacebookSignInVM model) 
         {

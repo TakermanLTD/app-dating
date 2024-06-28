@@ -53,6 +53,8 @@
   "footer.menu.register" : "Register",
   "footer.menu.title" : "Menu",
   "footer.menu.wishlist" : "Wishlist",
+  "footer.menu.privacyPolicy": "Privacy Policy",
+  "footer.menu.termsAndConditions": "Terms and Conditions",
   "footer.newsletter.buttonText" : "Subscribe",
   "footer.newsletter.inputPlaceholder" : "Enter Email",
   "footer.newsletter.intro" : "Subscribe to our newsletter",

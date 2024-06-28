@@ -53,6 +53,8 @@
   "footer.menu.register" : "Зарегистрироваться",
   "footer.menu.title" : "Меню",
   "footer.menu.wishlist" : "Список желаний",
+  "footer.menu.privacyPolicy": "Политика конфиденциальности",
+  "footer.menu.termsAndConditions": "Условия эксплуатации",
   "footer.newsletter.buttonText" : "Подписаться",
   "footer.newsletter.inputPlaceholder" : "Введите адрес электронной почты",
   "footer.newsletter.intro" : "Подпишитесь на нашу рассылку",

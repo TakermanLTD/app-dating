@@ -5,7 +5,7 @@ using Takerman.Dating.Models.Enum;
 
 namespace Takerman.Dating.Server.Controllers
 {
-    public class BaseController(ILogger _logger) : ControllerBase
+    public class BaseController(ILogger<BaseController> _logger) : ControllerBase
     {
         protected IActionResult ReturnResponse(dynamic model)
         {

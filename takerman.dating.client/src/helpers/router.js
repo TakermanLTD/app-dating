@@ -14,6 +14,8 @@ import Orders from '../views/Orders.vue';
 import Matches from '../views/Matches.vue';
 import Gallery from "../views/Gallery.vue";
 import Admin from "../views/Admin.vue";
+import PrivacyPolicy from "../views/PrivacyPolicy.vue";
+import TermsAndConditions from "../views/TermsAndConditions.vue";
 import '@/helpers/auth-guard.js';
 import { authGuard } from './auth-guard.js';
 
@@ -38,6 +40,8 @@ export const router = createRouter({
         { path: '/activate', component: Activate },
         { path: '/admin', component: Admin, beforeEnter: authGuard },
         { path: '/logout', component: Home },
+        { path: '/privacy-policy', component: PrivacyPolicy },
+        { path: '/terms-and-conditions', component: TermsAndConditions },
         { path: '/:pathMatch(.*)*', redirect: '/' }
     ]
 });

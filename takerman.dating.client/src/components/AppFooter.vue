@@ -15,6 +15,8 @@
                             <h5 class="text-secondary text-uppercase mb-4">{{ $t('footer.menu.title') }}</h5>
                             <div class="d-flex flex-column justify-content-start">
                                 <router-link class="text-secondary mb-2" to="/"><i class="fa fa-angle-right mr-2"></i>{{ $t('footer.menu.home') }}</router-link>
+                                <router-link class="text-secondary mb-2" to="/privacy-policy"><i class="fa fa-angle-right mr-2"></i>{{ $t('footer.menu.privacyPolicy') }}</router-link>
+                                <router-link class="text-secondary mb-2" to="/terms-and-conditions"><i class="fa fa-angle-right mr-2"></i>{{ $t('footer.menu.termsAndConditions') }}</router-link>
                                 <router-link class="text-secondary" to="/contacts"><i class="fa fa-angle-right mr-2"></i>{{ $t('footer.menu.contacts') }}</router-link>
                             </div>
                         </div>

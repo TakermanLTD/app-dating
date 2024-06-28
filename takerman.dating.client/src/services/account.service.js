@@ -1,19 +1,16 @@
 import { BehaviorSubject } from 'rxjs';
 import { router } from '@/helpers';
+import { fetchWrapper } from '@/helpers';
+import { useAuthStore } from '@/stores';
 
-const baseUrl = `/Users`;
 const accountSubject = new BehaviorSubject(null);
 
 export const accountService = {
     login,
     apiAuthenticate,
     logout,
-    getAll,
-    getById,
-    update,
-    delete: _delete,
     account: accountSubject.asObservable(),
-    get accountValue () { return accountSubject.value; }
+    get accountValue() { return accountSubject.value; }
 };
 
 async function login() {
@@ -27,7 +24,7 @@ async function login() {
 }
 
 async function apiAuthenticate(accessToken) {
-    const response = await fetch(`/User/FacebookSignIn`, { accessToken });
+    const response = await fetchWrapper.post(`/User/FacebookSignIn`, { AccessToken: accessToken });
     const account = response.data;
     accountSubject.next(account);
     startAuthenticateTimer();
@@ -40,33 +37,6 @@ function logout() {
     stopAuthenticateTimer();
     accountSubject.next(null);
     router.push('/login');
-}
-
-function getAll() {
-    return fetch(baseUrl)
-        .then(response => response.data);
-}
-
-function getById(id) {
-    return fetch(`${baseUrl}/${id}`)
-        .then(response => response.data);
-}
-
-async function update(id, params) {
-    const response = await fetch(`${baseUrl}/${id}`, params);
-    let account = response.data;
-    if (account.id === accountSubject.value?.id) {
-        account = { ...accountSubject.value, ...account };
-        accountSubject.next(account);
-    }
-    return account;
-}
-
-async function _delete(id) {
-    await fetch(`${baseUrl}/${id}`);
-    if (id === accountSubject.value?.id) {
-        logout();
-    }
 }
 
 let authenticateTimeout;

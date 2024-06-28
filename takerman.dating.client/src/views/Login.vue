@@ -25,7 +25,7 @@
                     <div class="col-sm-2">
                         <button id="btnSubmit" type="submit" class="btn btn-success text-center">Вход</button> &nbsp; or
                         <router-link to="/register">Регистрация</router-link> &nbsp;
-                        <button class="btn btn-facebook" @click="loginWithFacebook">
+                        <button type="button" class="btn btn-facebook" @click="loginWithFacebook">
                             <i class="fa fa-facebook mr-1"></i>
                             Login with Facebook
                         </button>
@@ -99,6 +99,9 @@ export default {
                 this.status = 'Потребителя не съществува. Моля регистрирайте се или ни уведомете.';
                 this.statusClass = 'danger';
             }
+        },
+        loginWithFacebook() {
+            accountService.login();
         }
     }
 }
