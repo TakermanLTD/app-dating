@@ -1,7 +1,9 @@
 <template>
-    <div>
-        <button class="btn btn-info" type="button" @click="loginWithFacebook">Facebook</button>
-    </div>
+	<div>
+		<button class="btn btn-info" type="button" @click="loginWithFacebook">
+			Facebook
+		</button>
+	</div>
 </template>
 
 <script lang="js">
@@ -10,6 +12,7 @@ export default {
         loginWithFacebook() {
             FB.login(response => {
                 if (response.authResponse) {
+                    debugger;
                     const accessToken = response.authResponse.accessToken;
                     this.validateFacebookToken(accessToken);
                 } else {
@@ -29,11 +32,8 @@ export default {
 
                 if (response.ok) {
                     const data = await response.json();
-                    console.log('Token is valid:', data);
-                    // Save the token (e.g., in local storage or Vuex)
                     localStorage.setItem('authToken', accessToken);
-                    // Redirect to a protected route or homepage
-                    this.$router.push({ name: 'Home' });
+                    this.$router.push({ name: '/home' });
                 } else {
                     console.error('Token validation failed');
                 }
