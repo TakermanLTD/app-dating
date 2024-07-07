@@ -1,12 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.AspNetCore.Identity;
-using System.Data;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace Takerman.Dating.Data
 {
-    public class User : IdentityUser<long>
+    public class User
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -64,20 +61,5 @@ namespace Takerman.Dating.Data
         public virtual ICollection<DateUserChoice> Choices { get; set; } = null;
 
         public string? Avatar { get; set; } = null;
-
-
-        public class Role : IdentityRole<long>
-        {
-        }
-
-        public class UserClaim : IdentityUserClaim<long> { }
-
-        public class UserRole : IdentityUserRole<long> { }
-
-        public class UserLogin : IdentityUserLogin<long> { }
-
-        public class RoleClaim : IdentityRoleClaim<long> { }
-
-        public class UserToken : IdentityUserToken<long> { }
     }
 }

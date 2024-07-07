@@ -1,7 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Takerman.Dating.Data;
+﻿using Takerman.Dating.Data;
 using Takerman.Dating.Models.DTOs;
-using Takerman.Dating.Models.Enum;
 using Takerman.Dating.Services.Authentication;
 
 namespace Takerman.Dating.Services.Abstraction
@@ -24,6 +22,8 @@ namespace Takerman.Dating.Services.Abstraction
 
         Task<AuthenticateResponse> Authenticate(AuthenticateRequest model);
 
+        Task<AuthenticateResponse> Authenticate(User user);
+
         Task<User> GetByEmailAsync(string email);
 
         Task<ResetPasswordRequest> GenerateResetPasswordRequest(int userId);
@@ -35,5 +35,9 @@ namespace Takerman.Dating.Services.Abstraction
         Task SaveAllUsers(IEnumerable<User> users);
 
         Task DeleteAllUsers();
+        
+        Task<User> GetByFacebookId(string id);
+        
+        Task UpdateFacebookIdAsync(string email, string facebookId);
     }
 }

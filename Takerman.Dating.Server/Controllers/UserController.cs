@@ -23,7 +23,13 @@ namespace Takerman.Dating.Server.Controllers
     public class FacebookTokenValidationResponse
     {
         public string Id { get; set; } = string.Empty;
-        public string Name { get; set; } = string.Empty;
+
+        public string FirstName { get; set; } = string.Empty;
+
+        public string LastName { get; set; } = string.Empty;
+
+        // public string Gender { get; set; } = string.Empty;
+
         public string Email { get; set; } = string.Empty;
     }
 
@@ -135,14 +141,43 @@ namespace Takerman.Dating.Server.Controllers
                 return Unauthorized();
             }
 
+            var userByFacebook = await _userService.GetByFacebookId(response.Id);
+            var userByEmail = await _userService.GetByEmailAsync(response.Email);
+
+            if (userByFacebook != null)
+            {
+                return Ok(await _userService.Authenticate(userByFacebook));
+            }
+            else if (userByEmail != null)
+            {
+                await _userService.UpdateFacebookIdAsync(response.Email, response.Id);
+                return Ok(await _userService.Authenticate(userByEmail));
+            }
+            else
+            {
+                var newUser = new User
+                {
+                    Facebook = response.Id,
+                    FirstName = response.FirstName,
+                    LastName = response.LastName,
+                    Email = response.Email,
+                    Password = string.Empty,
+                    IsActive = true,
+                    Gender = Gender.Male
+                };
+
+                var addedUser = await _userService.AddUser(newUser);
+
+                return Ok(await _userService.Authenticate(addedUser));
+            }
+
             // var result = await HttpContext.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             // if (!result.Succeeded)
             //     return BadRequest("Facebook authentication failed.");
             // var claims = result.Principal.Identities.FirstOrDefault().Claims;
             // var jwtToken = GenerateJwtToken(claims);
             // return Ok(new { Token = jwtToken });
-
-            return Ok(response); // For demonstration purposes
+            // return Ok(response); // For demonstration purposes
         }
 
         private string GenerateJwtToken(IEnumerable<Claim> claims)

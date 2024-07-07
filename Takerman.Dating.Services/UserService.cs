@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
-using IdentityModel;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -10,15 +9,13 @@ using System.Security.Cryptography;
 using System.Text;
 using Takerman.Dating.Data;
 using Takerman.Dating.Data.DTOs;
-using Takerman.Dating.Models.Configuration;
 using Takerman.Dating.Models.DTOs;
-using Takerman.Dating.Models.Enum;
 using Takerman.Dating.Services.Abstraction;
 using Takerman.Dating.Services.Authentication;
 
 namespace Takerman.Dating.Services
 {
-    public class UserService(IOptions<AppSettings> _appSettings, DefaultContext _context) : IUserService
+    public class UserService(IOptions<AppSettings> _appSettings, DefaultContext _context, ILogger<UserService> _logger) : IUserService
     {
         private readonly IMapper _mapper = new MapperConfiguration(cfg =>
             {
@@ -86,7 +83,7 @@ namespace Takerman.Dating.Services
             var existing = await GetByEmailAsync(user.Email);
             if (existing != null)
             {
-                return null;
+                return existing;
             }
             else
             {
@@ -142,19 +139,42 @@ namespace Takerman.Dating.Services
 
         public async Task<AuthenticateResponse> Authenticate(AuthenticateRequest model)
         {
-            var hashedPassword = GetHashedPassword(model.Password);
+            try
+            {
+                var hashedPassword = GetHashedPassword(model.Password);
 
-            var user = await _context.Users.FirstOrDefaultAsync(x =>
-                x.Email == model.Email &&
-                x.Password == hashedPassword &&
-                x.IsActive == true);
+                var user = await _context.Users.FirstOrDefaultAsync(x =>
+                    x.Email == model.Email &&
+                    x.Password == hashedPassword &&
+                    x.IsActive == true);
 
-            if (user == null)
-                return null;
+                if (user == null)
+                    return null;
 
-            var token = GenerateJwtToken(user);
+                var token = GenerateJwtToken(user);
 
-            return new AuthenticateResponse(user, token);
+                return new AuthenticateResponse(user, token);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occured while trying to authenticate the user");
+                throw;
+            }
+        }
+
+        public async Task<AuthenticateResponse> Authenticate(User user)
+        {
+            try
+            {
+                var token = GenerateJwtToken(user);
+
+                return new AuthenticateResponse(user, token);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occured while trying to authenticate the user");
+                throw;
+            }
         }
 
         public async Task<User> GetByEmailAsync(string email)
@@ -199,6 +219,18 @@ namespace Takerman.Dating.Services
         public async Task DeleteAllUsers()
         {
             _context.Users.RemoveRange(_context.Users);
+            await _context.SaveChangesAsync();
+        }
+
+        public Task<User> GetByFacebookId(string facebookId)
+        {
+            return _context.Users.FirstOrDefaultAsync(x => x.Facebook == facebookId);
+        }
+
+        public async Task UpdateFacebookIdAsync(string email, string facebookId)
+        {
+            var user = await GetByEmailAsync(email);
+            user.Facebook = facebookId;
             await _context.SaveChangesAsync();
         }
     }
