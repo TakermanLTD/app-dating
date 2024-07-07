@@ -4,12 +4,6 @@
             <Heading heading="Профил" />
             <br />
             <fieldset>
-                <div>
-                    <td>{{ account.id }}</td>
-                    <td>{{ account.facebookId }}</td>
-                    <td>{{ account.name }}</td>
-                    <td>{{ account.extraInfo }}</td>
-                </div>
                 <div class="form-group row">
                     <label for="firstName" class="col-sm-2 col-form-label">Първо име</label>
                     <div class="col-sm-10">
@@ -69,22 +63,22 @@
                     </div>
                 </div>
                 <br />
+                <!--
                 <div class="form-group row">
                     <label for="facebook" class="col-sm-2 col-form-label">Фейсбук</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" id="facebook" placeholder="Фейсбук"
-                               v-model="fields.facebook" />
+                        <input type="text" class="form-control" id="facebook" placeholder="Фейсбук" v-model="fields.facebook" />
                     </div>
                 </div>
                 <br />
                 <div class="form-group row">
                     <label for="instagram" class="col-sm-2 col-form-label">Инстаграм</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" id="instagram" placeholder="Инстаграм"
-                               v-model="fields.instagram" />
+                        <input type="text" class="form-control" id="instagram" placeholder="Инстаграм" v-model="fields.instagram" />
                     </div>
                 </div>
                 <br />
+                -->
                 <div class="form-group row">
                     <label for="ethnicity" class="col-sm-2 col-form-label">Етнос</label>
                     <div class="col-sm-10">

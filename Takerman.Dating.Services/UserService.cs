@@ -120,9 +120,7 @@ namespace Takerman.Dating.Services
             result.City = user.City;
             result.Country = user.Country;
             result.Ethnicity = user.Ethnicity;
-            result.Facebook = user.Facebook;
             result.Gender = user.Gender;
-            result.Instagram = user.Instagram;
             result.Phone = user.LastName;
 
             if (!string.IsNullOrEmpty(user.Password))
