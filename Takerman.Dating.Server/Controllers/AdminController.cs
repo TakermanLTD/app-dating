@@ -6,7 +6,7 @@ namespace Takerman.Dating.Server.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class AdminController(IAdminService _adminService, IUserService _userService, INotificationService _notificationService, ILogger<AdminController> _logger) : BaseController(_logger)
+    public class AdminController(IAdminService _adminService, IUserService _userService, INotificationService _notificationService, ILogger<AdminController> _logger) : ControllerBase
     {
         [HttpPost("AddDate")]
         public async Task<Date> AddDate(Date date)

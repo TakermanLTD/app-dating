@@ -35,7 +35,7 @@ namespace Takerman.Dating.Server.Controllers
 
     [ApiController]
     [Route("[controller]")]
-    public class UserController(IUserService _userService, INotificationService _notificationService, ILogger<UserController> _logger) : BaseController(_logger)
+    public class UserController(IUserService _userService, INotificationService _notificationService, ILogger<UserController> _logger) : ControllerBase
     {
         private readonly IMapper _mapper = new MapperConfiguration(cfg =>
             {

@@ -6,7 +6,7 @@ namespace Takerman.Dating.Server.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class CdnController(ICdnService _cdnService, ILogger<CdnController> _logger) : BaseController(_logger)
+    public class CdnController(ICdnService _cdnService, ILogger<CdnController> _logger) : ControllerBase
     {
         [HttpGet("GetUserPictures")]
         public Task<IEnumerable<UserPicture>> GetUserPictures(int userId)

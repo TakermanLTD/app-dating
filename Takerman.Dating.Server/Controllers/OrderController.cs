@@ -7,7 +7,7 @@ namespace Takerman.Dating.Server.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class OrderController(IOrderService _orderService, INotificationService _notificationService, IDatingService _datingService, ILogger<OrderController> _logger) : BaseController(_logger)
+    public class OrderController(IOrderService _orderService, INotificationService _notificationService, IDatingService _datingService, ILogger<OrderController> _logger) : ControllerBase
     {
         [HttpGet("Get")]
         public async Task<Order> Get(int id)

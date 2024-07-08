@@ -7,7 +7,7 @@ namespace Takerman.Dating.Server.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class DatesController(IDatingService _datingService, ICdnService _cdnService, ILogger<DatesController> _logger) : BaseController(_logger)
+    public class DatesController(IDatingService _datingService, ICdnService _cdnService, ILogger<DatesController> _logger) : ControllerBase
     {
         [HttpGet("Get")]
         public async Task<DateCardDto> Get(int id, int? userId)

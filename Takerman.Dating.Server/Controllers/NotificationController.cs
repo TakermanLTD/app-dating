@@ -8,7 +8,7 @@ namespace Takerman.Dating.Server.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class NotificationController(INotificationService _notificationService, IChatService _chatService, ILogger<NotificationController> _logger) : BaseController(_logger)
+    public class NotificationController(INotificationService _notificationService, IChatService _chatService, ILogger<NotificationController> _logger) : ControllerBase
     {
         [HttpPost("SendContactUsMessage")]
         public async Task SendContactUsMessage([FromBody] MailMessageDto model)
