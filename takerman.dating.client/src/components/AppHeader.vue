@@ -37,9 +37,9 @@
                                     <div class="dropdown-menu bg-primary rounded-0 border-0 m-0">
                                         <router-link v-if="this.user != null" class="dropdown-item" to="/profile">{{ $t('nav.profile') }}</router-link>
                                         <router-link v-if="this.user == null" class="dropdown-item" to="/register">{{ $t('nav.register') }}</router-link>
+                                        <router-link v-if="this.user != null" class="dropdown-item" to="/user-gallery">{{ $t('nav.photos') }}</router-link>
                                         <router-link v-if="this.user == null" class="dropdown-item" to="/login">{{ $t('nav.login') }}</router-link>
                                         <router-link v-if="this.user != null" class="dropdown-item" to="/logout" @click="this.logout">{{ $t('nav.logout') }}</router-link>
-                                        <router-link v-if="this.user != null" class="dropdown-item" to="/user-gallery">{{ $t('nav.photos') }}</router-link>
                                     </div>
                                 </div>
                             </div>

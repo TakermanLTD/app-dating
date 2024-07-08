@@ -24,13 +24,15 @@ namespace Takerman.Dating.Server.Controllers
     {
         public string Id { get; set; } = string.Empty;
 
-        public string FirstName { get; set; } = string.Empty;
-
-        public string LastName { get; set; } = string.Empty;
-
-        // public string Gender { get; set; } = string.Empty;
+        public string Name { get; set; } = string.Empty;
 
         public string Email { get; set; } = string.Empty;
+
+        public string Hometown { get; set; } = string.Empty;
+
+        public string Link { get; set; } = string.Empty;
+
+        public string Gender { get; set; } = string.Empty;
     }
 
     [ApiController]
@@ -134,7 +136,7 @@ namespace Takerman.Dating.Server.Controllers
         public async Task<IActionResult> ValidateFacebookToken([FromBody] FacebookTokenValidationRequest request)
         {
             var client = new HttpClient();
-            var response = await client.GetFromJsonAsync<FacebookTokenValidationResponse>($"https://graph.facebook.com/me?access_token={request.AccessToken}&fields=id,name,email");
+            var response = await client.GetFromJsonAsync<FacebookTokenValidationResponse>($"https://graph.facebook.com/me?access_token={request.AccessToken}&fields=id,name,email,gender,hometown,link,photos");
 
             if (response == null || response.Id == null)
             {
@@ -155,15 +157,20 @@ namespace Takerman.Dating.Server.Controllers
             }
             else
             {
+                var firstName = response.Name[..response.Name.IndexOf(' ')];
+                var lastName = response.Name[response.Name.IndexOf(' ')..];
                 var newUser = new User
                 {
-                    Facebook = response.Id,
-                    FirstName = response.FirstName,
-                    LastName = response.LastName,
+                    FacebookId = response.Id,
+                    FacebookLink = response.Link,
+                    FirstName = firstName,
+                    LastName = lastName,
                     Email = response.Email,
                     Password = string.Empty,
                     IsActive = true,
-                    Gender = Gender.Male
+                    Gender = Enum.Parse<Gender>(response.Gender, true),
+                    City = response.Hometown,
+                    Ethnicity = Ethnicity.All
                 };
 
                 var addedUser = await _userService.AddUser(newUser);

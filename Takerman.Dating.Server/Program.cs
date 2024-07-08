@@ -91,9 +91,6 @@ builder.Services.AddAuthentication(options =>
 {
     options.AppId = facebookSection["ClientId"] ?? string.Empty;
     options.AppSecret = facebookSection["ClientSecret"] ?? string.Empty;
-    options.Scope.Add("email");
-    options.Fields.Add("first_name");
-    options.Fields.Add("last_name");
     options.Events.OnCreatingTicket = context =>
     {
         context.Identity.AddClaim(new Claim("access_token", context.AccessToken));

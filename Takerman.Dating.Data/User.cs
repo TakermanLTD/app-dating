@@ -38,10 +38,16 @@ namespace Takerman.Dating.Data
         public string? Phone { get; set; }
 
         [DataType(DataType.Text)]
-        public string? Facebook { get; set; }
+        public string? FacebookId { get; set; }
+
+        public string? FacebookLink { get; set; }
 
         [DataType(DataType.Text)]
-        public string? Instagram { get; set; }
+        public string? InstagramId { get; set; }
+
+        public string? InstagramLink { get; set; }
+
+        public string? GoogleId { get; set; }
 
         [DataType(DataType.DateTime)]
         public DateTime CreatedOn { get; set; }
