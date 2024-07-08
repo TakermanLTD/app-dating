@@ -222,13 +222,13 @@ namespace Takerman.Dating.Services
 
         public Task<User> GetByFacebookId(string facebookId)
         {
-            return _context.Users.FirstOrDefaultAsync(x => x.Facebook == facebookId);
+            return _context.Users.FirstOrDefaultAsync(x => x.FacebookId == facebookId);
         }
 
         public async Task UpdateFacebookIdAsync(string email, string facebookId)
         {
             var user = await GetByEmailAsync(email);
-            user.Facebook = facebookId;
+            user.FacebookId = facebookId;
             await _context.SaveChangesAsync();
         }
     }
