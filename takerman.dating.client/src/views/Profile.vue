@@ -89,9 +89,6 @@
                         </div>
                     </div>
                 </div>
-                <div class="form-group row">
-                    <router-link to="/user-gallery"><button class="btn btn-primary text-center">Галерия</button></router-link>
-                </div>
                 <br />
                 <hgroup>
                     <h4>Парола</h4>
@@ -100,8 +97,7 @@
                     <div class="form-group row">
                         <label for="password" class="col-sm-2 col-form-label">Парола</label>
                         <div class="col-sm-10">
-                            <input type="password" class="form-control" id="password" placeholder="Парола"
-                                   v-model="fields.password" :pattern="this.passwordPattern" />
+                            <input type="password" class="form-control" id="password" placeholder="Парола" v-model="fields.password" :pattern="this.passwordPattern" />
                         </div>
                     </div>
                     <br />

@@ -10,6 +10,7 @@
                         <option v-for="dateType in dateTypes" :value="dateType.key">{{ dateType.value }}</option>
                     </select>
                 </div>
+                <br />
                 <div class="text-left">
                     <label>Етнос</label> <br />
                     <select id="frmEthnicity" placeholder="Етнос" @change="applyFilter" v-model="filter.ethnicity"
@@ -18,22 +19,24 @@
                         <option v-for="ethnicity in ethnicities" :value="ethnicity.key">{{ ethnicity.value }}</option>
                     </select>
                 </div>
-                <div class="text-left">
-                    <label>Мин. години</label> <br />
-                    <input id="frmMinAges" placeholder="Мин. години" @change="applyFilter" type="number" class="form-control"
-                           v-model="filter.minAges" />
+                <br />
+                <div class="row">
+                    <div class="col text-left">
+                        <label>Мин. години</label> <br />
+                        <input id="frmMinAges" placeholder="Мин. години" @change="applyFilter" type="number" class="form-control" v-model="filter.minAges" />
+                    </div>
+                    <div class="col text-left">
+                        <label>Макс. години</label> <br />
+                        <input id="frmMaxAges" placeholder="Макс. години" @change="applyFilter" type="number" class="form-control" v-model="filter.maxAges" />
+                    </div>
                 </div>
+                <br />
                 <div class="text-left">
-                    <label>макс години</label> <br />
-                    <input id="frmMaxAges" placeholder="макс години" @change="applyFilter" type="number" class="form-control"
-                           v-model="filter.maxAges" />
-                </div>
-                <div class="text-left">
-                    <label>Макс цена</label> <br />
-                    <input id="frmMaxPrice" placeholder="Макс цена" @change="applyFilter" type="number" class="form-control"
-                           v-model="filter.maxPrice" />
+                    <label>Макс. цена {{ $t('common.currencySign') }}</label> <br />
+                    <input id="frmMaxPrice" placeholder="Макс. цена" @change="applyFilter" type="number" class="form-control" v-model="filter.maxPrice" />
                 </div>
             </div>
+            <br />
             <div class="col-lg-9 col-md-8">
                 <div class="row pb-3 card-deck">
                     <loader v-if="this.loading" />
@@ -81,6 +84,7 @@ import { useAuthStore } from '@/stores';
 import card from '../components/Card.vue';
 import loader from '../components/Loader.vue';
 import cookies from '../helpers/cookies';
+import { capitalize } from 'vue';
 
 export default {
     data() {

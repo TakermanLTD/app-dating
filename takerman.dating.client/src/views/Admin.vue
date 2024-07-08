@@ -111,8 +111,6 @@
                 <th>country</th>
                 <th>city</th>
                 <th>phone</th>
-                <th>facebook</th>
-                <th>instagram</th>
             </tr>
             <tr>
                 <td></td>
@@ -122,8 +120,6 @@
                 <td><input @input="event => newUser.country = event.target.value" type="text" :v-model="newUser.country" class="form-control" :value="newUser.country" /></td>
                 <td><input @input="event => newUser.city = event.target.value" type="text" :v-model="newUser.city" class="form-control" :value="newUser.city" /></td>
                 <td><input @input="event => newUser.phone = event.target.value" type="text" :v-model="newUser.phone" class="form-control" :value="newUser.phone" /></td>
-                <td><input @input="event => newUser.facebook = event.target.value" type="text" :v-model="newUser.facebook" class="form-control" :value="newUser.facebook" /></td>
-                <td><input @input="event => newUser.instagram = event.target.value" type="text" :v-model="newUser.instagram" class="form-control" :value="newUser.instagram" /></td>
                 <td>
                     <button @click="addUser()" class="btn btn-success">add</button>
                 </td>
@@ -136,8 +132,6 @@
                 <td><input @input="event => user.country = event.target.value" type="text" :v-model="user.country" class="form-control" :value="user.country" /></td>
                 <td><input @input="event => user.city = event.target.value" type="text" :v-model="user.city" class="form-control" :value="user.city" /></td>
                 <td><input @input="event => user.phone = event.target.value" type="text" :v-model="user.phone" class="form-control" :value="user.phone" /></td>
-                <td><input @input="event => user.facebook = event.target.value" type="text" :v-model="user.facebook" class="form-control" :value="user.facebook" /></td>
-                <td><input @input="event => user.instagram = event.target.value" type="text" :v-model="user.instagram" class="form-control" :value="user.instagram" /></td>
                 <td>
                     <button @click="saveUser(user)" class="btn btn-success">save</button>
                     <button @click="deleteUser(user)" class="btn btn-danger">delete</button>
@@ -184,8 +178,6 @@ export default {
                 country: '',
                 city: '',
                 phone: '',
-                facebook: '',
-                instagram: '',
                 gender: 1,
                 ethnicity: 1
             }

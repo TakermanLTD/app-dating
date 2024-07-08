@@ -4,7 +4,7 @@ namespace Takerman.Dating.Data
 {
     public enum Ethnicity
     {
-        [Display(Name = "Всички")]
+        [Display(Name = "Всякакви")]
         All = 1,
 
         [Display(Name = "Българин")]
