@@ -158,7 +158,7 @@ namespace Takerman.Dating.Server.Controllers
             else
             {
                 var firstName = response.Name[..response.Name.IndexOf(' ')];
-                var lastName = response.Name[response.Name.IndexOf(' ')..];
+                var lastName = response.Name[(response.Name.IndexOf(' ') + 1)..];
                 var newUser = new User
                 {
                     FacebookId = response.Id,
@@ -168,7 +168,7 @@ namespace Takerman.Dating.Server.Controllers
                     Email = response.Email,
                     Password = string.Empty,
                     IsActive = true,
-                    Gender = Enum.Parse<Gender>(response.Gender, true),
+                    Gender = string.IsNullOrEmpty(response.Gender) ? Gender.Male : Enum.Parse<Gender>(response.Gender, true),
                     City = response.Hometown,
                     Ethnicity = Ethnicity.All
                 };
