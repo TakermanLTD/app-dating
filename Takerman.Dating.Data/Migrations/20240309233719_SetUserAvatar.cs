@@ -23,7 +23,7 @@ namespace Takerman.Dating.Data.Migrations
                 nullable: true);
 
             migrationBuilder.CreateTable(
-                name: "DatePictures",
+                name: "EthnicPictures",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -34,9 +34,9 @@ namespace Takerman.Dating.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_DatePictures", x => x.Id);
+                    table.PrimaryKey("PK_EthnicPictures", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_DatePictures_Dates_DateId",
+                        name: "FK_EthnicPictures_Dates_DateId",
                         column: x => x.DateId,
                         principalTable: "Dates",
                         principalColumn: "Id",
@@ -44,8 +44,8 @@ namespace Takerman.Dating.Data.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_DatePictures_DateId",
-                table: "DatePictures",
+                name: "IX_EthnicPictures_DateId",
+                table: "EthnicPictures",
                 column: "DateId");
         }
 
@@ -53,7 +53,7 @@ namespace Takerman.Dating.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "DatePictures");
+                name: "EthnicPictures");
 
             migrationBuilder.DropColumn(
                 name: "AvatarId",

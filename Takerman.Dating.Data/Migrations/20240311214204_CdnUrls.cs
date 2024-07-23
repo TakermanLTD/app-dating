@@ -20,7 +20,7 @@ namespace Takerman.Dating.Data.Migrations
 
             migrationBuilder.DropColumn(
                 name: "Url",
-                table: "DatePictures");
+                table: "EthnicPictures");
 
             migrationBuilder.AddColumn<string>(
                 name: "Avatar",
@@ -37,7 +37,7 @@ namespace Takerman.Dating.Data.Migrations
 
             migrationBuilder.AddColumn<string>(
                 name: "Name",
-                table: "DatePictures",
+                table: "EthnicPictures",
                 type: "nvarchar(max)",
                 nullable: false,
                 defaultValue: "");
@@ -56,7 +56,7 @@ namespace Takerman.Dating.Data.Migrations
 
             migrationBuilder.DropColumn(
                 name: "Name",
-                table: "DatePictures");
+                table: "EthnicPictures");
 
             migrationBuilder.AddColumn<int>(
                 name: "AvatarId",
@@ -74,7 +74,7 @@ namespace Takerman.Dating.Data.Migrations
 
             migrationBuilder.AddColumn<string>(
                 name: "Url",
-                table: "DatePictures",
+                table: "EthnicPictures",
                 type: "nvarchar(max)",
                 maxLength: 2147483647,
                 nullable: false,

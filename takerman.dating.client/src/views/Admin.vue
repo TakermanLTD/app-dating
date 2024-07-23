@@ -26,7 +26,6 @@
                 <th>min ages</th>
                 <th>max ages</th>
                 <th>price</th>
-                <th>ethnicity</th>
                 <th>link</th>
                 <th>action</th>
             </tr>
@@ -48,11 +47,6 @@
                 <td> <input type="number" @input="event => newDate.minAges = event.target.value" style="width: 80px;" :v-model="newDate.minAges" class="form-control" :value="newDate.minAges" /></td>
                 <td> <input type="number" @input="event => newDate.maxAges = event.target.value" style="width: 80px;" :v-model="newDate.maxAges" class="form-control" :value="newDate.maxAges" /></td>
                 <td> <input type="number" @input="event => newDate.price = event.target.value" style="width: 80px;" :v-model="newDate.price" class="form-control" :value="newDate.price" /></td>
-                <td>
-                    <select v-model="newDate.ethnicity" class="form-control" :value="newDate.ethnicity">
-                        <option v-for="(ethnicity, ethnicityKey) in this.ethnicities" :value="ethnicity.key" :key="ethnicityKey" @click="newDate.ethnicity = ethnicity.key">{{ ethnicity.value }}</option>
-                    </select>
-                </td>
                 <td>
                     <input type="text" @input="event => newDate.videoLink = event.target.value" :v-model="newDate.videoLink" class="form-control" :value="newDate.videoLink" />
                 </td>
@@ -78,11 +72,6 @@
                 <td> <input type="number" @input="event => date.minAges = event.target.value" style="width: 80px;" :v-model="date.minAges" class="form-control" :value="date.minAges" /></td>
                 <td> <input type="number" @input="event => date.maxAges = event.target.value" style="width: 80px;" :v-model="date.maxAges" class="form-control" :value="date.maxAges" /></td>
                 <td> <input type="number" @input="event => date.price = event.target.value" style="width: 80px;" :v-model="date.price" class="form-control" :value="date.price" /></td>
-                <td>
-                    <select v-model="date.ethnicity" class="form-control" :value="date.ethnicity">
-                        <option v-for="(ethnicity, ethnicityKey) in this.ethnicities" :value="ethnicity.key" :key="ethnicityKey" @click="date.ethnicity = ethnicity.key">{{ ethnicity.value }}</option>
-                    </select>
-                </td>
                 <td>
                     <input type="text" @input="event => date.videoLink = event.target.value" :v-model="date.videoLink" class="form-control" :value="date.videoLink" />
                 </td>

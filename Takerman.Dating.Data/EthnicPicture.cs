@@ -9,8 +9,6 @@ namespace Takerman.Dating.Data
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        public Ethnicity Ethnicity { get; set; }
-
         public string Url { get; set; }
 
         public DateTime UploadedOn { get; set; } = DateTime.Now;

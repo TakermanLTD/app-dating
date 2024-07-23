@@ -135,11 +135,11 @@ namespace Takerman.Dating.Services
             return _cdnConfig.Value.DefaultAvatarUrl;
         }
 
-        public async Task<IEnumerable<EthnicPicture>> GetDatePictures(Ethnicity ethnicity)
+        public async Task<IEnumerable<EthnicPicture>> GetEthnicPictures()
         {
             try
             {
-                return await _context.EthnicPictures.Where(x => x.Ethnicity == ethnicity).OrderBy(x => x.UploadedOn).ToListAsync();
+                return await _context.EthnicPictures.OrderBy(x => x.UploadedOn).ToListAsync();
             }
             catch (Exception ex)
             {
@@ -148,11 +148,11 @@ namespace Takerman.Dating.Services
             }
         }
 
-        public async Task<EthnicPicture> GetDateThumbnail(Ethnicity ethnicity)
+        public async Task<EthnicPicture> GetDateThumbnail()
         {
             try
             {
-                return await _context.EthnicPictures.FirstOrDefaultAsync(x => x.Ethnicity == ethnicity);
+                return await _context.EthnicPictures.FirstOrDefaultAsync();
             }
             catch (Exception ex)
             {

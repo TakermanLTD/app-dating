@@ -17,7 +17,7 @@ namespace Takerman.Dating.Data.Migrations
 
             migrationBuilder.RenameColumn(
                 name: "Data",
-                table: "DatePictures",
+                table: "EthnicPictures",
                 newName: "Url");
         }
 
@@ -31,7 +31,7 @@ namespace Takerman.Dating.Data.Migrations
 
             migrationBuilder.RenameColumn(
                 name: "Url",
-                table: "DatePictures",
+                table: "EthnicPictures",
                 newName: "Data");
         }
     }

@@ -11,15 +11,6 @@
                     </select>
                 </div>
                 <br />
-                <div class="text-left">
-                    <label>Етнос</label> <br />
-                    <select id="frmEthnicity" placeholder="Етнос" @change="applyFilter" v-model="filter.ethnicity"
-                            class="form-control">
-                        <option :value="0">{{ $t('dates.filter.all') }}</option>
-                        <option v-for="ethnicity in ethnicities" :value="ethnicity.key">{{ ethnicity.value }}</option>
-                    </select>
-                </div>
-                <br />
                 <div class="row">
                     <div class="col text-left">
                         <label>Мин. години</label> <br />
@@ -91,13 +82,11 @@ export default {
         return {
             userId: null,
             loading: false,
-            ethnicities: [],
             dateTypes: [],
             filter: {
                 minAges: null,
                 maxAges: null,
                 maxPrice: null,
-                ethnicity: 0,
                 dateType: 0
             },
             dates: [],
@@ -113,7 +102,6 @@ export default {
         this.userId = authStore.user?.id;
         await this.applyFilter();
         this.currency = cookies.get('currency');
-        this.ethnicities = await fetchWrapper.get('Options/GetEthnicities');
         this.dateTypes = await fetchWrapper.get('Options/GetDateTypes');
     },
     methods: {

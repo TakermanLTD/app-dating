@@ -20,7 +20,7 @@ namespace Takerman.Dating.Data.Migrations
 
             migrationBuilder.AlterColumn<string>(
                 name: "Data",
-                table: "DatePictures",
+                table: "EthnicPictures",
                 type: "nvarchar(max)",
                 nullable: false,
                 oldClrType: typeof(byte[]),
@@ -40,7 +40,7 @@ namespace Takerman.Dating.Data.Migrations
 
             migrationBuilder.AlterColumn<byte[]>(
                 name: "Data",
-                table: "DatePictures",
+                table: "EthnicPictures",
                 type: "varbinary(max)",
                 nullable: false,
                 oldClrType: typeof(string),

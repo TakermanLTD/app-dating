@@ -53,20 +53,10 @@ namespace Takerman.Dating.Services
                 if (filter.MaxPrice.HasValue && filter.MaxPrice.Value != 0)
                     query = query.Where(x => x.Price <= filter.MaxPrice.Value);
 
-                if (filter.Ethnicity.HasValue && filter.Ethnicity != 0)
-                    query = query.Where(x => (int)x.Ethnicity == filter.Ethnicity.Value);
-
                 if (filter.DateType.HasValue && filter.DateType != 0)
                     query = query.Where(x => (int)x.DateType == filter.DateType.Value);
             }
-
-            //var dates = await query
-            //    .OrderByDescending(x => x.StartsOn == null)
-            //    .ThenByDescending(x => x.StartsOn)
-            //    .ThenBy(x => x.MinAges)
-            //    .ThenBy(x => x.Ethnicity)
-            //    .ToListAsync();
-
+            
             var dates = await query
                 .OrderByDescending(x => x.Id)
                 .ToListAsync();
@@ -114,7 +104,6 @@ namespace Takerman.Dating.Services
         public async Task<DateCardDto> GetCardFromDate(Date date)
         {
             var card = _mapper.Map(date, new DateCardDto());
-            card.Ethnicity = date.Ethnicity.GetDisplay();
             card.Status = Enum.GetName(date.Status);
             card.DateType = date.DateType.GetDisplay();
 

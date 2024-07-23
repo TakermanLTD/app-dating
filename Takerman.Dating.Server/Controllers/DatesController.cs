@@ -15,7 +15,7 @@ namespace Takerman.Dating.Server.Controllers
             var date = await _datingService.Get(id);
             var result = await _datingService.GetCardFromDate(date);
 
-            var thumbnail = await _cdnService.GetDateThumbnail(date.Ethnicity);
+            var thumbnail = await _cdnService.GetDateThumbnail();
 
             result.Pictures = [thumbnail];
 
@@ -29,7 +29,7 @@ namespace Takerman.Dating.Server.Controllers
             var date = await _datingService.Get(id);
             var result = await _datingService.GetCardFromDate(date);
 
-            result.Pictures = await _cdnService.GetDatePictures(date.Ethnicity);
+            result.Pictures = await _cdnService.GetEthnicPictures();
 
             return result;
         }

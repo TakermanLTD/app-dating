@@ -21,11 +21,11 @@
       <div class="col-lg-7 h-auto mb-30">
         <div class="h-100 bg-light p-30">
           <hgroup>
-            <h3>{{ this.date.dateType }} {{ this.date.title }} за {{ this.date.ethnicity }}</h3>
+            <h3>{{ this.date.dateType }} {{ this.date.title }}</h3>
           </hgroup>
           <br />
           <p class="mb-4">{{ $t('date.description') }}</p>
-          <p v-if="this.date && this.date.ethnicity" class="mb-4">{{ $t('date.description.' + this.date.ethnicity.toLowerCase()) }}</p>
+          <p v-if="this.date" class="mb-4">{{ $t('date.description.') }}</p>
           <table class="table">
             <tr>
               <td>

@@ -119,7 +119,7 @@ namespace Takerman.Dating.Data.Migrations
                     b.ToTable("Dates");
                 });
 
-            modelBuilder.Entity("Takerman.Dating.Data.DatePicture", b =>
+            modelBuilder.Entity("Takerman.Dating.Data.EthnicPicture", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -142,7 +142,7 @@ namespace Takerman.Dating.Data.Migrations
 
                     b.HasIndex("DateId");
 
-                    b.ToTable("DatePictures");
+                    b.ToTable("EthnicPictures");
                 });
 
             modelBuilder.Entity("Takerman.Dating.Data.DateUserChoice", b =>
@@ -441,7 +441,7 @@ namespace Takerman.Dating.Data.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Takerman.Dating.Data.DatePicture", b =>
+            modelBuilder.Entity("Takerman.Dating.Data.EthnicPicture", b =>
                 {
                     b.HasOne("Takerman.Dating.Data.Date", "Date")
                         .WithMany()

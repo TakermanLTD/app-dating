@@ -8,7 +8,7 @@
         </div>
         <div class="card-body date-card-body">
             <h4 class="card-title text-center">
-                <router-link class="date-card-title" :to="'date?id=' + this.date.id + ''">{{ this.date.title }} за {{ this.date.ethnicity }}</router-link>
+                <router-link class="date-card-title" :to="'date?id=' + this.date.id + ''">{{ this.date.title }}</router-link>
             </h4>
             <table class="table">
                 <tbody>

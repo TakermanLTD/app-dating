@@ -36,8 +36,6 @@ namespace Takerman.Dating.Models.DTOs
 
         public string? Location { get; set; }
 
-        public string Ethnicity { get; set; } = "";
-
         public string VideoLink { get; set; } = "";
 
         public object ToListAsync()
