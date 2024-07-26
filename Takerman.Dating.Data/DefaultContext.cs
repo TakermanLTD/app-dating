@@ -14,7 +14,7 @@ namespace Takerman.Dating.Data
         public DbSet<ResetPasswordRequest> ResetPasswordRequests { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<UserPicture> UserPictures { get; set; }
-        public DbSet<EthnicPicture> EthnicPictures { get; set; }
+        public DbSet<EthnicPicture> DatePictures { get; set; }
         public DbSet<UserSavedSpot> UserSavedSpots { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)

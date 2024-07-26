@@ -135,11 +135,11 @@ namespace Takerman.Dating.Services
             return _cdnConfig.Value.DefaultAvatarUrl;
         }
 
-        public async Task<IEnumerable<EthnicPicture>> GetEthnicPictures()
+        public async Task<IEnumerable<EthnicPicture>> GetDatePictures()
         {
             try
             {
-                return await _context.EthnicPictures.OrderBy(x => x.UploadedOn).ToListAsync();
+                return await _context.DatePictures.OrderBy(x => x.UploadedOn).ToListAsync();
             }
             catch (Exception ex)
             {
@@ -152,7 +152,7 @@ namespace Takerman.Dating.Services
         {
             try
             {
-                return await _context.EthnicPictures.FirstOrDefaultAsync();
+                return await _context.DatePictures.FirstOrDefaultAsync();
             }
             catch (Exception ex)
             {
