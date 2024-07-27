@@ -1,3 +1,15 @@
-# Takerman.3DPrinting
+# Takerman.Dating
 
-Takerman.Dating.Data: dotnet ef migrations add [name] --startup-project ../Takerman.Dating.Server
+## Migrations
+On Takerman.Dating.Server:
+dotnet ef migrations add [name] --project ../Takerman.Dating.Data/Takerman.Dating.Data.csproj
+dotnet ef database update --project ../Takerman.Dating.Data/Takerman.Dating.Data.csproj
+dotnet ef migrations remove
+
+## E2E tests
+npx cypress open
+cypress run --browser chrome
+
+## Upgrade NPM packages
+ncu --upgrade
+npm install
