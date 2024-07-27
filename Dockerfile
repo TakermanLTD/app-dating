@@ -28,7 +28,7 @@ COPY Takerman.Dating.Tests/. ./Takerman.Dating.Tests/
 COPY ["takerman.dating.client/nuget.config", "./"]
 COPY ["takerman.dating.client/nuget.config", "takerman.dating.client/"]
 
-RUN dotnet nuget add source https://nuget.pkg.github.com/takermanltd/index.json -n github -u takerman -p ${NUGET_PASSWORD} --store-password-in-clear-text
+RUN dotnet nuget add source https://nuget.pkg.github.com/takermanltd/index.json -n github -u takerman --store-password-in-clear-text -p ${NUGET_PASSWORD} 
 RUN dotnet nuget list source
 
 COPY ["Takerman.Dating.Server/Takerman.Dating.Server.csproj", "Takerman.Dating.Server/"]
