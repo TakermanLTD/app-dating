@@ -16,7 +16,8 @@ RUN apt-get install -y libpng-dev libjpeg-dev curl libxi6 build-essential libgl1
 RUN curl -fsSL https://deb.nodesource.com/nsolid_setup_deb.sh | sh -s 20
 RUN apt-get install -y nodejs
 ARG BUILD_CONFIGURATION=Release
-ARG NUGET_PASSWORD
+RUN --mount=type=secret,id=NUGET_PASSWORD \
+    sed -i "s/NUGET_PASSWORD=$(cat /run/secrets/NUGET_PASSWORD)/" .env.production
 
 WORKDIR /src
 
