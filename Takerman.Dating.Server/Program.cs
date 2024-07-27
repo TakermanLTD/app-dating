@@ -118,8 +118,8 @@ builder.Services.AddAuthentication(options =>
 
 var app = builder.Build();
 
-using var scope = app.Services.CreateAsyncScope();
-await scope.ServiceProvider.GetRequiredService<IContextInitializer>().InitializeAsync();
+// using var scope = app.Services.CreateAsyncScope();
+// await scope.ServiceProvider.GetRequiredService<IContextInitializer>().InitializeAsync();
 
 app.UseDefaultFiles();
 
