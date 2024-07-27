@@ -25,7 +25,7 @@
           </hgroup>
           <br />
           <p class="mb-4">{{ $t('date.description') }}</p>
-          <p v-if="this.date" class="mb-4">{{ $t('date.description.') }}</p>
+          <p v-if="this.date" class="mb-4">{{ $t('date.description') }}</p>
           <table class="table">
             <tr>
               <td>

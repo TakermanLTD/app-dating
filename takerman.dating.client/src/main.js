@@ -1,4 +1,5 @@
 import { createApp } from 'vue';
+import { StoryblokVue, apiPlugin } from '@storyblok/vue';
 import { createI18n } from 'vue-i18n';
 import { createPinia } from 'pinia';
 import App from './App.vue';
@@ -52,4 +53,10 @@ app.use(pinia)
 	.use(VueGtag, {
 		config: { id: measurementId }
 	})
-	.mount('#app');
+	.use(StoryblokVue, {
+		accessToken: 'saPzezRIW4jZNX0V5lfGmQtt',
+		use: [apiPlugin],
+		apiOptions: {
+			region: "eu",
+		}
+	}).mount('#app');
