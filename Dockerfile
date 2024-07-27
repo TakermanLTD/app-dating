@@ -17,7 +17,7 @@ RUN curl -fsSL https://deb.nodesource.com/nsolid_setup_deb.sh | sh -s 20
 RUN apt-get install -y nodejs
 ARG BUILD_CONFIGURATION=Release
 RUN --mount=type=secret,id=NUGET_PASSWORD \
-    sed -i "s/NUGET_PASSWORD=$(cat /run/secrets/NUGET_PASSWORD)/" .env.production
+    sed -i "s/NUGET_PASSWORD=/NUGET_PASSWORD=$(cat /run/secrets/NUGET_PASSWORD)/" .env
 
 WORKDIR /src
 
