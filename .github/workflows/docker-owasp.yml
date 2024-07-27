@@ -64,7 +64,7 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          build-args: "NUGET_PASSWORD=${{ secrets.REGISTRY_TOKEN }}"
+          secrets: "NUGET_PASSWORD=${{ secrets.REGISTRY_TOKEN }}"
 
       - name: Stop OWASP ZAP and generate report
         run: zap-full-scan-stop
