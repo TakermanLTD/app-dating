@@ -79,12 +79,11 @@
 </template>
 
 <script lang="js">
-import { fetchWrapper } from '@/helpers';
-import { useAuthStore } from '@/stores';
 import breadcrumbs from '../components/Breadcrumbs.vue';
 import loader from '../components/Loader.vue';
 import card from '../components/Card.vue';
 import heading from '../components/Heading.vue';
+import { useAuth0 } from '@auth0/auth0-vue';
 
 export default {
   data() {
@@ -97,23 +96,25 @@ export default {
       ]
     };
   },
-  async created() {
+  async mounted() {
     this.loading = true;
-    const authStore = useAuthStore();
-    this.orders = await fetchWrapper.get('Order/GetByUserId?userId=' + authStore.user.id);
-    this.savedSpots = await fetchWrapper.get('Dates/GetSavedSpots?userId=' + authStore.user.id);
+    const { user, isAuthenticated } = useAuth0();
+    if (isAuthenticated.value) {
+      this.orders = await fetch('Order/GetByUserId?userId=' + user.id);
+      this.savedSpots = await fetch('Dates/GetSavedSpots?userId=' + user.id);
+    }
     this.loading = false;
   },
   methods: {
     async cancel(orderId) {
-      await fetchWrapper.put('Order/Cancel?id=' + orderId)
+      await fetch('Order/Cancel?id=' + orderId)
         .then((e) => {
           order.status = 'Отказана';
         });
     },
     async unsaveSpot(dateId) {
-      const authStore = useAuthStore();
-      await fetchWrapper.get('Dates/UnsaveSpot?userId=' + authStore.user.id + '&dateId=' + dateId)
+      const { user } = useAuth0();
+      await fetch('Dates/UnsaveSpot?userId=' + user.id + '&dateId=' + dateId)
         .then((result) => {
           this.emitter.emit('addToSpotCount', { 'eventContent': -1 });
           document.getElementById('spot_' + dateId).remove();

@@ -74,8 +74,6 @@
 </template>
 
 <script lang="js">
-import { fetchWrapper } from '@/helpers';
-import { useAuthStore } from '@/stores';
 import breadcrumbs from '../components/Breadcrumbs.vue';
 import loader from '../components/Loader.vue';
 import heading from '../components/Heading.vue';
@@ -106,9 +104,9 @@ export default {
   },
   async created() {
     this.loading = true;
-    const authStore = useAuthStore();
-    this.userId = authStore.user.id;
-    this.matches = await fetchWrapper.get('Dates/GetMatches?userId=' + this.userId);
+    const { user } = useAuth0();
+    this.userId = user.id;
+    this.matches = await fetch('Dates/GetMatches?userId=' + this.userId);
 
     this.connection = new signalR.HubConnectionBuilder()
       .withUrl("/chatHub")
@@ -131,13 +129,13 @@ export default {
     async sendMessage() {
       this.connection.invoke("SendMessage", this.userId, this.toUser.id, this.message)
         .then(async (res) => {
-          await fetchWrapper.post('Notification/SendChatMessageAsync', {
+          await fetch('Notification/SendChatMessageAsync', {
             userId: this.userId,
             toUserId: this.toUser.id,
             message: this.message
           });
           this.message = "";
-          this.messages = await fetchWrapper.get('Notification/GetChatMessagesAsync?userId=' + this.userId + '&toUserId=' + this.toUser.id);
+          this.messages = await fetch('Notification/GetChatMessagesAsync?userId=' + this.userId + '&toUserId=' + this.toUser.id);
         }).catch(err =>
           console.log(err)
         );
@@ -145,10 +143,10 @@ export default {
     async loadMessages(toUserId) {
       this.messages = [];
       this.toUserId = toUserId;
-      this.toUser = await fetchWrapper.get('User/Get?id=' + toUserId);
+      this.toUser = await fetch('User/Get?id=' + toUserId);
       let toUserAvatar = await fetch('Cdn/GetAvatar?userId=' + toUserId);
       this.toUser.avatarUrl = await toUserAvatar.text();
-      this.messages = await fetchWrapper.get('Notification/GetChatMessagesAsync?userId=' + this.userId + '&toUserId=' + toUserId);
+      this.messages = await fetch('Notification/GetChatMessagesAsync?userId=' + this.userId + '&toUserId=' + toUserId);
 
       this.connection.on("ReceiveMessage", (userId, toUserId, message) => {
         this.messages.unshift({

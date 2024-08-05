@@ -29,17 +29,16 @@
                         <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                             <div class="navbar-nav mr-auto py-0">
                                 <router-link class="nav-item nav-link" to="/">{{ $t('nav.home') }}</router-link>
-                                <router-link v-if="this.user != null" class="nav-item nav-link" to="/orders">{{ $t('nav.myDates') }}</router-link>
-                                <router-link v-if="this.user != null" class="nav-item nav-link" to="/matches">{{ $t('nav.matches') }}</router-link>
-                                <router-link v-if="this.user != null && this.user.isAdmin" class="nav-item nav-link" to="/admin">{{ $t('nav.admin') }}</router-link>
+                                <router-link v-if="this.$auth0.isAuthenticated" class="nav-item nav-link" to="/orders">{{ $t('nav.myDates') }}</router-link>
+                                <router-link v-if="this.$auth0.isAuthenticated" class="nav-item nav-link" to="/matches">{{ $t('nav.matches') }}</router-link>
+                                <router-link v-if="this.$auth0.isAuthenticated && this.$auth0.user?.isAdmin" class="nav-item nav-link" to="/admin">{{ $t('nav.admin') }}</router-link>
                                 <div class="nav-item dropdown">
                                     <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">{{ $t('nav.account') }} <i class="fa fa-angle-down mt-1"></i></a>
                                     <div class="dropdown-menu bg-primary rounded-0 border-0 m-0">
-                                        <router-link v-if="this.user != null" class="dropdown-item" to="/profile">{{ $t('nav.profile') }}</router-link>
-                                        <router-link v-if="this.user == null" class="dropdown-item" to="/register">{{ $t('nav.register') }}</router-link>
-                                        <router-link v-if="this.user != null" class="dropdown-item" to="/user-gallery">{{ $t('nav.photos') }}</router-link>
-                                        <router-link v-if="this.user == null" class="dropdown-item" to="/login">{{ $t('nav.login') }}</router-link>
-                                        <router-link v-if="this.user != null" class="dropdown-item" to="/logout" @click="this.logout">{{ $t('nav.logout') }}</router-link>
+                                        <router-link v-if="this.$auth0.isAuthenticated" class="dropdown-item" to="/profile">{{ $t('nav.profile') }}</router-link>
+                                        <router-link v-if="this.$auth0.isAuthenticated" class="dropdown-item" to="/user-gallery">{{ $t('nav.photos') }}</router-link>
+                                        <a href="#" v-if="!this.$auth0.isAuthenticated" class="dropdown-item" @click="this.$auth0.loginWithRedirect">{{ $t('nav.login') }}</a>
+                                        <a href="#" v-if="this.$auth0.isAuthenticated" class="dropdown-item" @click="this.$auth0.logout">{{ $t('nav.logout') }}</a>
                                     </div>
                                 </div>
                             </div>
@@ -64,15 +63,12 @@
 </template>
 
 <script lang="js">
-import { storeToRefs } from 'pinia';
-import { useAuthStore } from '@/stores';
-import { fetchWrapper } from '@/helpers';
 import LanguageSelector from './LanguageSelector.vue';
+import { useAuth0 } from '@auth0/auth0-vue';
 
 export default {
     data() {
         return {
-            user: null,
             savedSpotslength: 0
         }
     },
@@ -80,27 +76,16 @@ export default {
         LanguageSelector
     },
     async mounted() {
-        const authStore = useAuthStore();
-        let { user: authUser } = storeToRefs(authStore);
-        this.user = authUser;
-        if (this.user) {
-            let spots = await fetchWrapper.get('Dates/GetSavedSpots?userId=' + authStore.user?.id);
+        const { user, isAuthenticated } = useAuth0();
+
+        if (isAuthenticated.value) {
+            let spots = await fetch('Dates/GetSavedSpots?userId=' + user.id);
             this.savedSpotslength = spots.length;
         }
         this.emitter.on('addToSpotCount', (evt) => {
             this.savedSpotslength += evt.eventContent;
         })
-    },
-    methods: {
-        logout() {
-            const authStore = useAuthStore();
-            let { user: authUser } = storeToRefs(authStore);
-            authStore.logout();
-            // eslint-disable-next-line no-unused-vars
-            authUser = null;
-            this.user = null;
-        }
-    },
+    }
 }
 </script>
 

@@ -4,8 +4,7 @@
 
 <script lang="js">
 import { loadScript } from '@paypal/paypal-js';
-import { fetchWrapper } from '@/helpers';
-import { useAuthStore } from '@/stores';
+import { useAuth0 } from '@auth0/auth0-vue';
 
 export default {
     props: {
@@ -24,7 +23,7 @@ export default {
     async beforeCreate() {
         try {
             if (this.dateId) {
-                this.date = await fetchWrapper.get('Dates/Get?id=' + this.dateId);
+                this.date = await fetch('Dates/Get?id=' + this.dateId);
             }
 
             loadScript({ 'client-id': 'AQeperGzY3bUm7hiKg8OcfKHzMVxg6ItAMHuMUSvoc3ZWwP6OYSsUvzxnSqtP0ryDcIffn6MT_h9klly', currency: this.payment.currency })
@@ -63,14 +62,14 @@ export default {
         },
         onApprove(data, actions) {
             return actions.order.capture().then(async () => {
-                const authStore = useAuthStore();
+                const { user } = useAuth0();
                 let data = {
                     total: this.date.price,
                     currency: this.payment.currency,
-                    userId: authStore.user.id,
+                    userId: user?.id,
                     dateId: this.date.id
                 };
-                let response = await fetchWrapper.post('Order/Create', data);
+                let response = await fetch('Order/Create', data);
             });
         }
     },

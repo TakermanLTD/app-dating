@@ -24,7 +24,6 @@
 </template>
 
 <script lang="js">
-import { fetchWrapper } from '@/helpers';
 
 export default {
     data() {
@@ -43,7 +42,7 @@ export default {
                 e.preventDefault();
                 this.loading = true;
 
-                let response = await fetchWrapper.post('Notification/SubscripeToNewsletter', this.fields);
+                let response = await fetch('Notification/SubscripeToNewsletter', this.fields);
 
                 if (response == '') {
                     this.loading = false;

@@ -13,6 +13,7 @@ using Takerman.Mail;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Facebook;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Configuration
@@ -70,52 +71,13 @@ builder.Services.AddHsts(options =>
 });
 builder.Services.AddAuthentication(options =>
 {
-    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = FacebookDefaults.AuthenticationScheme;
-}).AddCookie()
-.AddGoogle(options =>
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options =>
 {
-    options.ClientId = googleSection["ClientId"] ?? string.Empty;
-    options.ClientSecret = googleSection["ClientSecret"] ?? string.Empty;
-    options.Events.OnCreatingTicket = context =>
-    {
-        context.Identity.AddClaim(new Claim("access_token", context.AccessToken));
-        if (context.RefreshToken != null)
-        {
-            context.Identity.AddClaim(new Claim("refresh_token", context.RefreshToken));
-        }
-        return Task.CompletedTask;
-    };
-})
-.AddFacebook(options =>
-{
-    options.AppId = facebookSection["ClientId"] ?? string.Empty;
-    options.AppSecret = facebookSection["ClientSecret"] ?? string.Empty;
-    options.Scope.Add("id");
-    options.Scope.Add("name");
-    options.Scope.Add("email");
-    options.Scope.Add("gender");
-    options.Scope.Add("hometown");
-    options.Scope.Add("link");
-    options.Scope.Add("photos");
-    options.Fields.Add("id");
-    options.Fields.Add("name");
-    options.Fields.Add("email");
-    options.Fields.Add("gender");
-    options.Fields.Add("hometown");
-    options.Fields.Add("link");
-    options.Fields.Add("photos");
-    options.Events.OnCreatingTicket = context =>
-    {
-        context.Identity.AddClaim(new Claim("access_token", context.AccessToken));
-        if (context.RefreshToken != null)
-        {
-            context.Identity.AddClaim(new Claim("refresh_token", context.RefreshToken));
-        }
-        return Task.CompletedTask;
-    };
+    options.Authority = "https://takerman.eu.auth0.com/";
+    options.Audience = "https://sreshti.net/api";
 });
-
 var app = builder.Build();
 
 using var scope = app.Services.CreateAsyncScope();

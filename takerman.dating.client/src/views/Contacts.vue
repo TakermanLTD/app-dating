@@ -48,7 +48,6 @@
 </template>
 
 <script lang="js">
-import { fetchWrapper } from '@/helpers';
 import Heading from '../components/Heading.vue';
 import breadcrumbs from '../components/Breadcrumbs.vue';
 
@@ -78,7 +77,7 @@ export default {
             try {
                 event.preventDefault();
                 this.loading = true;
-                let response = await fetchWrapper.post('Notification/SendContactUsMessage', this.fields);
+                let response = await fetch('Notification/SendContactUsMessage', this.fields);
                 if (!response) {
                     this.loading = false;
                     this.error = '';

@@ -70,17 +70,19 @@
 </template>
 
 <script lang="js">
-import { fetchWrapper } from '@/helpers';
-import { useAuthStore } from '@/stores';
 import card from '../components/Card.vue';
 import loader from '../components/Loader.vue';
 import cookies from '../helpers/cookies';
-import { capitalize } from 'vue';
+import { useAuth0 } from '@auth0/auth0-vue';
 
 export default {
-    data() {
+    setup(props) {
+        debugger;
+        const { user } = useAuth0();
+
         return {
-            userId: null,
+            user: user,
+            userId: user?.id,
             loading: false,
             dateTypes: [],
             filter: {
@@ -97,20 +99,19 @@ export default {
         card,
         loader
     },
-    async beforeMount() {
-        const authStore = useAuthStore();
-        this.userId = authStore.user?.id;
+    async mounted() {
         await this.applyFilter();
         this.currency = cookies.get('currency');
-        this.dateTypes = await fetchWrapper.get('Options/GetDateTypes');
+        this.dateTypes = await fetch('Options/GetDateTypes');
     },
     methods: {
         async applyFilter() {
             try {
                 this.loading = true;
-                const authStore = useAuthStore();
-                // todo: load the dates on mount and on apply filter just filter the js object
-                this.dates = await fetchWrapper.post('Dates/GetAllAsCards' + (authStore.user == null ? '' : '?userId=' + authStore.user.id), this.filter);
+                const { user, isAuthenticated } = useAuth0();
+                if (isAuthenticated.value) {
+                    this.dates = await (await fetch('Dates/GetAllAsCards' + (user == null ? '' : '?userId=' + user.id), this.filter)).json();
+                }
                 this.loading = false;
             } catch (error) {
                 this.loading = false;

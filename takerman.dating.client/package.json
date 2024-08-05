@@ -9,6 +9,7 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore"
   },
   "dependencies": {
+    "@auth0/auth0-vue": "^2.3.3",
     "@microsoft/signalr": "^8.0.7",
     "@paypal/paypal-js": "^8.1.0",
     "@popperjs/core": "^2.11.8",

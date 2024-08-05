@@ -131,7 +131,6 @@
 </template>
 
 <script lang="js">
-import { fetchWrapper } from '@/helpers';
 import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css'
 import moment from 'moment';
@@ -173,9 +172,9 @@ export default {
         };
     },
     async mounted() {
-        this.ethnicities = await fetchWrapper.get('Options/GetEthnicities');
-        this.dateTypes = await fetchWrapper.get('Options/GetDateTypes');
-        this.dates = await fetchWrapper.get('Dates/GetAll');
+        this.ethnicities = await fetch('Options/GetEthnicities');
+        this.dateTypes = await fetch('Options/GetDateTypes');
+        this.dates = await fetch('Dates/GetAll');
         for (let i = 0; i < this.dates.length; i++) {
             let currDate = this.dates[i];
             if (currDate.status == 2) {
@@ -190,55 +189,55 @@ export default {
                 currDate.statusClass = 'status-not-approved';
             }
         }
-        this.users = await fetchWrapper.get('User/GetAll');
-        this.statuses = await fetchWrapper.get('Options/GetDateStatuses');
+        this.users = await fetch('User/GetAll');
+        this.statuses = await fetch('Options/GetDateStatuses');
     },
     methods: {
         async deleteSpots() {
             if (confirm('are you sure?')) {
-                await fetchWrapper.delete('Admin/DeleteAllSpots');
-                this.dates = await fetchWrapper.get('Dates/GetAll');
+                await fetch('Admin/DeleteAllSpots');
+                this.dates = await fetch('Dates/GetAll');
             }
         },
         async deleteOrders() {
             if (confirm('are you sure?')) {
-                await fetchWrapper.delete('Admin/DeleteAllOrders');
-                this.dates = await fetchWrapper.get('Dates/GetAll');
+                await fetch('Admin/DeleteAllOrders');
+                this.dates = await fetch('Dates/GetAll');
             }
         },
         async resetDates() {
             if (confirm('are you sure?')) {
-                await fetchWrapper.delete('Admin/ResetAllDates');
-                this.dates = await fetchWrapper.get('Dates/GetAll');
+                await fetch('Admin/ResetAllDates');
+                this.dates = await fetch('Dates/GetAll');
             }
         },
         async addDate() {
             this.newDate.orders = [];
             this.newDate.attendees = [];
             this.newDate.dateType = 1;
-            let result = await fetchWrapper.post('Admin/AddDate', this.newDate);
+            let result = await fetch('Admin/AddDate', this.newDate);
             this.dates.push(result);
         },
         async saveDate(date) {
             date.orders = [];
             date.attendees = [];
-            await fetchWrapper.put('Admin/SaveDate', date);
+            await fetch('Admin/SaveDate', date);
         },
         async saveDates() {
             for (let i = 0; i < this.dates.length; i++) {
                 this.dates[i].orders = [];
                 this.dates[i].attendees = [];
             }
-            await fetchWrapper.put('Admin/SaveAllDates', this.dates);
+            await fetch('Admin/SaveAllDates', this.dates);
         },
         async deleteDate(date) {
-            await fetchWrapper.delete('Admin/DeleteDate?id=' + date.id);
+            await fetch('Admin/DeleteDate?id=' + date.id);
             let index = this.dates.indexOf(date);
             this.dates.splice(index, 1);
         },
         async deleteDates() {
             if (confirm('are you sure?')) {
-                await fetchWrapper.delete('Admin/DeleteAllDates');
+                await fetch('Admin/DeleteAllDates');
                 this.dates = [];
             }
         },
@@ -246,14 +245,14 @@ export default {
             this.newUser.orders = [];
             this.newUser.choices = [];
             this.newUser.pictures = [];
-            var result = await fetchWrapper.post('Admin/AddUser', this.newUser);
+            var result = await fetch('Admin/AddUser', this.newUser);
             this.users.push(result);
         },
         async saveUser(user) {
             user.orders = [];
             user.choices = [];
             user.pictures = [];
-            await fetchWrapper.put('Admin/SaveUser', user);
+            await fetch('Admin/SaveUser', user);
         },
         async saveUsers() {
             for (let i = 0; i < this.users.length; i++) {
@@ -261,22 +260,22 @@ export default {
                 this.users[i].choices = [];
                 this.users[i].pictures = [];
             }
-            await fetchWrapper.put('Admin/SaveAllUsers', this.users);
+            await fetch('Admin/SaveAllUsers', this.users);
         },
         async deleteUser(user) {
-            await fetchWrapper.delete('User/Delete?userId=' + user.id);
+            await fetch('User/Delete?userId=' + user.id);
             let index = this.users.indexOf(user);
             this.users.splice(index, 1);
         },
         async deleteUsers() {
             if (confirm('are you sure?')) {
-                await fetchWrapper.delete('Admin/DeleteAllUsers');
+                await fetch('Admin/DeleteAllUsers');
                 this.users = [];
             }
         },
         async resetUsers() {
             if (confirm('are you sure?')) {
-                await fetchWrapper.put('Admin/ResetAllUsers');
+                await fetch('Admin/ResetAllUsers');
                 this.users = [];
             }
         }

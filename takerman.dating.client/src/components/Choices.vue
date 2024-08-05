@@ -55,10 +55,9 @@
 </template>
 
 <script lang="js">
-import { fetchWrapper } from '@/helpers';
-import { useAuthStore } from '@/stores';
 import Avatar from './Avatar.vue';
 import Heading from './Heading.vue';
+import { useAuth0 } from '@auth0/auth0-vue';
 
 export default {
     props: {
@@ -80,10 +79,10 @@ export default {
         Avatar, Heading
     },
     async mounted() {
-        const authStore = useAuthStore();
-        this.date = await fetchWrapper.get('Dates/Get?id=' + this.dateId);
-        if (authStore.user) {
-            this.choices = await fetchWrapper.get('Dates/GetChoices?userId=' + authStore.user.id + '&dateId=' + this.dateId);
+        const { user } = useAuth0();
+        this.date = await fetch('Dates/Get?id=' + this.dateId);
+        if (user) {
+            this.choices = await fetch('Dates/GetChoices?userId=' + user?.id + '&dateId=' + this.dateId);
             for (let i = 0; i < this.choices.length; i++) {
                 const choice = this.choices[i];
                 choice.avatarUrl = await this.getAvatarUrl(choice.voteForId);
@@ -92,8 +91,8 @@ export default {
     },
     methods: {
         async saveChoices() {
-            const authStore = useAuthStore();
-            await fetchWrapper.post('Dates/SaveChoices?userId=' + authStore.user.id + '&dateId=' + this.dateId, this.choices);
+            const { user } = useAuth0();
+            await fetch('Dates/SaveChoices?userId=' + user?.id + '&dateId=' + this.dateId, this.choices);
             this.showStatus = true;
         },
         checkRadio(radio, radios) {

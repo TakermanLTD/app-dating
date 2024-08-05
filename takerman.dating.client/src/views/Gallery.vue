@@ -16,8 +16,6 @@
     </div>
 </template>
 <script>
-import { fetchWrapper } from '@/helpers';
-import { useAuthStore } from '@/stores';
 import Avatar from '../components/Avatar.vue';
 export default {
     data() {
@@ -29,8 +27,8 @@ export default {
         };
     },
     async mounted() {
-        const authStore = useAuthStore();
-        this.userId = authStore.user.id;
+        const { user } = useAuth0();
+        this.userId = user?.id;
         this.pictures = await this.getPictures();
         let result = await fetch('Cdn/GetAvatar?userId=' + this.userId);
         this.avatar = await result.text();
@@ -41,7 +39,7 @@ export default {
     methods: {
         async getPictures() {
             this.loading = true;
-            let result = await fetchWrapper.get('Cdn/GetUserPictures?userId=' + this.userId);
+            let result = await fetch('Cdn/GetUserPictures?userId=' + this.userId);
             this.loading = false;
             return result;
         },
@@ -76,7 +74,7 @@ export default {
             this.avatar = await result.text();
         },
         async remove(id) {
-            await fetchWrapper.delete('Cdn/DeletePicture?id=' + id)
+            await fetch('Cdn/DeletePicture?id=' + id)
                 .then(async (response) => {
                     for (let i = 0; i < this.pictures.length; i++) {
                         const picture = this.pictures[i];

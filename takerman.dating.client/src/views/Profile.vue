@@ -135,9 +135,8 @@
 </template>
 
 <script lang="js">
-import { fetchWrapper } from '@/helpers';
-import { useAuthStore } from '@/stores';
 import Heading from '../components/Heading.vue';
+import { useAuth0 } from '@auth0/auth0-vue';
 
 export default {
     data() {
@@ -164,10 +163,10 @@ export default {
             passwordPattern: ".{8,}"
         };
     },
-    async beforeCreate() {
-        this.ethnicities = await fetchWrapper.get('Options/GetEthnicities');
-        const authStore = useAuthStore();
-        const data = await fetchWrapper.get('User/Get?id=' + authStore.user.id);
+    async mounted() {
+        this.ethnicities = await fetch('Options/GetEthnicities');
+        const { user } = useAuth0();
+        const data = await fetch('User/Get?id=' + user.id);
         this.fields.id = data.id;
         this.fields.firstName = data.firstName;
         this.fields.lastName = data.lastName;
@@ -199,7 +198,7 @@ export default {
                         return;
                     }
                 }
-                const response = await fetchWrapper.put("User/Save", this.fields);
+                const response = await fetch("User/Save", this.fields);
                 this.loading = false;
                 if (response == "" || response.status == 200) {
                     this.status = 'Редактиран успешно';
@@ -221,10 +220,10 @@ export default {
             event.preventDefault();
             if (confirm('Сигурни ли сте, че искате да изтриете акаунта си?')) {
                 this.loading = true;
-                const authStore = useAuthStore();
-                await fetchWrapper.delete("User/Delete?userId=" + authStore.user.id);
+                const { user, logout } = useAuth0();
+                await fetch("User/Delete?userId=" + user.id);
                 this.loading = false;
-                authStore.logout();
+                logout();
             }
         }
     },

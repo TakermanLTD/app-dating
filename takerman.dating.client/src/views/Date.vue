@@ -45,7 +45,7 @@
             </tr>
             <tr>
               <td colspan="2" style="font-size: x-large;">
-                <strong><i class="bi bi-calendar-event"></i> {{ $t('dates.card.startsOn') }}</strong><br/>{{ this.date.startsOn ? moment(this.date.startsOn).format("DD MMM, HH:mm") : 'След запазване на достатъчно места' }}
+                <strong><i class="bi bi-calendar-event"></i> {{ $t('dates.card.startsOn') }}</strong><br />{{ this.date.startsOn ? moment(this.date.startsOn).format("DD MMM, HH:mm") : 'След запазване на достатъчно места' }}
               </td>
             </tr>
           </table>
@@ -132,15 +132,13 @@
 
 <script lang="js">
 import moment from 'moment';
-import { useAuthStore } from '@/stores';
 import PayButton from '../components/PayButton.vue';
-import { router } from '@/helpers';
 import { useRoute } from 'vue-router';
-import { fetchWrapper } from '@/helpers';
 import breadcrumbs from '../components/Breadcrumbs.vue';
 import loader from '../components/Loader.vue';
 import heading from '../components/Heading.vue';
 import Choices from '../components/Choices.vue';
+import { useAuth0 } from '@auth0/auth0-vue';
 
 export default {
   data() {
@@ -181,14 +179,14 @@ export default {
     let queryString = window.location.search;
     let urlParams = new URLSearchParams(queryString);
 
-    const authStore = useAuthStore();
-    if (authStore.user)
-      this.userId = authStore.user.id;
+    const { user } = useAuth0();
+    if (user)
+      this.userId = user?.id;
     if (urlParams.has('id')) {
       this.id = urlParams.get('id');
-      this.date = await fetchWrapper.get('Dates/GetDate?id=' + this.id);
-      this.isBought = await (await fetch('Dates/IsBought?dateId=' + this.id + (this.userId ? '&userId=' + this.userId : ''))).json();
-      this.isSpotSaved = await (await fetch('Dates/IsSpotSaved?dateId=' + this.id + (this.userId ? '&userId=' + this.userId : ''))).json();
+      this.date = await fetch('Dates/GetDate?id=' + this.id);
+      this.isBought = await (await fetch('Dates/IsBought?dateId=' + this.id + (user?.id ? '&userId=' + user?.id : ''))).json();
+      this.isSpotSaved = await (await fetch('Dates/IsSpotSaved?dateId=' + this.id + (user?.id ? '&userId=' + user?.id : ''))).json();
 
       let startsOn = new Date(this.date?.startsOn);
       let countdownToStart = setInterval(async () => {
@@ -246,9 +244,9 @@ export default {
         paymentSource: e.paymentSource
       }
 
-      let order = await fetchWrapper.post('Order/Create', data);
+      let order = await fetch('Order/Create', data);
 
-      this.date = await fetchWrapper.get('Dates/GetDate?id=' + order.dateId);
+      this.date = await fetch('Dates/GetDate?id=' + order.dateId);
 
       const payButton = document.getElementsByClassName('pay-button');
       for (let i = 0; i < payButton.length; i++) {
@@ -260,11 +258,11 @@ export default {
       this.paymentStatus = 'fail';
     },
     async saveSpot(date) {
-      const authStore = useAuthStore();
-      if (!authStore.user) {
+      const { user } = useAuth0();
+      if (!user) {
         router.push('/login?returnUrl=/date?id=' + this.date?.id);
       } else {
-        await fetchWrapper.get('Dates/SaveSpot' + (authStore.user == null ? '' : '?userId=' + authStore.user.id + '&dateId=' + this.date.id))
+        await fetch('Dates/SaveSpot' + (user == null ? '' : '?userId=' + user.id + '&dateId=' + this.date.id))
           .then((result) => {
             this.date.status = result.status;
             this.date.menCount = result.menCount;
@@ -275,11 +273,11 @@ export default {
       }
     },
     async unsaveSpot(date) {
-      const authStore = useAuthStore();
-      if (!authStore.user) {
+      const { user } = useAuth0();
+      if (!user) {
         router.push('/login?returnUrl=/date?id=' + this.date?.id);
       } else {
-        await fetchWrapper.get('Dates/UnsaveSpot' + (authStore.user == null ? '' : '?userId=' + authStore.user.id + '&dateId=' + this.date.id))
+        await fetch('Dates/UnsaveSpot' + (user == null ? '' : '?userId=' + user.id + '&dateId=' + this.date.id))
           .then((result) => {
             this.date.status = result.status;
             this.date.menCount = result.menCount;

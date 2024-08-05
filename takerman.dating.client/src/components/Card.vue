@@ -28,7 +28,7 @@
                 </tbody>
             </table>
             <div class="text-center">
-                <h3 class="font-weight-semi-bold">{{ $t('common.currencySign') == '$' ? $t('common.currencySign') +  this.date.price : this.date.price + $t('common.currencySign') }}</h3>
+                <h3 class="font-weight-semi-bold">{{ $t('common.currencySign') == '$' ? $t('common.currencySign') + this.date.price : this.date.price + $t('common.currencySign') }}</h3>
                 <p v-if="this.date.status === 'NotApproved'">
                     <a v-if="this.isSpotSaved" @click="this.unsaveSpot(this.date)" class="btn btn-danger">Няма да присъствам</a>
                     <a v-else @click="this.saveSpot(this.date)" class="btn btn-primary">Запази място</a>
@@ -41,7 +41,7 @@
                         <a v-if="moment(this.date.startsOn).add(-15, 'minutes') < moment()" :href="this.date.videoLink" class="btn btn-success btn-lg" target="_blank">Влез в срещата</a>
                     </div>
                     <div v-else>
-                        <router-link class="btn btn-success" :to="this.user ? '/date?id=' + this.date.id : '/login'">Купи срещата</router-link>
+                        <router-link class="btn btn-success" :to="user ? '/date?id=' + this.date.id : '/login'">Купи срещата</router-link>
                     </div>
                 </div>
                 <div v-if="this.date.status === 'Started'">
@@ -60,10 +60,8 @@
 <script lang="js">
 import moment from 'moment';
 import { useRoute } from 'vue-router';
-import { fetchWrapper } from '@/helpers';
-import { useAuthStore } from '@/stores';
 import PayButton from './PayButton.vue';
-import { router } from '@/helpers';
+import { useAuth0 } from '@auth0/auth0-vue';
 
 export default {
     props: {
@@ -74,7 +72,6 @@ export default {
             date: null,
             moment: moment,
             paymentStatus: '',
-            user: null,
             isBought: false,
             isSpotSaved: false,
         }
@@ -92,12 +89,10 @@ export default {
         PayButton
     },
     async mounted() {
-        const authStore = useAuthStore();
-        if (authStore.user)
-            this.user = authStore.user;
-        this.date = await fetchWrapper.get('Dates/GetDate?id=' + this.id);
-        this.isBought = this.user && await (await fetch('Dates/IsBought?dateId=' + this.id + (this.user.id ? '&userId=' + this.user.id : ''))).json();
-        this.isSpotSaved = this.user && await (await fetch('Dates/IsSpotSaved?dateId=' + this.id + (this.user.id ? '&userId=' + this.user.id : ''))).json();
+        const { user } = useAuth0();
+        this.date = await (await fetch('Dates/GetDate?id=' + this.id)).json();
+        this.isBought = user && await (await fetch('Dates/IsBought?dateId=' + this.id + (user?.id ? '&userId=' + user?.id : ''))).json();
+        this.isSpotSaved = user && await (await fetch('Dates/IsSpotSaved?dateId=' + this.id + (user?.id ? '&userId=' + user?.id : ''))).json();
     },
     methods: {
         async onApprove(e, o) {
@@ -105,14 +100,14 @@ export default {
 
             const data = {
                 dateId: this.date.id,
-                userId: this.user.id,
+                userId: user?.id,
                 paymentId: e.paymentID,
                 payerId: e.payerID,
                 orderId: e.orderID,
                 paymentSource: e.paymentSource
             }
 
-            await fetchWrapper.post('Order/Create', data);
+            await fetch('Order/Create', data);
 
             const payButton = document.getElementsByClassName('pay-button');
             for (let i = 0; i < payButton.length; i++) {
@@ -124,10 +119,10 @@ export default {
             this.paymentStatus = 'fail';
         },
         async saveSpot(date) {
-            if (!this.user) {
+            if (!user) {
                 router.push('/login?returnUrl=/date?id=' + this.date.id);
             } else {
-                await fetchWrapper.get('Dates/SaveSpot' + (this.user == null ? '' : '?userId=' + this.user.id + '&dateId=' + this.date.id))
+                await fetch('Dates/SaveSpot' + (user == null ? '' : '?userId=' + user?.id + '&dateId=' + this.date.id))
                     .then((result) => {
                         this.date.status = result.status;
                         this.date.menCount = result.menCount;
@@ -138,10 +133,10 @@ export default {
             }
         },
         async unsaveSpot(date) {
-            if (!this.user) {
+            if (!user) {
                 router.push('/login?returnUrl=/date?id=' + this.date.id);
             } else {
-                await fetchWrapper.get('Dates/UnsaveSpot' + (this.user == null ? '' : '?userId=' + this.user.id + '&dateId=' + this.date.id))
+                await fetch('Dates/UnsaveSpot' + (user == null ? '' : '?userId=' + user?.id + '&dateId=' + this.date.id))
                     .then((result) => {
                         this.date.status = result.status;
                         this.date.menCount = result.menCount;
