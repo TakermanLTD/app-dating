@@ -17,7 +17,6 @@ RUN curl -fsSL https://deb.nodesource.com/nsolid_setup_deb.sh | sh -s 20
 RUN apt-get install -y nodejs
 ARG BUILD_CONFIGURATION=Release
 ARG NUGET_PASSWORD
-RUN --mount=type=secret,id=NUGET_PASSWORD export NUGET_PASSWORD=$(cat /run/secrets/NUGET_PASSWORD) && echo $NUGET_PASSWORD
 
 WORKDIR /src
 
@@ -29,7 +28,8 @@ COPY Takerman.Dating.Tests/. ./Takerman.Dating.Tests/
 COPY ["takerman.dating.client/nuget.config", "./"]
 COPY ["takerman.dating.client/nuget.config", "takerman.dating.client/"]
 
-RUN dotnet nuget add source https://nuget.pkg.github.com/takermanltd/index.json -n github -u takerman --store-password-in-clear-text -p ${NUGET_PASSWORD} 
+RUN sed -i "s|</configuration>|<packageSourceCredentials><github><add key=\"Username\" value=\"takerman\"/><add key=\"ClearTextPassword\" value=\"${NUGET_PASSWORD}\"/></github></packageSourceCredentials></configuration>|" nuget.config
+RUN dotnet nuget add source https://nuget.pkg.github.com/takermanltd/index.json --name github
 RUN dotnet nuget list source
 
 COPY ["Takerman.Dating.Server/Takerman.Dating.Server.csproj", "Takerman.Dating.Server/"]
