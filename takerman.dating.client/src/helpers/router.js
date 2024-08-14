@@ -16,8 +16,7 @@ import Gallery from "../views/Gallery.vue";
 import Admin from "../views/Admin.vue";
 import PrivacyPolicy from "../views/PrivacyPolicy.vue";
 import TermsAndConditions from "../views/TermsAndConditions.vue";
-import '@/helpers/auth-guard.js';
-import { authGuard } from './auth-guard.js';
+import { useAuthStore } from '@/stores';
 
 export const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -26,24 +25,38 @@ export const router = createRouter({
         { path: '/', component: Home },
         { path: '/home', component: Home },
         { path: '/contacts', component: Contacts },
-        { path: '/profile', component: Profile, beforeEnter: authGuard },
-        { path: '/user-profile', component: UserProfile, beforeEnter: authGuard },
-        { path: '/user-gallery', component: Gallery, beforeEnter: authGuard },
+        { path: '/profile', component: Profile },
+        { path: '/user-profile', component: UserProfile },
+        { path: '/user-gallery', component: Gallery },
         { path: '/date', component: Date },
         { path: '/dates', component: Dates },
-        { path: '/orders', component: Orders, beforeEnter: authGuard },
-        { path: '/matches', component: Matches, beforeEnter: authGuard },
+        { path: '/orders', component: Orders },
+        { path: '/matches', component: Matches },
         { path: '/register', component: Registration },
         { path: '/login', component: Login },
         { path: '/reset-password-request', component: ResetPasswordRequest },
         { path: '/reset-password', component: ResetPassword },
         { path: '/activate', component: Activate },
-        { path: '/admin', component: Admin, beforeEnter: authGuard },
+        { path: '/admin', component: Admin },
         { path: '/logout', component: Home },
         { path: '/privacy-policy', component: PrivacyPolicy },
         { path: '/terms-and-conditions', component: TermsAndConditions },
         { path: '/:pathMatch(.*)*', redirect: '/' }
     ]
+});
+
+router.beforeEach((to) => {
+    const authStore = useAuthStore();
+        if (!authStore.user && (to.path == '/profile'
+            || to.path == '/user-profile'
+            || to.path == '/user-gallery'
+            || to.path == '/orders'
+            || to.path == '/matches'
+            || to.path == '/admin'
+            || to.path == '/logout'
+        )) {
+            return { path: '/login' }
+        }
 });
 
 export default router;
