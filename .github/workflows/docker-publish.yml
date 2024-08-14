@@ -59,4 +59,4 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           secrets: |
-            NUGET_PASSWORD=${{ secrets.REGISTRY_TOKEN }}
+            NUGET_PASSWORD=${{ secrets.GITHUB_TOKEN }}
