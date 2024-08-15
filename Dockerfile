@@ -1,28 +1,30 @@
-
-
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 ENV ASPNETCORE_ENVIRONMENT=Production
 WORKDIR /app
 EXPOSE 80
 EXPOSE 443
 RUN apt-get update
-RUN apt-get install -y curl gnupg libpng-dev libjpeg-dev curl libxi6 build-essential libgl1-mesa-glx
+RUN apt-get install -y curl gnupg
+RUN apt-get install -y libpng-dev libjpeg-dev curl libxi6 build-essential libgl1-mesa-glx
 RUN curl -fsSL https://deb.nodesource.com/nsolid_setup_deb.sh | sh -s 20
 RUN apt-get install -y nodejs
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 RUN apt-get update
-RUN apt-get install -y curl libpng-dev libjpeg-dev curl libxi6 build-essential libgl1-mesa-glx
+RUN apt-get install -y curl
+RUN apt-get install -y libpng-dev libjpeg-dev curl libxi6 build-essential libgl1-mesa-glx
 RUN curl -fsSL https://deb.nodesource.com/nsolid_setup_deb.sh | sh -s 20
 RUN apt-get install -y nodejs
 ARG BUILD_CONFIGURATION=Release
 ARG NUGET_PASSWORD
 
 WORKDIR /src
+
 COPY Takerman.Dating.Data/. ./Takerman.Dating.Data/
 COPY Takerman.Dating.Services/. ./Takerman.Dating.Services/
 COPY Takerman.Dating.Models/. ./Takerman.Dating.Models/
 COPY Takerman.Dating.Tests/. ./Takerman.Dating.Tests/
+
 COPY ["takerman.dating.client/nuget.config", "./"]
 COPY ["takerman.dating.client/nuget.config", "takerman.dating.client/"]
 
@@ -41,24 +43,18 @@ RUN echo "user.email=tivanov@takerman.net" > .npmrc
 RUN echo "user.name=takerman" > .npmrc
 RUN echo "user.username=takerman" > .npmrc
 RUN npm install --production
-
-WORKDIR "/src/Takerman.Dating.Tests"
-RUN dotnet test "./Takerman.Dating.Tests.csproj"
-
-WORKDIR "/src/takerman.dating.client"
-FROM cypress/base AS test
-COPY . /opt/app
-WORKDIR /opt/app
-RUN npx cypress install
-RUN cypress run --headless
+# RUN npm ci
 
 WORKDIR "/src/Takerman.Dating.Server"
 RUN dotnet clean "./Takerman.Dating.Server.csproj"
 RUN dotnet restore "./Takerman.Dating.Server.csproj"
 RUN dotnet build "./Takerman.Dating.Server.csproj" -c $BUILD_CONFIGURATION -o /app/build
+RUN dotnet test "./Takerman.Dating.Server.csproj"
 RUN rm -f .npmrc
 
-WORKDIR "/src/Takerman.Dating.Server"
+WORKDIR "/src/Takerman.Dating.Tests"
+RUN dotnet test "./Takerman.Dating.Tests.csproj"
+
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
 RUN dotnet publish "./Takerman.Dating.Server.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
