@@ -69,8 +69,11 @@ jobs:
       #     GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
       - name: Publish
-        uses: docker/build-push-action@v6
-        with:
-          context: .
-          push: true
-          tags: takermanltd/app-dating:latest
+        run: dotnet publish --os linux --arch x64 -c Release /p:PublishProfile=github
+
+      # - name: Publish
+      #   uses: docker/build-push-action@v6
+      #   with:
+      #     context: .
+      #     push: true
+      #     tags: takermanltd/app-dating:latest
