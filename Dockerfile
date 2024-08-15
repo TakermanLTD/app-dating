@@ -1,3 +1,9 @@
+
+FROM cypress/base as test
+COPY . /opt/app
+WORKDIR /opt/app
+RUN npx cypress install
+
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 ENV ASPNETCORE_ENVIRONMENT=Production
 WORKDIR /app
@@ -16,18 +22,11 @@ RUN apt-get install -y nodejs
 ARG BUILD_CONFIGURATION=Release
 ARG NUGET_PASSWORD
 
-FROM cypress/base as test
-COPY . /opt/app
-WORKDIR /opt/app
-RUN npx cypress install
-
 WORKDIR /src
-
 COPY Takerman.Dating.Data/. ./Takerman.Dating.Data/
 COPY Takerman.Dating.Services/. ./Takerman.Dating.Services/
 COPY Takerman.Dating.Models/. ./Takerman.Dating.Models/
 COPY Takerman.Dating.Tests/. ./Takerman.Dating.Tests/
-
 COPY ["takerman.dating.client/nuget.config", "./"]
 COPY ["takerman.dating.client/nuget.config", "takerman.dating.client/"]
 
@@ -47,15 +46,17 @@ RUN echo "user.name=takerman" > .npmrc
 RUN echo "user.username=takerman" > .npmrc
 RUN npm install --production
 
+WORKDIR "/src/Takerman.Dating.Tests"
+RUN dotnet test "./Takerman.Dating.Tests.csproj"
+
+FROM test
+RUN cypress run
+
 WORKDIR "/src/Takerman.Dating.Server"
 RUN dotnet clean "./Takerman.Dating.Server.csproj"
 RUN dotnet restore "./Takerman.Dating.Server.csproj"
 RUN dotnet build "./Takerman.Dating.Server.csproj" -c $BUILD_CONFIGURATION -o /app/build
-RUN dotnet test "./Takerman.Dating.Tests.csproj"
 RUN rm -f .npmrc
-
-FROM test
-RUN cypress run
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
