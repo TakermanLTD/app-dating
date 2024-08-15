@@ -1,4 +1,4 @@
-@Takerman.Dating.Server_HostAddress = http://localhost:7203
+@Takerman.Dating.Server_HostAddress = http://127.0.0.1:7203
 
 GET {{Takerman.Dating.Server_HostAddress}}/api/
 Accept: application/json
