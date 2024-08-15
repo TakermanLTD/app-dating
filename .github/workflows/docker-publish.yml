@@ -53,10 +53,12 @@ jobs:
       - name: Cypress run
         uses: cypress-io/github-action@v6
         with:
+          working-directory: ./takerman.dating.client
           build: npm run build
           start: npm start
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        
 
       - name: Build and push Docker image
         id: build-and-push
