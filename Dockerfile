@@ -1,8 +1,4 @@
 
-FROM cypress/base as test
-COPY . /opt/app
-WORKDIR /opt/app
-RUN npx cypress install
 
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 ENV ASPNETCORE_ENVIRONMENT=Production
@@ -49,8 +45,12 @@ RUN npm install --production
 WORKDIR "/src/Takerman.Dating.Tests"
 RUN dotnet test "./Takerman.Dating.Tests.csproj"
 
-FROM test
-RUN cypress run
+WORKDIR "/src/takerman.dating.client"
+FROM cypress/base AS test
+COPY . /opt/app
+WORKDIR /opt/app
+RUN npx cypress install
+RUN cypress run --headless
 
 WORKDIR "/src/Takerman.Dating.Server"
 RUN dotnet clean "./Takerman.Dating.Server.csproj"
@@ -58,6 +58,7 @@ RUN dotnet restore "./Takerman.Dating.Server.csproj"
 RUN dotnet build "./Takerman.Dating.Server.csproj" -c $BUILD_CONFIGURATION -o /app/build
 RUN rm -f .npmrc
 
+WORKDIR "/src/Takerman.Dating.Server"
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
 RUN dotnet publish "./Takerman.Dating.Server.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
