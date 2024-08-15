@@ -52,7 +52,7 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
           build-args: NUGET_PASSWORD=${{ secrets.REGISTRY_TOKEN }}
 
-      - name: Cypress run
+      - name: E2E tests
         uses: cypress-io/github-action@v6
         with:
           working-directory: ./takerman.dating.client

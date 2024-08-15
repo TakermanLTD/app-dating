@@ -123,19 +123,19 @@ context('Cypress APIs', () => {
     // set multiple environment variables
       Cypress.env({
         host: 'veronica.dev.local',
-        api_server: 'http://localhost:8888/v1/',
+        api_server: 'http://127.0.0.1:8888/v1/',
       })
 
       // get environment variable
       expect(Cypress.env('host')).to.eq('veronica.dev.local')
 
       // set environment variable
-      Cypress.env('api_server', 'http://localhost:8888/v2/')
-      expect(Cypress.env('api_server')).to.eq('http://localhost:8888/v2/')
+      Cypress.env('api_server', 'http://127.0.0.1:8888/v2/')
+      expect(Cypress.env('api_server')).to.eq('http://127.0.0.1:8888/v2/')
 
       // get all environment variable
       expect(Cypress.env()).to.have.property('host', 'veronica.dev.local')
-      expect(Cypress.env()).to.have.property('api_server', 'http://localhost:8888/v2/')
+      expect(Cypress.env()).to.have.property('api_server', 'http://127.0.0.1:8888/v2/')
     })
   })
 

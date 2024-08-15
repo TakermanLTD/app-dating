@@ -24,7 +24,7 @@ function request(method) {
 function authHeader(url) {
     const { user } = useAuthStore();
     const isLoggedIn = !!user?.token;
-    // const isApiUrl = url.startsWith('https://localhost:7203/');
+    // const isApiUrl = url.startsWith('https://127.0.0.1:7203/');
     // if (isLoggedIn && isApiUrl) {
     if (isLoggedIn) {
         return { Authorization: `Bearer ${user.token}` };
