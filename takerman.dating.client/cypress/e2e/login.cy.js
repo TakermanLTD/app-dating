@@ -8,5 +8,5 @@ describe('login', () => {
     cy.get('input[id=password]').type('Hakerman91!');
     cy.get('button[id=btnSubmit]').click();
     cy.url().should('include', '/');
-  })
-})
+  });
+});

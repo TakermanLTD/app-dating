@@ -43,13 +43,14 @@ RUN echo "user.email=tivanov@takerman.net" > .npmrc
 RUN echo "user.name=takerman" > .npmrc
 RUN echo "user.username=takerman" > .npmrc
 RUN npm install --production
+RUN cypress run
 # RUN npm ci
 
 WORKDIR "/src/Takerman.Dating.Server"
 RUN dotnet clean "./Takerman.Dating.Server.csproj"
 RUN dotnet restore "./Takerman.Dating.Server.csproj"
 RUN dotnet build "./Takerman.Dating.Server.csproj" -c $BUILD_CONFIGURATION -o /app/build
-RUN dotnet test "./Takerman.Dating.Server.csproj"
+RUN dotnet test "./Takerman.Dating.Tests.csproj"
 RUN rm -f .npmrc
 
 FROM build AS publish
