@@ -22,7 +22,7 @@ namespace Takerman.Dating.Tests
 
         protected override IEnumerable<TestAppSettings> GetTestAppSettings()
         {
-            yield return new() { Filename = "appsettings.json", IsOptional = false };
+            yield return new() { Filename = "test-appsettings.json", IsOptional = false };
         }
     }
 }
