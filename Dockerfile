@@ -3,13 +3,13 @@ ENV ASPNETCORE_ENVIRONMENT=Production
 WORKDIR /app
 EXPOSE 80
 EXPOSE 443
-RUN apt update && apt install -y curl nodejs
+RUN apt update && apt install -y curl nodejs gnupg libpng-dev libjpeg-dev curl libxi6 build-essential libgl1-mesa-glx
 RUN curl -fsSL https://deb.nodesource.com/nsolid_setup_deb.sh | sh -s 20
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ENV ASPNETCORE_ENVIRONMENT=Production
 WORKDIR /src
-RUN apt update && apt install -y curl nodejs
+RUN apt update && apt install -y curl nodejs libpng-dev libjpeg-dev curl libxi6 build-essential libgl1-mesa-glx
 RUN curl -fsSL https://deb.nodesource.com/nsolid_setup_deb.sh | sh -s 20
 ARG BUILD_CONFIGURATION=Release
 ARG NUGET_PASSWORD
