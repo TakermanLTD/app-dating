@@ -1,7 +1,7 @@
 <template>
     <div class="container-fluid">
         <div class="row px-xl-5">
-            <div class="col-lg-3 col-md-4">
+            <div id="filter" class="col-lg-3 col-md-4">
                 <div class="text-left">
                     <label>Тип среща</label> <br />
                     <select id="frmDateType" placeholder="Тип среща" @change="applyFilter" v-model="filter.dateType"
@@ -28,7 +28,7 @@
                 </div>
             </div>
             <br />
-            <div class="col-lg-9 col-md-8">
+            <div id="datesList" class="col-lg-9 col-md-8">
                 <div class="row pb-3 card-deck">
                     <loader v-if="this.loading" />
                     <div v-else-if="!dates || dates.length == 0" class="text-center">

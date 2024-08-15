@@ -1,7 +1,7 @@
 /// <reference types="cypress" />
 
 describe('login', () => {
-  it('successfully login', () => {
+  it('forms authentication', () => {
     // cy.login('takerman', 'Hakerman91!');
     cy.visit('/login');
     cy.get('input[id=email]').type('tanyo@takerman.net');
@@ -9,4 +9,7 @@ describe('login', () => {
     cy.get('button[id=btnSubmit]').click();
     cy.url().should('include', '/');
   });
+
+  it("facebook authentication", () => {});
+  it("google authentication", () => {});
 });

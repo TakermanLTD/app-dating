@@ -16,7 +16,7 @@
             <div v-show="this.success !== ''" class="sent-message" style="display: block;">{{ this.success }}</div>
         </div>
         <h6 class="text-secondary text-uppercase mt-4 mb-3">{{ $t('footer.social.title') }}</h6>
-        <div class="d-flex">
+        <div id="socialBar" class="d-flex">
             <a class="btn btn-primary btn-square mr-2" target="_blank" :href="$t('footer.social.facebook')"><i class="fab fa-facebook-f"></i></a>
             <a class="btn btn-primary btn-square" target="_blank" :href="$t('footer.social.instagram')"><i class="fab fa-instagram"></i></a>
         </div>

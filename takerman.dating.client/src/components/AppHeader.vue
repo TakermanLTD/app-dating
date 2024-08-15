@@ -15,7 +15,7 @@
             </div>
         </div>
 
-        <div class="container-fluid bg-dark mb-30">
+        <div id="headerNavigation" class="container-fluid bg-dark mb-30">
             <div class="row px-xl-5">
                 <div class="col-lg-12">
                     <nav class="navbar navbar-expand-lg bg-dark navbar-dark py-3 py-lg-0 px-0">
@@ -44,7 +44,7 @@
                                 </div>
                             </div>
                             <div class="navbar-nav ml-auto py-0 d-none d-lg-block">
-                                <router-link to="/orders" class="btn px-0">
+                                <router-link id="watchlist" to="/orders" class="btn px-0">
                                     <i class="fas fa-heart text-primary"></i>
                                     <span class="badge text-secondary border border-secondary rounded-circle" style="padding-bottom: 2px;">{{ this.savedSpotslength }}</span>
                                 </router-link>

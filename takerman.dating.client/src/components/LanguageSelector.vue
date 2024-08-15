@@ -1,5 +1,5 @@
 <template>
-	<div class="btn-group mx-2">
+	<div id="languageSelector" class="btn-group mx-2">
 		<button
 			type="button"
 			class="btn btn-sm btn-light dropdown-toggle"
