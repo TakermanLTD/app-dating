@@ -3,7 +3,7 @@ using Takerman.Mail;
 using Xunit.Abstractions;
 using Xunit.Microsoft.DependencyInjection.Abstracts;
 
-namespace Takerman.Dating.Tests
+namespace Takerman.Dating.Tests.Integration
 {
     public class MailTests : TestBed<TestFixture>
     {
