@@ -47,7 +47,7 @@ RUN echo "user.username=takerman" > .npmrc
 RUN npm install --production
 
 WORKDIR "/src/Takerman.Dating.Tests"
-RUN dotnet test "./Unit/*"
+RUN dotnet test "./Takerman.Dating.Tests.csproj"
 
 FROM test
 RUN cypress run
