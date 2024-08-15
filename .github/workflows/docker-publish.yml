@@ -55,7 +55,6 @@ jobs:
         with:
           working-directory: ./takerman.dating.client
           build: npm run build
-          start: npm start
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
         
