@@ -54,6 +54,9 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.0.x'
+          source-url: https://nuget.pkg.github.com/takermanltd/index.json
+        env:
+          NUGET_AUTH_TOKEN: ${{ secrets.REGISTRY_TOKEN }}
       - name: Install dependencies
         run: dotnet restore
       - name: Build
