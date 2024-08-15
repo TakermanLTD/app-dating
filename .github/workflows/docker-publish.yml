@@ -58,6 +58,5 @@ jobs:
           working-directory: ./takerman.dating.client
           build: npm run build
           start: npm run dev
-          env: CYPRESS_BASE_URL=https://sreshti.net
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
