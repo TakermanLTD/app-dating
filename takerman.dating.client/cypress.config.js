@@ -2,7 +2,7 @@ const { defineConfig } = require("cypress");
 
 module.exports = defineConfig({
   e2e: {
-    baseUrl: 'https://127.0.0.1:5175', // 'https://sreshti.net'
+    baseUrl: 'https://localhost:5175', // 'https://sreshti.net'
     setupNodeEvents(on, config) {
     }
   },

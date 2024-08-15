@@ -50,35 +50,35 @@ export default defineConfig({
     server: {
         proxy: {
             '^/User': {
-                target: 'https://127.0.0.1:7203/',
+                target: 'https://localhost:7203/',
                 secure: false
             },
             '^/Options': {
-                target: 'https://127.0.0.1:7203/',
+                target: 'https://localhost:7203/',
                 secure: false
             },
             '^/Order': {
-                target: 'https://127.0.0.1:7203/',
+                target: 'https://localhost:7203/',
                 secure: false
             },
             '^/Dates': {
-                target: 'https://127.0.0.1:7203/',
+                target: 'https://localhost:7203/',
                 secure: false
             },
             '^/Notification': {
-                target: 'https://127.0.0.1:7203/',
+                target: 'https://localhost:7203/',
                 secure: false
             },
             '^/Admin': {
-                target: 'https://127.0.0.1:7203/',
+                target: 'https://localhost:7203/',
                 secure: false
             },
             '^/Cdn': {
-                target: 'https://127.0.0.1:7203/',
+                target: 'https://localhost:7203/',
                 secure: false
             },
             '^/chatHub': {
-                target: 'https://127.0.0.1:7203/',
+                target: 'https://localhost:7203/',
                 secure: false,
                 ws: true
             },

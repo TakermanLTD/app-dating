@@ -8,7 +8,7 @@
 		<RootNamespace>Takerman.Dating.Server</RootNamespace>
 		<SpaRoot>..\takerman.dating.client</SpaRoot>
 		<SpaProxyLaunchCommand>npm run dev</SpaProxyLaunchCommand>
-		<SpaProxyServerUrl>https://127.0.0.1:5175</SpaProxyServerUrl>
+		<SpaProxyServerUrl>https://localhost:5175</SpaProxyServerUrl>
 		<InvariantGlobalization>false</InvariantGlobalization>
 		<RepositoryUrl>https://github.com/TakermanLTD/dating</RepositoryUrl>
 	</PropertyGroup>
