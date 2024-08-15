@@ -1,4 +1,4 @@
-name: Build
+name: Default
 
 on:
   schedule:
@@ -11,8 +11,6 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}
-  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
   build:
@@ -23,13 +21,13 @@ jobs:
       id-token: write
 
     steps:
-      - name: Checkout repository
+      - name: Initialize repository
         uses: actions/checkout@v4
 
-      - name: Setup Docker buildx
+      - name: Initialize the build
         uses: docker/setup-buildx-action@v3
 
-      - name: Log into registry ${{ env.REGISTRY }}
+      - name: Login to GitHub registry
         if: github.event_name != 'pull_request'
         uses: docker/login-action@v3
         with:
@@ -37,32 +35,29 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Log into Docker Hub
+      - name: Login to DockerHub registry
         if: github.event_name != 'pull_request'
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Extract Docker metadata
+      - name: Get Docker metadata
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          images: ${{ env.REGISTRY }}/${{ github.repository }}
 
-      - name: Setup dotnet
+      - name: Initialize dotnet
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.0.x'
           source-url: https://nuget.pkg.github.com/takermanltd/index.json
         env:
           NUGET_AUTH_TOKEN: ${{ secrets.REGISTRY_TOKEN }}
-      - name: Install dependencies
-        run: dotnet restore
-      - name: Build
-        run: dotnet build
-      - name: Test with the dotnet CLI
-        run: dotnet test
+      
+      - name: Building
+        run: dotnet restore && dotnet build && dotnet test
 
       # - name: Cypress run
       #   uses: cypress-io/github-action@v6
@@ -73,13 +68,9 @@ jobs:
       #   env:
       #     GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@v3
+      - name: Publish
+        uses: docker/build-push-action@v6
         with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-        
-      - name: Publish and push the container image
-        run: |
-          dotnet publish --os linux --arch x64 -c Release /p:PublishProfile=github
+          context: .
+          push: true
+          tags: takermanltd/app-dating:latest
