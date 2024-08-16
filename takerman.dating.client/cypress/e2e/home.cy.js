@@ -17,26 +17,42 @@ describe('home', () => {
     cy.get('#newsletterForm').should('exist');
     cy.get('#socialBar').should('exist');
     cy.get('#zsiq_float').should('exist');
+
   });
 
-  it("navigation", () => {
-    // visit a date
-    // privacy
-    // terms and conditions
-    // contact us
-    // social links
+  it.only("links has the correct URLs", () => {
+    let baseUrl = Cypress.config().baseUrl;
+    cy.visit('/');
 
-    // if not logged in:
-    // register
-    // login
+    if (cy.get("#headerLogin") != null) {
+      cy.visit('/login');
+      cy.get('input[id=email]').type('tanyo@takerman.net');
+      cy.get('input[id=password]').type('Hakerman91!');
+      cy.get('button[id=btnSubmit]').click();
+    }
 
-    // if logged in:
-    // my dates
-    // matches
-    // profile
-    // photos
+    cy.get('#footerPrivacyPolicy').click();
+    cy.location('pathname').should('eq', '/privacy-policy');
+    cy.go('back');
 
-    // if logged in as admin:
-    // admin
+    cy.get('#footerTerms').click();
+    cy.location('pathname').should('eq', '/terms-and-conditions');
+    cy.go('back');
+
+    cy.get('#footerContacts').click();
+    cy.location('pathname').should('eq', '/contacts');
+    cy.go('back');
+
+    cy.get('#footerProfile').click();
+    cy.location('pathname').should('eq', '/profile');
+    cy.go('back');
+
+    cy.get('#footerMatches').click();
+    cy.location('pathname').should('eq', '/matches');
+    cy.go('back');
+
+    cy.get('#footerOrders').click();
+    cy.location('pathname').should('eq', '/orders');
+    cy.go('back');
   });
 });

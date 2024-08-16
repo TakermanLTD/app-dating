@@ -2,7 +2,9 @@
 
 describe('login', () => {
   it('forms authentication', () => {
-    // cy.login('takerman', 'Hakerman91!');
+    cy.visit('/');
+
+    cy.visit('/logout');
     cy.visit('/login');
     cy.get('input[id=email]').type('tanyo@takerman.net');
     cy.get('input[id=password]').type('Hakerman91!');
@@ -10,6 +12,6 @@ describe('login', () => {
     cy.url().should('include', '/');
   });
 
-  it("facebook authentication", () => {});
-  it("google authentication", () => {});
+  it("facebook authentication", () => { });
+  it("google authentication", () => { });
 });

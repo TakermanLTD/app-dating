@@ -28,18 +28,18 @@
                         </button>
                         <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                             <div class="navbar-nav mr-auto py-0">
-                                <router-link class="nav-item nav-link" to="/">{{ $t('nav.home') }}</router-link>
-                                <router-link v-if="this.user != null" class="nav-item nav-link" to="/orders">{{ $t('nav.myDates') }}</router-link>
-                                <router-link v-if="this.user != null" class="nav-item nav-link" to="/matches">{{ $t('nav.matches') }}</router-link>
-                                <router-link v-if="this.user != null && this.user.isAdmin" class="nav-item nav-link" to="/admin">{{ $t('nav.admin') }}</router-link>
+                                <router-link id="headerHome" class="nav-item nav-link" to="/">{{ $t('nav.home') }}</router-link>
+                                <router-link id="headerOrders" v-if="this.user != null" class="nav-item nav-link" to="/orders">{{ $t('nav.myDates') }}</router-link>
+                                <router-link id="headerMatches" v-if="this.user != null" class="nav-item nav-link" to="/matches">{{ $t('nav.matches') }}</router-link>
+                                <router-link id="headerAdmin" v-if="this.user != null && this.user.isAdmin" class="nav-item nav-link" to="/admin">{{ $t('nav.admin') }}</router-link>
                                 <div class="nav-item dropdown">
-                                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">{{ $t('nav.account') }} <i class="fa fa-angle-down mt-1"></i></a>
+                                    <a id="headerAccount" href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">{{ $t('nav.account') }} <i class="fa fa-angle-down mt-1"></i></a>
                                     <div class="dropdown-menu bg-primary rounded-0 border-0 m-0">
-                                        <router-link v-if="this.user != null" class="dropdown-item" to="/profile">{{ $t('nav.profile') }}</router-link>
-                                        <router-link v-if="this.user == null" class="dropdown-item" to="/register">{{ $t('nav.register') }}</router-link>
-                                        <router-link v-if="this.user != null" class="dropdown-item" to="/user-gallery">{{ $t('nav.photos') }}</router-link>
-                                        <router-link v-if="this.user == null" class="dropdown-item" to="/login">{{ $t('nav.login') }}</router-link>
-                                        <router-link v-if="this.user != null" class="dropdown-item" to="/logout" @click="this.logout">{{ $t('nav.logout') }}</router-link>
+                                        <router-link id="headerProfile" v-if="this.user != null" class="dropdown-item" to="/profile">{{ $t('nav.profile') }}</router-link>
+                                        <router-link id="headerRegister" v-if="this.user == null" class="dropdown-item" to="/register">{{ $t('nav.register') }}</router-link>
+                                        <router-link id="headerGallery" v-if="this.user != null" class="dropdown-item" to="/user-gallery">{{ $t('nav.photos') }}</router-link>
+                                        <router-link id="headerLogin" v-if="this.user == null" class="dropdown-item" to="/login">{{ $t('nav.login') }}</router-link>
+                                        <router-link id="headerLogout" v-if="this.user != null" class="dropdown-item" to="/logout" @click="this.logout">{{ $t('nav.logout') }}</router-link>
                                     </div>
                                 </div>
                             </div>
