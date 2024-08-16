@@ -32,8 +32,8 @@
                                 <router-link id="headerOrders" v-if="this.user != null" class="nav-item nav-link" to="/orders">{{ $t('nav.myDates') }}</router-link>
                                 <router-link id="headerMatches" v-if="this.user != null" class="nav-item nav-link" to="/matches">{{ $t('nav.matches') }}</router-link>
                                 <router-link id="headerAdmin" v-if="this.user != null && this.user.isAdmin" class="nav-item nav-link" to="/admin">{{ $t('nav.admin') }}</router-link>
-                                <div class="nav-item dropdown">
-                                    <a id="headerAccount" href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">{{ $t('nav.account') }} <i class="fa fa-angle-down mt-1"></i></a>
+                                <div id="headerAccount" class="nav-item dropdown">
+                                    <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">{{ $t('nav.account') }} <i class="fa fa-angle-down mt-1"></i></a>
                                     <div class="dropdown-menu bg-primary rounded-0 border-0 m-0">
                                         <router-link id="headerProfile" v-if="this.user != null" class="dropdown-item" to="/profile">{{ $t('nav.profile') }}</router-link>
                                         <router-link id="headerRegister" v-if="this.user == null" class="dropdown-item" to="/register">{{ $t('nav.register') }}</router-link>
