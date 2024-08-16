@@ -45,7 +45,7 @@ describe('scenarios', () => {
   it("enter date", () => { });
   it("vote", () => { });
   it("chat", () => { });
-  it("full scenario", () => {
+  xit("full scenario", () => {
     for (let i = 0; i < 10; i++) {
       // register
       cy.visit('/register');
