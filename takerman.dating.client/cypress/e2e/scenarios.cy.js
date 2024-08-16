@@ -45,4 +45,40 @@ describe('scenarios', () => {
   it("enter date", () => { });
   it("vote", () => { });
   it("chat", () => { });
+  it("full scenario", () => {
+    for (let i = 0; i < 10; i++) {
+      // register
+      cy.visit('/register');
+      cy.get('input[id=firstName]').type('Test' + i);
+      cy.get('input[id=lastName]').type('Test' + i);
+      cy.get('input[id=email]').type('test' + i + '@takerman.net');
+      if (i < 5) {
+        cy.get('#genderMan').check();
+      } else {
+        cy.get('#genderWoman').check();
+      }
+      cy.get('input[id=password]').type('Hakerman91!');
+      cy.get('input[id=confirmPassword]').type('Hakerman91!');
+      cy.get('button[id=btnSubmit]').click();
+      cy.url().should('include', '/');
+
+      // save spot
+      // logout
+
+      // login as admin
+      // approve the date
+      // logout
+
+      // for each ten customers
+      // login
+      // buy the date
+      // logout
+
+      // for each ten customers
+      // login
+      // visit the link
+      // vote
+      // check your matches
+    }
+  });
 });
