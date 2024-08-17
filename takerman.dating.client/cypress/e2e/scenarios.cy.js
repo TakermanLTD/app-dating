@@ -39,7 +39,19 @@ describe('scenarios', () => {
 
   });
 
-  it("register", () => { });
+  it.only("register", () => {
+    let id = + Math.random();
+    alert(id);
+    cy.visit('/register');
+    cy.get('input[id=firstName]').type('Test' + id);
+    cy.get('input[id=lastName]').type('Test' + id);
+    cy.get('input[id=email]').type('test' + id + '@takerman.net');
+    cy.get('#genderMan').check();
+    cy.get('input[id=password]').type('Hakerman91!');
+    cy.get('input[id=confirmPassword]').type('Hakerman91!');
+    cy.get('button[id=btnSubmit]').click();
+    cy.url().should('include', '/login');
+  });
   it("save date", () => { });
   it("buy date", () => { });
   it("enter date", () => { });

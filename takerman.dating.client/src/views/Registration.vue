@@ -10,7 +10,7 @@
                         <label for="firstName" class="col-sm-2 col-form-label">Първо име</label>
                         <div class="col-sm-10">
                             <input type="text" class="form-control" id="firstName" required placeholder="Първо име"
-                                v-model="fields.firstName" />
+                                   v-model="fields.firstName" />
                         </div>
                     </div>
                     <br />
@@ -18,7 +18,7 @@
                         <label for="lastName" class="col-sm-2 col-form-label">Фамилия</label>
                         <div class="col-sm-10">
                             <input type="text" class="form-control" id="lastName" required placeholder="Фамилия"
-                                v-model="fields.lastName" />
+                                   v-model="fields.lastName" />
                         </div>
                     </div>
                     <br />
@@ -26,7 +26,7 @@
                         <label for="email" class="col-sm-2 col-form-label">Имейл</label>
                         <div class="col-sm-10">
                             <input type="email" class="form-control" id="email" required placeholder="Имейл"
-                                v-model="fields.email" />
+                                   v-model="fields.email" />
                         </div>
                     </div>
                     <br />
@@ -36,13 +36,13 @@
                             <div class="form-check form-check-inline">
                                 <label class="form-check-label">
                                     <input class="form-check-input" type="radio" required name="gender" id="genderMan" :value="1"
-                                        v-model="fields.gender"> Мъж
+                                           v-model="fields.gender"> Мъж
                                 </label>
                             </div>
                             <div class="form-check form-check-inline">
                                 <label class="form-check-label">
                                     <input class="form-check-input" type="radio" required name="gender" id="genderWoman" :value="2"
-                                        v-model="fields.gender"> Жена
+                                           v-model="fields.gender"> Жена
                                 </label>
                             </div>
                         </div>
@@ -57,7 +57,7 @@
                         <label for="password" class="col-sm-2 col-form-label">Парола</label>
                         <div class="col-sm-10">
                             <input type="password" class="form-control" id="password" required placeholder="Парола"
-                                v-model="fields.password" :pattern="this.passwordPattern" />
+                                   v-model="fields.password" :pattern="this.passwordPattern" />
                         </div>
                     </div>
                     <br />
@@ -65,8 +65,8 @@
                         <label for="confirmPassword" class="col-sm-2 col-form-label">Паролата отново</label>
                         <div class="col-sm-10">
                             <input type="password" class="form-control" id="confirmPassword" required
-                                placeholder="Паролата отново" v-model="fields.confirmPassword"
-                                :pattern="this.passwordPattern" />
+                                   placeholder="Паролата отново" v-model="fields.confirmPassword"
+                                   :pattern="this.passwordPattern" />
                         </div>
                     </div>
                     <br />
@@ -79,8 +79,8 @@
                     <div class="col-sm-10">
                         <div v-if="this.loading">Зареждане...</div>
                         <div v-else v-show="status"
-                            :class="{ 'alert-success': this.statusClass == 'success', 'alert-danger': this.statusClass == 'danger' }"
-                            class="alert" role="alert">
+                             :class="{ 'alert-success': this.statusClass == 'success', 'alert-danger': this.statusClass == 'danger' }"
+                             class="alert" role="alert">
                             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                             <span class="sr-only"></span> {{ status }}
                         </div>
@@ -139,8 +139,11 @@ export default {
                         this.statusClass = 'danger';
                         return;
                     }
-                    this.status = 'Активационен линк е изпратен до имейла ви. Моля отворете пощата си, за да потвърдите акаунта.';
+                    this.status = 'Потребителя е регистриран успешно! Пренасочване към логин след 3 секунди.';
                     this.statusClass = 'success';
+                    setTimeout(() => {
+                        router.push('/login');
+                    }, 3000);
                 }
                 else {
                     this.status = 'Грешка при регистрация на потребител. Моля уведомете ни';
