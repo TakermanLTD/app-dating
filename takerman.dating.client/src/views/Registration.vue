@@ -3,7 +3,6 @@
         <div class="container">
             <Heading heading="Регистрация" />
             <br />
-            <FacebookLogin></FacebookLogin>
             <fieldset>
                 <div>
                     <div class="form-group row">
@@ -95,7 +94,6 @@
 <script lang="js">
 import { fetchWrapper } from '@/helpers';
 import Heading from '../components/Heading.vue';
-import FacebookLogin from '../components/FacebookLogin.vue';
 
 export default {
     data() {
@@ -114,10 +112,20 @@ export default {
             passwordPattern: ".{8,}"
         };
     },
+    mounted() {
+        let myScript = document.createElement('script');
+        myScript.setAttribute('src', 'https://www.google.com/recaptcha/api.js?render=6Lce4CgqAAAAALXUa5i4ex9VJMTNEM7sBpCPYEar');
+        document.body.appendChild(myScript);
+    },
     methods: {
         async save(event) {
             try {
                 event.preventDefault();
+                grecaptcha.ready(function () {
+                    grecaptcha.execute('6Lce4CgqAAAAALXUa5i4ex9VJMTNEM7sBpCPYEar', { action: 'submit' }).then(function (token) {
+                        debugger;
+                    });
+                });
                 this.loading = true;
                 if (!new RegExp(this.passwordPattern).test(this.password) || !new RegExp(this.passwordPattern).test(this.confirmPassword)) {
                     this.loading = false;
