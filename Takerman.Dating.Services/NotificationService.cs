@@ -1,9 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
-using RabbitMQ.Client;
-using System.Text;
 using Takerman.Dating.Data;
 using Takerman.Dating.Services.Abstraction;
 using Takerman.Mail;
@@ -105,6 +101,25 @@ Created On: {order.CreatedOn} <br />",
         }
 
         public async Task NotifyForCreatedUser(User user, string domainName)
+        {
+            await _mailService.SendToQueue(new MailMessageDto()
+            {
+                Body = $"You have registered an account in Dating. <br />" +
+                    $"Email: {user.Email} <br /> Password: the password you have set",
+                From = "tivanov@takerman.net",
+                Subject = "You have registered in " + domainName,
+                To = user.Email
+            });
+
+            _logger.LogWarning(
+@$"A new user has beed registered. It is active
+User Data:
+UserId: {user.Id}
+Name: {user.FirstName} {user.FirstName}
+Email: {user.Email}");
+        }
+
+        public async Task NotifyForNotActivatedCreatedUser(User user, string domainName)
         {
             await _mailService.SendToQueue(new MailMessageDto()
             {

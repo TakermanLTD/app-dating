@@ -89,7 +89,7 @@ namespace Takerman.Dating.Services
             {
                 user.Password = GetHashedPassword(user.Password);
                 user.CreatedOn = DateTime.Now;
-                user.IsActive = false;
+                user.IsActive = true;
                 var result = (await _context.Users.AddAsync(user)).Entity;
                 await _context.SaveChangesAsync();
 

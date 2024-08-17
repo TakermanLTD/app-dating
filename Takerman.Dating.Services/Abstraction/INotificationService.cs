@@ -19,6 +19,8 @@ namespace Takerman.Dating.Services.Abstraction
 
         Task NotifyForResetPasswordRequest(string code, User user, string domainName);
 
+        Task NotifyForNotActivatedCreatedUser(User user, string domainName);
+
         Task NotifyForOrderCanceledAsync(Order result);
 
         Task SubscribeForNewsletterAsync(Newsletter newsletter);
