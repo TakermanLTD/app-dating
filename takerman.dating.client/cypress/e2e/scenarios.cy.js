@@ -39,7 +39,7 @@ describe('scenarios', () => {
 
   });
 
-  it.only("register", () => {
+  xit("register", () => {
     let id = + Math.random();
     alert(id);
     cy.visit('/register');
@@ -57,7 +57,16 @@ describe('scenarios', () => {
   it("enter date", () => { });
   it("vote", () => { });
   it("chat", () => { });
-  xit("full scenario", () => {
+  it("full scenario", () => {
+    cy.visit('/logout');
+    cy.visit('/login');
+    cy.get('input[id=email]').type('tanyo@takerman.net');
+    cy.get('input[id=password]').type('Hakerman91!');
+    cy.get('button[id=btnSubmit]').click();
+    cy.url().should('include', '/');
+    cy.visit('/admin');
+    cy.visit('/logout');
+
     for (let i = 0; i < 10; i++) {
       // register
       cy.visit('/register');
@@ -72,25 +81,55 @@ describe('scenarios', () => {
       cy.get('input[id=password]').type('Hakerman91!');
       cy.get('input[id=confirmPassword]').type('Hakerman91!');
       cy.get('button[id=btnSubmit]').click();
+      cy.clock().tick(500);
+
+      cy.visit('/login');
+      cy.get('input[id=email]').type('test' + i + '@takerman.net');
+      cy.get('input[id=password]').type('Hakerman91!');
+      cy.get('button[id=btnSubmit]').click();
+      cy.url().should('include', '/');
+      cy.clock().tick(500);
+
+      /*
+      cy.get('.btn-save-date').each((element) => {
+        cy.get(element).click();
+      });
+      */
+    }
+
+    cy.visit('/logout');
+    cy.visit('/login');
+    cy.get('input[id=email]').type('tanyo@takerman.net');
+    cy.get('input[id=password]').type('Hakerman91!');
+    cy.get('button[id=btnSubmit]').click();
+    cy.url().should('include', '/');
+    cy.visit('/admin');
+    cy.get('.row-date').each((el) => {
+      if (cy.get(el).find('.tbx-menCount').first().val() >= cy.get(el).find('.tbx-maxMen').first().val()) {
+        cy.get(el).find('.ddl-status').first().val(2);
+        cy.get(el).find('.btn-save').first().click();
+      }
+    });
+    cy.visit('/logout');
+
+    for (let i = 0; i < 10; i++) {
+      cy.visit('/login');
+      cy.get('input[id=email]').type('test' + i + '@takerman.net');
+      cy.get('input[id=password]').type('Hakerman91!');
+      cy.get('button[id=btnSubmit]').click();
       cy.url().should('include', '/');
 
-      // save spot
-      // logout
-
-      // login as admin
-      // approve the date
-      // logout
-
-      // for each ten customers
-      // login
-      // buy the date
-      // logout
-
-      // for each ten customers
-      // login
-      // visit the link
-      // vote
-      // check your matches
+      cy.get('.date-card-image').each((date) => {
+        cy.get(date).click();
+        cy.clock().tick(1000);
+        cy.get('.pay-button').first().click();
+      });
     }
+
+    // for each ten customers
+    // login
+    // visit the link
+    // vote
+    // check your matches
   });
 });

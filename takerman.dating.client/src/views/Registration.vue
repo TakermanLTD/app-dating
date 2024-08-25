@@ -77,7 +77,7 @@
                     </div>
                     <div class="col-sm-10">
                         <div v-if="this.loading">Зареждане...</div>
-                        <div v-else v-show="status"
+                        <div id="registrationStatusBadge" v-else v-show="status"
                              :class="{ 'alert-success': this.statusClass == 'success', 'alert-danger': this.statusClass == 'danger' }"
                              class="alert" role="alert">
                             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
@@ -113,19 +113,19 @@ export default {
         };
     },
     mounted() {
-        let myScript = document.createElement('script');
-        myScript.setAttribute('src', 'https://www.google.com/recaptcha/api.js?render=6Lce4CgqAAAAALXUa5i4ex9VJMTNEM7sBpCPYEar');
-        document.body.appendChild(myScript);
+        // let myScript = document.createElement('script');
+        // myScript.setAttribute('src', 'https://www.google.com/recaptcha/api.js?render=6Lce4CgqAAAAALXUa5i4ex9VJMTNEM7sBpCPYEar');
+        // document.body.appendChild(myScript);
     },
     methods: {
         async save(event) {
             try {
                 event.preventDefault();
-                grecaptcha.ready(function () {
-                    grecaptcha.execute('6Lce4CgqAAAAALXUa5i4ex9VJMTNEM7sBpCPYEar', { action: 'submit' }).then(function (token) {
-                        debugger;
-                    });
-                });
+                // grecaptcha.ready(function () {
+                //     grecaptcha.execute('6Lce4CgqAAAAALXUa5i4ex9VJMTNEM7sBpCPYEar', { action: 'submit' }).then(function (token) {
+                //         debugger;
+                //     });
+                // });
                 this.loading = true;
                 if (!new RegExp(this.passwordPattern).test(this.password) || !new RegExp(this.passwordPattern).test(this.confirmPassword)) {
                     this.loading = false;
@@ -147,18 +147,13 @@ export default {
                         this.statusClass = 'danger';
                         return;
                     }
-                    this.status = 'Потребителя е регистриран успешно! Пренасочване към логин след 3 секунди.';
+                    this.status = 'Потребителя е регистриран успешно! Вече можете да <a href="/login">влезете</a> в профила си.';
                     this.statusClass = 'success';
-                    setTimeout(() => {
-                        router.push('/login');
-                    }, 3000);
-                }
-                else {
+                } else {
                     this.status = 'Грешка при регистрация на потребител. Моля уведомете ни';
                     this.statusClass = 'danger';
                 }
-            }
-            catch (error) {
+            } catch (error) {
                 this.loading = false;
                 this.status = 'Грешка при регистрация на потребител. Моля уведомете ни за грешката';
                 this.statusClass = 'danger';

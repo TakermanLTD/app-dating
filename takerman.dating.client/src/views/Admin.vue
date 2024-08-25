@@ -40,13 +40,13 @@
                         <option v-for="(status, statusKey) in this.statuses" :value="status.key" :key="statusKey" @click="newDate.status = status.key">{{ status.value }}</option>
                     </select>
                 </td>
-                <td> <input type="number" @input="event => newDate.minMen = event.target.value" style="width: 80px;" :v-model="newDate.minMen" class="form-control" :value="newDate.minMen" /></td>
-                <td> <input type="number" @input="event => newDate.menCount = event.target.value" style="width: 80px;" :v-model="newDate.menCount" class="form-control" :value="newDate.menCount" /></td>
-                <td> <input type="number" @input="event => newDate.minWomen = event.target.value" style="width: 80px;" :v-model="newDate.minWomen" class="form-control" :value="newDate.minWomen" /></td>
-                <td> <input type="number" @input="event => newDate.womenCount = event.target.value" style="width: 80px;" :v-model="newDate.womenCount" class="form-control" :value="newDate.womenCount" /></td>
-                <td> <input type="number" @input="event => newDate.minAges = event.target.value" style="width: 80px;" :v-model="newDate.minAges" class="form-control" :value="newDate.minAges" /></td>
-                <td> <input type="number" @input="event => newDate.maxAges = event.target.value" style="width: 80px;" :v-model="newDate.maxAges" class="form-control" :value="newDate.maxAges" /></td>
-                <td> <input type="number" @input="event => newDate.price = event.target.value" style="width: 80px;" :v-model="newDate.price" class="form-control" :value="newDate.price" /></td>
+                <td> <input type="number" @input="event => newDate.minMen = event.target.value" style="width: 80px;" :v-model="newDate.minMen" class="form-control tbx-minMen-add" :value="newDate.minMen" /></td>
+                <td> <input type="number" @input="event => newDate.menCount = event.target.value" style="width: 80px;" :v-model="newDate.menCount" class="form-control tbx-menCount-add" :value="newDate.menCount" /></td>
+                <td> <input type="number" @input="event => newDate.minWomen = event.target.value" style="width: 80px;" :v-model="newDate.minWomen" class="form-control tbx-minWomen-add" :value="newDate.minWomen" /></td>
+                <td> <input type="number" @input="event => newDate.womenCount = event.target.value" style="width: 80px;" :v-model="newDate.womenCount" class="form-control tbx-womenCount-add" :value="newDate.womenCount" /></td>
+                <td> <input type="number" @input="event => newDate.minAges = event.target.value" style="width: 80px;" :v-model="newDate.minAges" class="form-control tbx-minAges-add" :value="newDate.minAges" /></td>
+                <td> <input type="number" @input="event => newDate.maxAges = event.target.value" style="width: 80px;" :v-model="newDate.maxAges" class="form-control tbx-maxAges-add" :value="newDate.maxAges" /></td>
+                <td> <input type="number" @input="event => newDate.price = event.target.value" style="width: 80px;" :v-model="newDate.price" class="form-control tbx-pruce-add" :value="newDate.price" /></td>
                 <td>
                     <input type="text" @input="event => newDate.videoLink = event.target.value" :v-model="newDate.videoLink" class="form-control" :value="newDate.videoLink" />
                 </td>
@@ -54,30 +54,30 @@
                     <button @click="addDate" class="btn btn-success">add</button>
                 </td>
             </tr>
-            <tr v-for="(date, dateKey) in this.dates" :key="dateKey" :class="date.statusClass">
+            <tr class="row-date" v-for="(date, dateKey) in this.dates" :key="dateKey" :class="date.statusClass">
                 <td>{{ date.id }}</td>
                 <td> <input @input="event => date.title = event.target.value" type="text" :v-model="date.title" class="form-control" :value="date.title" /></td>
                 <td>
                     <VueDatePicker v-model="date.startsOn" />
                 </td>
                 <td>
-                    <select v-model="date.status" class="form-control" :value="date.status">
+                    <select v-model="date.status" class="form-control ddl-status" :value="date.status">
                         <option v-for="(status, statusKey) in this.statuses" :value="status.key" :key="statusKey" @click="date.status = status.key">{{ status.value }}</option>
                     </select>
                 </td>
-                <td> <input type="number" @input="event => date.minMen = event.target.value" style="width: 80px;" :v-model="date.minMen" class="form-control" :value="date.minMen" /></td>
-                <td> <input type="number" @input="event => date.menCount = event.target.value" style="width: 80px;" :v-model="date.menCount" class="form-control" :value="date.menCount" /></td>
-                <td> <input type="number" @input="event => date.minWomen = event.target.value" style="width: 80px;" :v-model="date.minWomen" class="form-control" :value="date.minWomen" /></td>
-                <td> <input type="number" @input="event => date.womenCount = event.target.value" style="width: 80px;" :v-model="date.womenCount" class="form-control" :value="date.womenCount" /></td>
-                <td> <input type="number" @input="event => date.minAges = event.target.value" style="width: 80px;" :v-model="date.minAges" class="form-control" :value="date.minAges" /></td>
-                <td> <input type="number" @input="event => date.maxAges = event.target.value" style="width: 80px;" :v-model="date.maxAges" class="form-control" :value="date.maxAges" /></td>
-                <td> <input type="number" @input="event => date.price = event.target.value" style="width: 80px;" :v-model="date.price" class="form-control" :value="date.price" /></td>
+                <td> <input type="number" @input="event => date.minMen = event.target.value" style="width: 80px;" :v-model="date.minMen" class="form-control tbx-minMen" :value="date.minMen" /></td>
+                <td> <input type="number" @input="event => date.menCount = event.target.value" style="width: 80px;" :v-model="date.menCount" class="form-control tbx-menCount" :value="date.menCount" /></td>
+                <td> <input type="number" @input="event => date.minWomen = event.target.value" style="width: 80px;" :v-model="date.minWomen" class="form-control tbx-minWomen" :value="date.minWomen" /></td>
+                <td> <input type="number" @input="event => date.womenCount = event.target.value" style="width: 80px;" :v-model="date.womenCount" class="form-control tbx-womenCount" :value="date.womenCount" /></td>
+                <td> <input type="number" @input="event => date.minAges = event.target.value" style="width: 80px;" :v-model="date.minAges" class="form-control tbx-minAges" :value="date.minAges" /></td>
+                <td> <input type="number" @input="event => date.maxAges = event.target.value" style="width: 80px;" :v-model="date.maxAges" class="form-control tbx-maxAges" :value="date.maxAges" /></td>
+                <td> <input type="number" @input="event => date.price = event.target.value" style="width: 80px;" :v-model="date.price" class="form-control tbx-price" :value="date.price" /></td>
                 <td>
-                    <input type="text" @input="event => date.videoLink = event.target.value" :v-model="date.videoLink" class="form-control" :value="date.videoLink" />
+                    <input type="text" @input="event => date.videoLink = event.target.value" :v-model="date.videoLink" class="form-control tbx-videoLink" :value="date.videoLink" />
                 </td>
                 <td>
-                    <button @click="saveDate(date)" class="btn btn-success">save</button>
-                    <button @click="deleteDate(date)" class="btn btn-danger">delete</button>
+                    <button @click="saveDate(date)" class="btn btn-success btn-save">save</button>
+                    <button @click="deleteDate(date)" class="btn btn-danger btn-delete">delete</button>
                 </td>
             </tr>
         </table>
@@ -113,11 +113,11 @@
                     <button @click="addUser()" class="btn btn-success">add</button>
                 </td>
             </tr>
-            <tr v-for="(user, userKey) in this.users" :key="userKey">
+            <tr class="row-user" v-for="(user, userKey) in this.users" :key="userKey">
                 <td>{{ user.id }}</td>
                 <td><input @input="event => user.firstName = event.target.value" type="text" :v-model="user.firstName" class="form-control" :value="user.firstName" /></td>
                 <td><input @input="event => user.lastName = event.target.value" type="text" :v-model="user.lastName" class="form-control" :value="user.lastName" /></td>
-                <td><input @input="event => user.email = event.target.value" type="text" :v-model="user.email" class="form-control" :value="user.email" /></td>
+                <td><input @input="event => user.email = event.target.value" type="text" :v-model="user.email" class="form-control tbx-user-email" :value="user.email" /></td>
                 <td><input @input="event => user.country = event.target.value" type="text" :v-model="user.country" class="form-control" :value="user.country" /></td>
                 <td><input @input="event => user.city = event.target.value" type="text" :v-model="user.city" class="form-control" :value="user.city" /></td>
                 <td><input @input="event => user.phone = event.target.value" type="text" :v-model="user.phone" class="form-control" :value="user.phone" /></td>

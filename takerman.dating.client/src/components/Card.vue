@@ -30,24 +30,24 @@
             <div class="text-center">
                 <h3 class="font-weight-semi-bold">{{ $t('common.currencySign') == '$' ? $t('common.currencySign') +  this.date.price : this.date.price + $t('common.currencySign') }}</h3>
                 <p v-if="this.date.status === 'NotApproved'">
-                    <a v-if="this.isSpotSaved" @click="this.unsaveSpot(this.date)" class="btn btn-danger">Няма да присъствам</a>
-                    <a v-else @click="this.saveSpot(this.date)" class="btn btn-primary">Запази място</a>
+                    <a v-if="this.isSpotSaved" @click="this.unsaveSpot(this.date)" class="btn btn-danger btn-unsave-date">Няма да присъствам</a>
+                    <a v-else @click="this.saveSpot(this.date)" class="btn btn-primary btn-save-date">Запази място</a>
                 </p>
                 <div v-if="this.date.status === 'Approved'">
                     <div v-if="this.isBought">
                         <p>
                             Вече сте купили срещата
                         </p>
-                        <a v-if="moment(this.date.startsOn).add(-15, 'minutes') < moment()" :href="this.date.videoLink" class="btn btn-success btn-lg" target="_blank">Влез в срещата</a>
+                        <a v-if="moment(this.date.startsOn).add(-15, 'minutes') < moment()" :href="this.date.videoLink" class="btn btn-success btn-lg btn-enter-video" target="_blank">Влез в срещата</a>
                     </div>
                     <div v-else>
-                        <router-link class="btn btn-success" :to="this.user ? '/date?id=' + this.date.id : '/login'">Купи срещата</router-link>
+                        <router-link class="btn btn-success btn-buy-date" :to="this.user ? '/date?id=' + this.date.id : '/login'">Купи срещата</router-link>
                     </div>
                 </div>
                 <div v-if="this.date.status === 'Started'">
                     <strong>Срещата е започнала</strong><br />
                     <div v-if="this.isBought">
-                        <a :href="this.date.videoLink" class="btn btn-success btn-lg" target="_blank">Влез в срещата</a>
+                        <a :href="this.date.videoLink" class="btn btn-success btn-lg btn-enter-date" target="_blank">Влез в срещата</a>
                     </div>
                 </div>
                 <div v-if="this.date.status === 'Finished' || this.date.status === 'ResultsRevealed'">
