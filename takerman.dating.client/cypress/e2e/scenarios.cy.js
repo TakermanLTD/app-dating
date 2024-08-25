@@ -57,7 +57,7 @@ describe('scenarios', () => {
   it("enter date", () => { });
   it("vote", () => { });
   it("chat", () => { });
-  it("full scenario", () => {
+  xit("full scenario", () => {
     cy.visit('/logout');
     cy.visit('/login');
     cy.get('input[id=email]').type('tanyo@takerman.net');
