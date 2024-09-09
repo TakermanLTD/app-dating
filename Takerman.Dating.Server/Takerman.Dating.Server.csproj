@@ -34,9 +34,9 @@
 		<PackageReference Include="Serilog" Version="4.0.1" />
 		<PackageReference Include="Serilog.AspNetCore" Version="8.0.2" />
 		<PackageReference Include="Serilog.Sinks.Slack" Version="2.2.2" />
-		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.7.2" />
+		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.7.3" />
 		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.0.2" />
-		<PackageReference Include="Takerman.AI" Version="1.0.2" />
+		<PackageReference Include="Takerman.AI" Version="1.0.3" />
 		<PackageReference Include="Takerman.Auth" Version="1.0.2" />
 		<PackageReference Include="Takerman.Blogging" Version="1.0.2" />
 		<PackageReference Include="Takerman.Dating" Version="1.0.3" />

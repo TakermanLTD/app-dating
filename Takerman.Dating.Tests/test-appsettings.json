@@ -3,11 +3,11 @@
     "Secret": "54r*5IZqLmfhGSXV!)(XesedkZp^ezL6"
   },
   "ConnectionStrings": {
-    "DefaultConnection": "Data Source=data_sqlserver,5433;Initial Catalog=takerman_dating_bg;Integrated Security=False;Persist Security Info=False;User ID=takerman;Password=Hakerman91!;Trust Server Certificate=True",
+    "DefaultConnection": "Data Source=takerman.net,5433;Initial Catalog=takerman_dating_dev;Integrated Security=False;Persist Security Info=False;User ID=takerman;Password=Hakerman91!;Trust Server Certificate=True",
     "DataProvider": "sqlserver"
   },
   "RabbitMqConfig": {
-    "Hostname": "devops_rabbitmq",
+    "Hostname": "takerman.net",
     "Username": "takerman",
     "Password": "Hakerman91!",
     "Port": 5672
