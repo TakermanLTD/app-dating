@@ -38,9 +38,7 @@
 		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.0.2" />
 		<PackageReference Include="Takerman.AI" Version="1.0.3" />
 		<PackageReference Include="Takerman.Auth" Version="1.0.2" />
-		<PackageReference Include="Takerman.Blogging" Version="1.0.2" />
 		<PackageReference Include="Takerman.Dating" Version="1.0.3" />
-		<PackageReference Include="Takerman.External" Version="1.0.2" />
 		<PackageReference Include="Takerman.Notifications" Version="1.0.2" />
 	</ItemGroup>
 
