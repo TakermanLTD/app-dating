@@ -13,7 +13,7 @@
     "@paypal/paypal-js": "^8.1.1",
     "@popperjs/core": "^2.11.8",
     "@vuepic/vue-datepicker": "^9.0.2",
-    "bootstrap": "^4.6.2",
+    "bootstrap": "^5.0.0",
     "bootstrap-icons": "^1.11.3",
     "bootstrap-vue": "^2.23.1",
     "easing": "^1.2.1",
