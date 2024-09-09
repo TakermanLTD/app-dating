@@ -1,4 +1,3 @@
-using AutoMapper.Configuration.Annotations;
 using Takerman.Dating.Services.Abstraction;
 using Takerman.Mail;
 using Xunit.Abstractions;
@@ -18,8 +17,8 @@ namespace Takerman.Dating.Tests.Integration
             _notificationService = _fixture.GetService<INotificationService>(_testOutputHelper);
         }
 
-        //[Theory(Skip ="Skip integration tests on build")]
-        [Theory]
+        //[Theory]
+        [Theory(Skip = "Skip integration tests on build")]
         [InlineData("tivanov@takerman.net")]
         public async Task Should_SendResetPasswordEmail_When_CorrectInputIsPassed(string email)
         {
