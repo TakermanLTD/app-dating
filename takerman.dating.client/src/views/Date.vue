@@ -27,27 +27,29 @@
           <p class="mb-4">{{ $t('date.description') }}</p>
           <p v-if="this.date" class="mb-4">{{ $t('date.description') }}</p>
           <table class="table">
-            <tr>
-              <td>
-                <strong><i class="bi bi-person-standing"></i>{{ $t('dates.card.menCount') }}</strong> {{ this.date.menCount }}/{{ this.date.minMen }}
-              </td>
-              <td>
-                <strong><i class="bi bi-person-standing-dress"></i>{{ $t('dates.card.womenCount') }}</strong> {{ this.date.womenCount }}/{{ this.date.minWomen }}
-              </td>
-            </tr>
-            <tr>
-              <td>
-                <strong>{{ $t('dates.card.minAges') }}</strong> {{ this.date.minAges }}
-              </td>
-              <td>
-                <strong>{{ $t('dates.card.maxAges') }}</strong> {{ this.date.maxAges }}
-              </td>
-            </tr>
-            <tr>
-              <td colspan="2" style="font-size: x-large;">
-                <strong><i class="bi bi-calendar-event"></i> {{ $t('dates.card.startsOn') }}</strong><br/>{{ this.date.startsOn ? moment(this.date.startsOn).format("DD MMM, HH:mm") : 'След запазване на достатъчно места' }}
-              </td>
-            </tr>
+            <tbody>
+              <tr>
+                <td>
+                  <strong><i class="bi bi-person-standing"></i>{{ $t('dates.card.menCount') }}</strong> {{ this.date.menCount }}/{{ this.date.minMen }}
+                </td>
+                <td>
+                  <strong><i class="bi bi-person-standing-dress"></i>{{ $t('dates.card.womenCount') }}</strong> {{ this.date.womenCount }}/{{ this.date.minWomen }}
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <strong>{{ $t('dates.card.minAges') }}</strong> {{ this.date.minAges }}
+                </td>
+                <td>
+                  <strong>{{ $t('dates.card.maxAges') }}</strong> {{ this.date.maxAges }}
+                </td>
+              </tr>
+              <tr>
+                <td colspan="2" style="font-size: x-large;">
+                  <strong><i class="bi bi-calendar-event"></i> {{ $t('dates.card.startsOn') }}</strong><br />{{ this.date.startsOn ? moment(this.date.startsOn).format("DD MMM, HH:mm") : 'След запазване на достатъчно места' }}
+                </td>
+              </tr>
+            </tbody>
           </table>
           <div>
             <h3 class="font-weight-semi-bold"><i class="bi bi-tag"></i>{{ $t('common.currencySign') }}{{ this.date.price }}</h3>
