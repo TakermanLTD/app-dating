@@ -13,6 +13,9 @@ using Takerman.Mail;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Facebook;
 using System.Security.Claims;
+using Serilog.Events;
+using Serilog.Sinks.Slack.Models;
+using Serilog.Sinks.Slack;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Configuration
@@ -26,6 +29,16 @@ var hostname = Dns.GetHostName();
 Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Warning()
     .ReadFrom.Configuration(builder.Configuration)
+    .WriteTo.Slack(new SlackSinkOptions
+    {
+        WebHookUrl = "https://hooks.slack.com/services/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",
+        CustomIcon = ":heart:",
+        Period = TimeSpan.FromSeconds(10),
+        ShowDefaultAttachments = false,
+        ShowExceptionAttachments = true,
+        MinimumLogEventLevel = LogEventLevel.Error,
+        PropertyDenyList = ["Level", "SourceContext"]
+    })
     .CreateLogger();
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? string.Empty;
