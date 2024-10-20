@@ -13,9 +13,7 @@ using Takerman.Mail;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Facebook;
 using System.Security.Claims;
-using Serilog.Events;
-using Serilog.Sinks.Slack.Models;
-using Serilog.Sinks.Slack;
+using Takerman.Logging;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Configuration
@@ -33,14 +31,8 @@ if (!builder.Environment.IsDevelopment())
 var googleSection = builder.Configuration.GetSection(nameof(GoogleAuthConfig));
 var facebookSection = builder.Configuration.GetSection(nameof(FacebookAuthConfig));
 
-Log.Logger = new LoggerConfiguration()
-    .MinimumLevel.Warning()
-    .WriteTo.Console(restrictedToMinimumLevel: LogEventLevel.Warning)
-    .WriteTo.Slack("https://hooks.slack.com/services/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", restrictedToMinimumLevel: LogEventLevel.Error)
-    .CreateLogger();
-
-builder.Host.UseSerilog(Log.Logger);
-builder.Logging.AddSerilog(Log.Logger);
+builder.Host.AddTakermanLogging();
+builder.Logging.AddTakermanLogging();
 builder.Services.AddSignalR();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
