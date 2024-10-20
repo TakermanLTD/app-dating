@@ -26,36 +26,29 @@ builder.Configuration
 
 var hostname = Dns.GetHostName();
 
-Log.Logger = new LoggerConfiguration()
-    .MinimumLevel.Warning()
-    .ReadFrom.Configuration(builder.Configuration)
-    .WriteTo.Slack(new SlackSinkOptions
-    {
-        WebHookUrl = "https://hooks.slack.com/services/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",
-        CustomIcon = ":heart:",
-        Period = TimeSpan.FromSeconds(10),
-        ShowDefaultAttachments = false,
-        ShowExceptionAttachments = true,
-        MinimumLogEventLevel = LogEventLevel.Error,
-        PropertyDenyList = ["Level", "SourceContext"]
-    })
-    .CreateLogger();
-
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? string.Empty;
 if (!builder.Environment.IsDevelopment())
     connectionString = connectionString.Replace("takerman_dating_bg", hostname);
 
 var googleSection = builder.Configuration.GetSection(nameof(GoogleAuthConfig));
 var facebookSection = builder.Configuration.GetSection(nameof(FacebookAuthConfig));
-builder.Services.AddSignalR();
+
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Warning()
+    .WriteTo.Console(restrictedToMinimumLevel: LogEventLevel.Warning)
+    .WriteTo.Slack("https://hooks.slack.com/services/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", restrictedToMinimumLevel: LogEventLevel.Error)
+    .CreateLogger();
+
 builder.Host.UseSerilog(Log.Logger);
+builder.Logging.AddSerilog(Log.Logger);
+builder.Services.AddSignalR();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddExceptionHandler<BadRequestExceptionHandler>();
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
-builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
+builder.Services.Configure<AppSettings>(builder.Configuration.GetSection(nameof(AppSettings)));
 builder.Services.AddDbContext<DefaultContext>(options => options.UseSqlServer(connectionString, b => b.MigrationsAssembly("Takerman.Dating.Data")));
 builder.Services.AddTransient<DbContext, DefaultContext>();
 builder.Services.AddTransient<IContextInitializer, ContextInitializer>();
